@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ccesbvhkx1b8a"]
+[gd_scene load_steps=18 format=3 uid="uid://bxn4ktmm2kls6"]
 
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="1_afcvf"]
 [ext_resource type="AudioStream" uid="uid://c5rik6egnyrrx" path="res://assets/music/level_1/level_1_bg.tres" id="1_gj2fu"]

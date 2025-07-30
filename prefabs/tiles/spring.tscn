@@ -1,0 +1,127 @@
+[gd_scene load_steps=11 format=3 uid="uid://t6xvasqtnplb"]
+
+[ext_resource type="Script" uid="uid://v8vrrqikjn7h" path="res://scripts/spring.gd" id="1_d87sf"]
+[ext_resource type="Shader" uid="uid://brmxaym5su1lg" path="res://assets/shaders/nine_patch.gdshader" id="2_w38pd"]
+[ext_resource type="Texture2D" uid="uid://dt1mpqi1l44ar" path="res://assets/art/spring_head.png" id="3_ms41f"]
+[ext_resource type="Texture2D" uid="uid://c7mss1md770xp" path="res://assets/art/spring_base.png" id="4_n8tp2"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_66y8n"]
+shader = ExtResource("2_w38pd")
+shader_parameter/scale = Vector2(1, 1)
+shader_parameter/right = 4
+shader_parameter/top = 4
+shader_parameter/left = 4
+shader_parameter/bottom = 4
+
+[sub_resource type="Animation" id="Animation_mlksw"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeadSprite:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HeadSprite:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_gyfg6"]
+resource_name = "spring"
+length = 0.5
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HeadSprite:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.2, 0.5)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HeadSprite:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0, 2),
+"points": PackedFloat32Array(0, 0, 0, 0.0333333, -2.64599, -4, -0.0333333, 0, 0.133333, 0, -4, -0.0333333, 0, 0.133333, 0, 0, -0.1, -0.0964686, 0, 0),
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.5)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_66y8n"]
+_data = {
+&"RESET": SubResource("Animation_mlksw"),
+&"spring": SubResource("Animation_gyfg6")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_66y8n"]
+size = Vector2(8, 3)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nrfyi"]
+size = Vector2(8, 7)
+
+[node name="Spring" type="Node2D" node_paths=PackedStringArray("head_sprite", "tube_sprite", "base_sprite", "tube_base", "spring_area", "anim_player")]
+script = ExtResource("1_d87sf")
+power = 200.0
+head_sprite = NodePath("HeadSprite")
+tube_sprite = NodePath("TubeSprite")
+base_sprite = NodePath("BaseSprite")
+tube_base = NodePath("TubeBase")
+spring_area = NodePath("SpringArea2D")
+anim_player = NodePath("AnimationPlayer")
+
+[node name="TubeSprite" type="Sprite2D" parent="."]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_66y8n")
+scale = Vector2(1, 1e-05)
+texture = ExtResource("3_ms41f")
+offset = Vector2(0, -2.5)
+region_enabled = true
+region_rect = Rect2(0, 3, 8, 5)
+
+[node name="HeadSprite" type="Sprite2D" parent="."]
+texture_repeat = 1
+material = SubResource("ShaderMaterial_66y8n")
+texture = ExtResource("3_ms41f")
+offset = Vector2(0, -1.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 8, 3)
+
+[node name="TubeBase" type="Node2D" parent="."]
+
+[node name="BaseSprite" type="Sprite2D" parent="."]
+texture = ExtResource("4_n8tp2")
+region_rect = Rect2(0, 0, 8, 8)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_66y8n")
+}
+
+[node name="SpringArea2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpringArea2D"]
+position = Vector2(0, -4.5)
+shape = SubResource("RectangleShape2D_66y8n")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_nrfyi")

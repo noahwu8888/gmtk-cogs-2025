@@ -1,0 +1,54 @@
+[gd_scene load_steps=11 format=4 uid="uid://cy7fb0f5jqp4x"]
+
+[ext_resource type="Script" uid="uid://d2qqwau4hkym7" path="res://scripts/room.gd" id="1_yg100"]
+[ext_resource type="TileSet" uid="uid://0kov5o43lpg" path="res://assets/tilesets/main_tilset.tres" id="2_p3u21"]
+[ext_resource type="TileSet" uid="uid://cf882mkqehjce" path="res://assets/tilesets/fore_tileset.tres" id="2_y72nq"]
+[ext_resource type="Script" uid="uid://ynenhsujby15" path="res://addons/cameraregion2d/CameraRegion2D.gd" id="3_y72nq"]
+[ext_resource type="TileSet" uid="uid://xh4db45fg6vt" path="res://assets/tilesets/bg_tileset.tres" id="4_y72nq"]
+[ext_resource type="Script" uid="uid://ec185iqkwh8a" path="res://addons/cameraregion2d/CameraTransition.gd" id="6_0dyi5"]
+
+[sub_resource type="Curve" id="Curve_gyfg6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_mlksw"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_66y8n"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_nrfyi"]
+script = ExtResource("6_0dyi5")
+position = SubResource("Curve_gyfg6")
+zoom = SubResource("Curve_66y8n")
+rotation = SubResource("Curve_mlksw")
+transition_time = 1.0
+metadata/_custom_type_script = "uid://ec185iqkwh8a"
+
+[node name="Room" type="Node2D" node_paths=PackedStringArray("fore_layer", "main_layer", "bg_layer", "region")]
+script = ExtResource("1_yg100")
+fore_layer = NodePath("ForeLayer")
+main_layer = NodePath("MainLayer")
+bg_layer = NodePath("BGLayer")
+region = NodePath("CameraRegion2D")
+
+[node name="ForeLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_y72nq")
+
+[node name="MainLayer" type="TileMapLayer" parent="."]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAMAAAABAAAAAAACAAMAAAAEAAAAAAADAAMAAAADAAAAAAACAAMAAAACAAAAAAACAAMAAAAGAAIAAAABAAMAAAAIAAIAAAACAAMAAAAHAAIAAAACAAMAAAAKAAIAAAACAAMAAAAJAAIAAAACAAMAAAALAAIAAAADAAMAAAAOAAAAAAABAAMAAAAPAAAAAAACAAMAAAAQAAAAAAACAAMAAAARAAAAAAACAAMAAAASAAAAAAACAAMAAAATAAAAAAACAAMAAAAUAAAAAAACAAMAAAAVAAAAAAADAAMAAAAWAAMAAAABAAMAAAAfAAMAAAADAAMAAAAeAAMAAAACAAMAAAAdAAMAAAACAAMAAAAcAAMAAAACAAMAAAAbAAMAAAACAAMAAAAaAAMAAAACAAMAAAAZAAMAAAACAAMAAAAYAAMAAAACAAMAAAAXAAMAAAACAAMAAAAgAP7/AAABAAMAAAAhAP7/AAACAAMAAAAkAP7/AAACAAMAAAAjAP7/AAACAAMAAAAiAP7/AAACAAMAAAAmAP7/AAADAAMAAAAlAP7/AAACAAMAAAAlAP3/AQAAAAAAAQAeAAIAAQAAAAAAAgA=")
+tile_set = ExtResource("2_p3u21")
+
+[node name="BGLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("4_y72nq")
+
+[node name="CameraRegion2D" type="Node2D" parent="."]
+position = Vector2(0, -128)
+script = ExtResource("3_y72nq")
+size = Vector2(800, 192)
+centered = false
+camera_zoom = Vector2(4, 4)
+transition = SubResource("Resource_nrfyi")
+metadata/_custom_type_script = "uid://ynenhsujby15"

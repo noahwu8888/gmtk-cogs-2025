@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://b8em18cjqhgg2"]
+
+[ext_resource type="Script" uid="uid://7wof5v1ev1w0" path="res://scripts/goal.gd" id="1_bnsmo"]
+[ext_resource type="Texture2D" uid="uid://bnnnbi32cg7tc" path="res://assets/art/goal.png" id="2_b3wvb"]
+[ext_resource type="AnimationLibrary" uid="uid://d1m50h8yvtr8y" path="res://assets/animation/idle_anim_lib.tres" id="3_cnojs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0dyi5"]
+radius = 4.0
+
+[node name="Goal" type="Node2D"]
+script = ExtResource("1_bnsmo")
+
+[node name="Visuals" type="Node2D" parent="."]
+position = Vector2(0, 0.0151501)
+rotation = -0.174533
+scale = Vector2(1.00165, 0.998353)
+
+[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
+texture = ExtResource("2_b3wvb")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_0dyi5")
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"Idle": ExtResource("3_cnojs")
+}
+autoplay = "Idle/idle1"

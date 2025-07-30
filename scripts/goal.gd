@@ -1,0 +1,19 @@
+extends Node2D
+class_name Goal
+
+signal player_entered()
+
+@export var area2d: Area2D
+
+
+func _ready() -> void:
+	area2d.body_entered.connect(_on_body_entered)
+
+
+func _on_body_entered(body: Node2D):
+	if body is Player:
+		player_entered.emit()
+
+
+func play_ending(duration: float):
+	# TODO: Add visuals that scale based on duration
