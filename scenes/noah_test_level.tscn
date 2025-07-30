@@ -1,11 +1,12 @@
-[gd_scene load_steps=18 format=3 uid="uid://bxn4ktmm2kls6"]
+[gd_scene load_steps=19 format=3 uid="uid://ccesbvhkx1b8a"]
 
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="1_afcvf"]
-[ext_resource type="AudioStream" uid="uid://c5rik6egnyrrx" path="res://assets/music/level_1/level_1_bg.tres" id="1_gj2fu"]
+[ext_resource type="AudioStream" uid="uid://rmpyi2mvb7yc" path="res://assets/music/level_1/level_1_bg_double.tres" id="1_gj2fu"]
 [ext_resource type="Script" uid="uid://ynenhsujby15" path="res://addons/cameraregion2d/CameraRegion2D.gd" id="2_g3cfa"]
 [ext_resource type="Script" uid="uid://ec185iqkwh8a" path="res://addons/cameraregion2d/CameraTransition.gd" id="3_g3cfa"]
 [ext_resource type="Texture2D" uid="uid://bvn0ladfae4yv" path="res://icon.svg" id="3_k0uv7"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="6_muymi"]
+[ext_resource type="AudioStream" uid="uid://c3bl4uchs2vfc" path="res://assets/music/level_1/bg1.1.mp3" id="7_muymi"]
 
 [sub_resource type="Curve" id="Curve_k0uv7"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -44,7 +45,7 @@ script = ExtResource("3_g3cfa")
 position = SubResource("Curve_lrwhu")
 zoom = SubResource("Curve_rd5be")
 rotation = SubResource("Curve_w01do")
-transition_time = 1.0
+transition_time = 0.25
 metadata/_custom_type_script = "uid://ec185iqkwh8a"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gj2fu"]
@@ -77,6 +78,10 @@ func _physics_process(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+
+
+func _on_rhythm_notifier_beat(current_beat: int) -> void:
+	print(\"Current Beat: \", current_beat)
 "
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jwn0t"]
@@ -85,6 +90,9 @@ func _physics_process(delta: float) -> void:
 
 [node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("1_gj2fu")
+autoplay = true
+max_polyphony = 4
+playback_type = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 process_callback = 0
@@ -106,7 +114,8 @@ metadata/_custom_type_script = "uid://ynenhsujby15"
 [node name="Room2" type="Node2D" parent="CameraRegionController2D"]
 position = Vector2(1904, 336)
 script = ExtResource("2_g3cfa")
-size = Vector2(1152, 648)
+size = Vector2(2304, 1296)
+camera_zoom = Vector2(0.5, 0.5)
 transition = SubResource("Resource_571nt")
 metadata/_custom_type_script = "uid://ynenhsujby15"
 
@@ -134,6 +143,17 @@ texture = ExtResource("3_k0uv7")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
 shape = SubResource("CircleShape2D_jwn0t")
 
-[node name="RhythmNotifier" type="Node" parent="."]
+[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("6_muymi")
+bpm = 136.0
+beat_length = 0.441176
+audio_stream_player = NodePath("../AudioStreamPlayer")
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_muymi")
+volume_db = -80.0
+autoplay = true
+parameters/looping = true
+
+[connection signal="beat" from="RhythmNotifier" to="CharacterBody2D" method="_on_rhythm_notifier_beat"]

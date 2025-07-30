@@ -117,7 +117,7 @@ class _Rhythm:
 	signal interval_changed(current_interval: int)
 
 	var repeating: bool
-	var beat_count: float
+	var beat_count: float 
 	var start_beat: float
 	var last_frame_interval
 	
@@ -140,6 +140,7 @@ class _Rhythm:
 			last_frame_interval = null
 		elif last_frame_interval != current_interval:
 			interval_changed.emit(current_interval)
+			print("RHYTHM NOTIFIER, ", current_interval)
 			last_frame_interval = current_interval
 
 
