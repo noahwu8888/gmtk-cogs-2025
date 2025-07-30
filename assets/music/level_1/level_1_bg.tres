@@ -1,0 +1,47 @@
+[gd_resource type="AudioStreamInteractive" load_steps=5 format=3 uid="uid://c5rik6egnyrrx"]
+
+[ext_resource type="AudioStream" uid="uid://d28wbnugn31g4" path="res://assets/music/level_1/bg1.mp3" id="1_2tnvm"]
+[ext_resource type="AudioStream" uid="uid://b5pcu35iqsk6j" path="res://assets/music/level_1/bg2.mp3" id="2_lgdet"]
+[ext_resource type="AudioStream" uid="uid://b3vsknftiivkh" path="res://assets/music/level_1/bg3.mp3" id="3_g440o"]
+[ext_resource type="AudioStream" uid="uid://ds6n2uql6uwjd" path="res://assets/music/level_1/bg4.mp3" id="4_l3k6v"]
+
+[resource]
+clip_count = 4
+clip_0/name = &"Bg 1"
+clip_0/stream = ExtResource("1_2tnvm")
+clip_0/auto_advance = 0
+clip_1/name = &"Bg 2"
+clip_1/stream = ExtResource("2_lgdet")
+clip_1/auto_advance = 0
+clip_2/name = &"Bg 3"
+clip_2/stream = ExtResource("3_g440o")
+clip_2/auto_advance = 0
+clip_3/name = &"Bg 4"
+clip_3/stream = ExtResource("4_l3k6v")
+clip_3/auto_advance = 0
+_transitions = {
+Vector2i(0, 1): {
+"fade_beats": 1.0,
+"fade_mode": 3,
+"from_time": 3,
+"to_time": 1
+},
+Vector2i(1, 2): {
+"fade_beats": 1.0,
+"fade_mode": 3,
+"from_time": 3,
+"to_time": 1
+},
+Vector2i(2, 3): {
+"fade_beats": 1.0,
+"fade_mode": 3,
+"from_time": 3,
+"to_time": 1
+},
+Vector2i(3, 0): {
+"fade_beats": 1.0,
+"fade_mode": 3,
+"from_time": 3,
+"to_time": 1
+}
+}

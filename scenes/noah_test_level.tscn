@@ -1,0 +1,139 @@
+[gd_scene load_steps=18 format=3 uid="uid://ccesbvhkx1b8a"]
+
+[ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="1_afcvf"]
+[ext_resource type="AudioStream" uid="uid://c5rik6egnyrrx" path="res://assets/music/level_1/level_1_bg.tres" id="1_gj2fu"]
+[ext_resource type="Script" uid="uid://ynenhsujby15" path="res://addons/cameraregion2d/CameraRegion2D.gd" id="2_g3cfa"]
+[ext_resource type="Script" uid="uid://ec185iqkwh8a" path="res://addons/cameraregion2d/CameraTransition.gd" id="3_g3cfa"]
+[ext_resource type="Texture2D" uid="uid://bvn0ladfae4yv" path="res://icon.svg" id="3_k0uv7"]
+[ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="6_muymi"]
+
+[sub_resource type="Curve" id="Curve_k0uv7"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_gj2fu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_muymi"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_jwn0t"]
+script = ExtResource("3_g3cfa")
+position = SubResource("Curve_k0uv7")
+zoom = SubResource("Curve_muymi")
+rotation = SubResource("Curve_gj2fu")
+transition_time = 1.0
+metadata/_custom_type_script = "uid://ec185iqkwh8a"
+
+[sub_resource type="Curve" id="Curve_lrwhu"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_w01do"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_rd5be"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Resource" id="Resource_571nt"]
+script = ExtResource("3_g3cfa")
+position = SubResource("Curve_lrwhu")
+zoom = SubResource("Curve_rd5be")
+rotation = SubResource("Curve_w01do")
+transition_time = 1.0
+metadata/_custom_type_script = "uid://ec185iqkwh8a"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gj2fu"]
+size = Vector2(2304, 128)
+
+[sub_resource type="GDScript" id="GDScript_muymi"]
+resource_name = "play"
+script/source = "extends CharacterBody2D
+
+
+const SPEED = 300.0
+const JUMP_VELOCITY = -400.0
+
+
+func _physics_process(delta: float) -> void:
+	# Add the gravity.
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var direction := Input.get_axis(\"ui_left\", \"ui_right\")
+	if direction:
+		velocity.x = direction * SPEED
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+
+	move_and_slide()
+"
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jwn0t"]
+
+[node name="TestLevel" type="Node2D"]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_gj2fu")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+process_callback = 0
+position_smoothing_enabled = true
+
+[node name="CameraRegionController2D" type="Node2D" parent="." node_paths=PackedStringArray("camera", "target_node")]
+script = ExtResource("1_afcvf")
+camera = NodePath("../Camera2D")
+target_node = NodePath("../CharacterBody2D")
+metadata/_custom_type_script = "uid://boimiilxj3n2b"
+
+[node name="Room1" type="Node2D" parent="CameraRegionController2D"]
+position = Vector2(576, 336)
+script = ExtResource("2_g3cfa")
+size = Vector2(1152, 648)
+transition = SubResource("Resource_jwn0t")
+metadata/_custom_type_script = "uid://ynenhsujby15"
+
+[node name="Room2" type="Node2D" parent="CameraRegionController2D"]
+position = Vector2(1904, 336)
+script = ExtResource("2_g3cfa")
+size = Vector2(1152, 648)
+transition = SubResource("Resource_571nt")
+metadata/_custom_type_script = "uid://ynenhsujby15"
+
+[node name="Room1" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Room1"]
+position = Vector2(1152, 640)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Room1/StaticBody2D"]
+shape = SubResource("RectangleShape2D_gj2fu")
+
+[node name="Sprite2D" type="Sprite2D" parent="Room1/StaticBody2D"]
+position = Vector2(-0.000152588, 0)
+scale = Vector2(18, 1)
+texture = ExtResource("3_k0uv7")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+position = Vector2(214, 405)
+script = SubResource("GDScript_muymi")
+
+[node name="Icon" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_k0uv7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("CircleShape2D_jwn0t")
+
+[node name="RhythmNotifier" type="Node" parent="."]
+script = ExtResource("6_muymi")
+metadata/_custom_type_script = "uid://dqi2pls0xboqr"
