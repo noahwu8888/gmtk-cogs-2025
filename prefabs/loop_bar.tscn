@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://dktcdyv405i1p"]
+
+[ext_resource type="Script" uid="uid://dnsrw5rx0w5uo" path="res://scripts/loop_bar.gd" id="1_dqg14"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1sw51"]
+
+[node name="LoopBar" type="Node2D"]
+script = ExtResource("1_dqg14")
+start_pos = Vector2(0, 324)
+end_pos = Vector2(1152, 324)
+bpm = 60.0
+beats = 4
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(5, 648)
+texture = SubResource("PlaceholderTexture2D_1sw51")
