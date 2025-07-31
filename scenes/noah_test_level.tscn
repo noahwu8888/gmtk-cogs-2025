@@ -1,93 +1,59 @@
-[gd_scene load_steps=22 format=3 uid="uid://ccesbvhkx1b8a"]
+[gd_scene load_steps=21 format=4 uid="uid://ccesbvhkx1b8a"]
 
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="1_afcvf"]
 [ext_resource type="Script" uid="uid://ynenhsujby15" path="res://addons/cameraregion2d/CameraRegion2D.gd" id="2_g3cfa"]
 [ext_resource type="Script" uid="uid://ec185iqkwh8a" path="res://addons/cameraregion2d/CameraTransition.gd" id="3_g3cfa"]
-[ext_resource type="Texture2D" uid="uid://bvn0ladfae4yv" path="res://icon.svg" id="3_k0uv7"]
+[ext_resource type="Script" uid="uid://d2qqwau4hkym7" path="res://scripts/room.gd" id="4_ppy5q"]
+[ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="4_rd5be"]
+[ext_resource type="TileSet" uid="uid://cf882mkqehjce" path="res://assets/tilesets/fore_tileset.tres" id="6_1058y"]
 [ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/bg_music_manager.gd" id="7_jwn0t"]
+[ext_resource type="TileSet" uid="uid://0kov5o43lpg" path="res://assets/tilesets/main_tilset.tres" id="7_sy0p2"]
 [ext_resource type="AudioStream" uid="uid://2p0ujxmu6fam" path="res://assets/music/level_1/bg1.mp3" id="8_571nt"]
+[ext_resource type="TileSet" uid="uid://xh4db45fg6vt" path="res://assets/tilesets/bg_tileset.tres" id="8_hadbe"]
+[ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="9_7nrp1"]
 [ext_resource type="Script" uid="uid://q4owhci408e2" path="res://scripts/music_control/bg_music_emitter.gd" id="9_tjc5a"]
 [ext_resource type="AudioStream" uid="uid://cvoju3lrgidp" path="res://assets/music/level_1/bg2.mp3" id="10_rsm4i"]
 [ext_resource type="AudioStream" uid="uid://djrtk0k21pep2" path="res://assets/music/level_1/bg3.mp3" id="11_ppy5q"]
 [ext_resource type="AudioStream" uid="uid://4h25ywrkro2p" path="res://assets/music/level_1/bg4.mp3" id="12_1058y"]
 
-[sub_resource type="Curve" id="Curve_k0uv7"]
+[sub_resource type="Curve" id="Curve_gyfg6"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Curve" id="Curve_gj2fu"]
+[sub_resource type="Curve" id="Curve_mlksw"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Curve" id="Curve_muymi"]
+[sub_resource type="Curve" id="Curve_66y8n"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 2
 
-[sub_resource type="Resource" id="Resource_jwn0t"]
+[sub_resource type="Resource" id="Resource_nrfyi"]
 script = ExtResource("3_g3cfa")
-position = SubResource("Curve_k0uv7")
-zoom = SubResource("Curve_muymi")
-rotation = SubResource("Curve_gj2fu")
+position = SubResource("Curve_gyfg6")
+zoom = SubResource("Curve_66y8n")
+rotation = SubResource("Curve_mlksw")
 transition_time = 1.0
 metadata/_custom_type_script = "uid://ec185iqkwh8a"
 
-[sub_resource type="Curve" id="Curve_lrwhu"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_w01do"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Curve" id="Curve_rd5be"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="Resource" id="Resource_571nt"]
-script = ExtResource("3_g3cfa")
-position = SubResource("Curve_lrwhu")
-zoom = SubResource("Curve_rd5be")
-rotation = SubResource("Curve_w01do")
-transition_time = 0.25
-metadata/_custom_type_script = "uid://ec185iqkwh8a"
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gj2fu"]
-size = Vector2(2304, 128)
-
-[sub_resource type="GDScript" id="GDScript_muymi"]
-resource_name = "play"
-script/source = "extends CharacterBody2D
+[sub_resource type="GDScript" id="GDScript_ppy5q"]
+resource_name = "test_bg"
+script/source = "extends Node
 
 
-const SPEED = 300.0
-const JUMP_VELOCITY = -400.0
+@export var active_tracks : Array[AudioStream]
+@export var new_active_tracks : Array[AudioStream]
+
+func _ready() -> void:
+	$\"../BackgroundManager\".update_emitters_for_room(active_tracks)
 
 
-func _physics_process(delta: float) -> void:
-	# Add the gravity.
-	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	# Handle jump.
-	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
-
-	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction := Input.get_axis(\"ui_left\", \"ui_right\")
-	if direction:
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-
-	move_and_slide()
-
-
-func _on_rhythm_notifier_beat(current_beat: int) -> void:
-	print(\"Current Beat: \", current_beat)
+# Called when the node enters the scene tree for the first time.
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_P:
+			$\"../BackgroundManager\".update_emitters_for_room(new_active_tracks)
 "
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_jwn0t"]
 
 [node name="TestLevel" type="Node2D"]
 
@@ -98,74 +64,73 @@ position_smoothing_enabled = true
 [node name="CameraRegionController2D" type="Node2D" parent="." node_paths=PackedStringArray("camera", "target_node")]
 script = ExtResource("1_afcvf")
 camera = NodePath("../Camera2D")
-target_node = NodePath("../CharacterBody2D")
+target_node = NodePath("../Player")
 metadata/_custom_type_script = "uid://boimiilxj3n2b"
 
-[node name="Room1" type="Node2D" parent="CameraRegionController2D"]
-position = Vector2(576, 336)
+[node name="CameraRegion2D" type="Node2D" parent="CameraRegionController2D"]
+position = Vector2(0, -128)
 script = ExtResource("2_g3cfa")
-size = Vector2(1152, 648)
-transition = SubResource("Resource_jwn0t")
+size = Vector2(340, 192)
+centered = false
+camera_zoom = Vector2(4, 4)
+transition = SubResource("Resource_nrfyi")
 metadata/_custom_type_script = "uid://ynenhsujby15"
 
-[node name="Room2" type="Node2D" parent="CameraRegionController2D"]
-position = Vector2(1904, 336)
-script = ExtResource("2_g3cfa")
-size = Vector2(2304, 1296)
-camera_zoom = Vector2(0.5, 0.5)
-transition = SubResource("Resource_571nt")
-metadata/_custom_type_script = "uid://ynenhsujby15"
+[node name="Room" type="Node2D" parent="." node_paths=PackedStringArray("loop_bar", "fore_layer", "main_layer", "bg_layer", "region")]
+script = ExtResource("4_ppy5q")
+loop_bar = NodePath("LoopBar")
+fore_layer = NodePath("ForeLayer")
+main_layer = NodePath("MainLayer")
+bg_layer = NodePath("BGLayer")
+region = NodePath("../CameraRegionController2D/CameraRegion2D")
 
-[node name="Room1" type="Node2D" parent="."]
+[node name="LoopBar" parent="Room" instance=ExtResource("4_rd5be")]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="Room1"]
-position = Vector2(1152, 640)
+[node name="Marker2D" parent="Room/LoopBar" index="1"]
+position = Vector2(320, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Room1/StaticBody2D"]
-shape = SubResource("RectangleShape2D_gj2fu")
+[node name="ForeLayer" type="TileMapLayer" parent="Room"]
+tile_set = ExtResource("6_1058y")
 
-[node name="Sprite2D" type="Sprite2D" parent="Room1/StaticBody2D"]
-position = Vector2(-0.000152588, 0)
-scale = Vector2(18, 1)
-texture = ExtResource("3_k0uv7")
+[node name="MainLayer" type="TileMapLayer" parent="Room"]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAMAAAABAAAAAAACAAMAAAAEAAAAAAADAAMAAAADAAAAAAACAAMAAAACAAAAAAACAAMAAAAGAAIAAAABAAMAAAAIAAIAAAACAAMAAAAHAAIAAAACAAMAAAAKAAIAAAACAAMAAAAJAAIAAAACAAMAAAALAAIAAAADAAMAAAAOAAAAAAABAAMAAAAPAAAAAAACAAMAAAAQAAAAAAACAAMAAAARAAAAAAACAAMAAAASAAAAAAACAAMAAAATAAAAAAACAAMAAAAUAAAAAAACAAMAAAAVAAAAAAADAAMAAAAWAAMAAAABAAMAAAAfAAMAAAADAAMAAAAeAAMAAAACAAMAAAAdAAMAAAACAAMAAAAcAAMAAAACAAMAAAAbAAMAAAACAAMAAAAaAAMAAAACAAMAAAAZAAMAAAACAAMAAAAYAAMAAAACAAMAAAAXAAMAAAACAAMAAAAgAP7/AAABAAMAAAAhAP7/AAACAAMAAAAkAP7/AAACAAMAAAAjAP7/AAACAAMAAAAiAP7/AAACAAMAAAAmAP7/AAADAAMAAAAlAP7/AAACAAMAAAAlAP3/AQAAAAAAAQAeAAIAAQAAAAAAAgA=")
+tile_set = ExtResource("7_sy0p2")
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-position = Vector2(214, 405)
-script = SubResource("GDScript_muymi")
+[node name="BGLayer" type="TileMapLayer" parent="Room"]
+tile_set = ExtResource("8_hadbe")
 
-[node name="Icon" type="Sprite2D" parent="CharacterBody2D"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_k0uv7")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-shape = SubResource("CircleShape2D_jwn0t")
+[node name="Player" parent="." instance=ExtResource("9_7nrp1")]
+position = Vector2(16, -15)
 
 [node name="BackgroundManager" type="Node" parent="."]
 script = ExtResource("7_jwn0t")
+active_tracks = Dictionary[AudioStream, bool]({
+ExtResource("11_ppy5q"): true
+})
 
 [node name="BGMusicEmitter1" type="AudioStreamPlayer" parent="BackgroundManager"]
 stream = ExtResource("8_571nt")
 script = ExtResource("9_tjc5a")
-end_room_number = 1
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter2" type="AudioStreamPlayer" parent="BackgroundManager"]
 stream = ExtResource("10_rsm4i")
 script = ExtResource("9_tjc5a")
-start_room_number = 2
-end_room_number = 2
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter3" type="AudioStreamPlayer" parent="BackgroundManager"]
 stream = ExtResource("11_ppy5q")
 script = ExtResource("9_tjc5a")
-start_room_number = 3
-end_room_number = 3
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter4" type="AudioStreamPlayer" parent="BackgroundManager"]
 stream = ExtResource("12_1058y")
 script = ExtResource("9_tjc5a")
-start_room_number = 4
-end_room_number = 4
 metadata/_custom_type_script = "uid://q4owhci408e2"
+
+[node name="TestScript" type="Node" parent="."]
+script = SubResource("GDScript_ppy5q")
+active_tracks = Array[AudioStream]([ExtResource("11_ppy5q")])
+new_active_tracks = Array[AudioStream]([ExtResource("12_1058y")])
+
+[editable path="Room/LoopBar"]

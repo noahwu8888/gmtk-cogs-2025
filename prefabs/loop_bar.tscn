@@ -14,3 +14,6 @@ beats = 4
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(5, 648)
 texture = SubResource("PlaceholderTexture2D_1sw51")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(1152, 0)

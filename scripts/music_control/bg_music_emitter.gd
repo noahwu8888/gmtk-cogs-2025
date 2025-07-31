@@ -1,8 +1,6 @@
 extends AudioStreamPlayer
 class_name BGMusicEmitter
 
-@export var start_room_number : int = 1
-@export var end_room_number : int = 100
 @export var fade_in_time : float = 1.0
 @export var fade_out_time : float = 1.0
 @export var beat_length : int = 32 
@@ -12,7 +10,7 @@ var rhythm_notifier: RhythmNotifier
 
 func _ready() -> void:
 	max_polyphony = 2
-
+	
 	music_manager = get_parent()
 	if not music_manager:
 		push_error("BGMusicManager not found in parent node path.")
@@ -41,8 +39,10 @@ func _on_stream_finished() -> void:
 	pass
 
 func _on_rhythm_notifier_beat(current_beat: int) -> void:
-	print("Beat:", current_beat)
+	#print("Beat:", current_beat)
 	if current_beat == beat_length:
-		if music_manager.current_room >= start_room_number and music_manager.current_room <= end_room_number:
-			print("Emitter:", self.name, "beat-based loop triggered.")
+		if stream in music_manager.active_tracks:
+			#print("Emitter:", self.name, "beat-based loop triggered.")
 			play() 
+		else:
+			fade_out()

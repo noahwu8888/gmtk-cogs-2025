@@ -140,7 +140,7 @@ class _Rhythm:
 			last_frame_interval = null
 		elif last_frame_interval != current_interval:
 			interval_changed.emit(current_interval)
-			print("RHYTHM NOTIFIER, ", current_interval)
+			#print("RHYTHM NOTIFIER, ", current_interval)
 			last_frame_interval = current_interval
 
 
