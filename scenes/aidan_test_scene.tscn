@@ -1,7 +1,14 @@
+<<<<<<< Updated upstream
 [gd_scene load_steps=3 format=3 uid="uid://cv1dpx42144m6"]
 
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="1_3m7fn"]
 [ext_resource type="PackedScene" uid="uid://bcdwmkrcd6dd4" path="res://prefabs/level elements/platform.tscn" id="2_8i16t"]
+=======
+[gd_scene load_steps=3 format=3 uid="uid://dr8775oeyt6d4"]
+
+[ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="1_3m7fn"]
+[ext_resource type="PackedScene" path="res://prefabs/level elements/platform.tscn" id="2_8i16t"]
+>>>>>>> Stashed changes
 
 [node name="AidanTestScene" type="Node"]
 
