@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="3_q1qbj"]
 [ext_resource type="Script" uid="uid://dc1got8i8eqpe" path="res://scripts/game_manager.gd" id="4_q1qbj"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="5_b7oqo"]
-[ext_resource type="AudioStream" uid="uid://d28wbnugn31g4" path="res://assets/music/level_1/bg1.mp3" id="5_pe0l7"]
+[ext_resource type="AudioStream" uid="uid://2p0ujxmu6fam" path="res://assets/music/level_1/bg1.mp3" id="5_pe0l7"]
 
 [sub_resource type="AudioStreamInteractive" id="AudioStreamInteractive_k32p6"]
 clip_count = 2

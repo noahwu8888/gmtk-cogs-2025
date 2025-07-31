@@ -16,5 +16,6 @@ func _on_body_entered(body: Node2D):
 
 
 func play_ending(duration: float):
+	pass
 	# TODO: Add visuals that scale based on duration
 	pass

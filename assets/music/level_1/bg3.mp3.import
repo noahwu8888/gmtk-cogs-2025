@@ -2,7 +2,7 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://b3vsknftiivkh"
+uid="uid://djrtk0k21pep2"
 path="res://.godot/imported/bg3.mp3-906dd15cf51d14fb06d9bfdae2e78970.mp3str"
 
 [deps]
@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/bg3.mp3-906dd15cf51d14fb06d9bfdae2e78970.mp3s
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0.0
 bpm=136.0
-beat_count=32
+beat_count=0
 bar_beats=4
