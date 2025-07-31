@@ -15,6 +15,11 @@ run/main_scene="uid://t6jjkf7w2aip"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[display]
+
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep_width"
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/cameraregion2d/plugin.cfg")

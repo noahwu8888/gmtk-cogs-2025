@@ -3,11 +3,11 @@ class_name Goal
 
 signal player_entered()
 
-@export var area2d: Area2D
+@export var area: Area2D
 
 
 func _ready() -> void:
-	area2d.body_entered.connect(_on_body_entered)
+	area.body_entered.connect(_on_body_entered)
 
 
 func _on_body_entered(body: Node2D):
@@ -17,3 +17,4 @@ func _on_body_entered(body: Node2D):
 
 func play_ending(duration: float):
 	# TODO: Add visuals that scale based on duration
+	pass

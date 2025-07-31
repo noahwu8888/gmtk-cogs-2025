@@ -1,0 +1,32 @@
+[gd_resource type="AnimationNodeStateMachine" load_steps=7 format=3 uid="uid://ce4y6eggeuulk"]
+
+[ext_resource type="Curve" uid="uid://c18s3s024fiub" path="res://assets/curves/ease_out_1.tres" id="1_sh808"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1txc5"]
+animation = &"left"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ht1c8"]
+animation = &"right"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_u51tk"]
+xfade_time = 0.5
+xfade_curve = ExtResource("1_sh808")
+advance_mode = 2
+advance_expression = "velocity.x > 0"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kbsxf"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rgeog"]
+xfade_time = 0.5
+xfade_curve = ExtResource("1_sh808")
+advance_mode = 2
+advance_expression = "velocity.x < 0"
+
+[resource]
+states/Start/position = Vector2(229, 89)
+states/left/node = SubResource("AnimationNodeAnimation_1txc5")
+states/left/position = Vector2(410, 158)
+states/right/node = SubResource("AnimationNodeAnimation_ht1c8")
+states/right/position = Vector2(590, 177)
+transitions = ["left", "right", SubResource("AnimationNodeStateMachineTransition_u51tk"), "Start", "left", SubResource("AnimationNodeStateMachineTransition_kbsxf"), "right", "left", SubResource("AnimationNodeStateMachineTransition_rgeog")]
