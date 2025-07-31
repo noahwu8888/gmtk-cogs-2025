@@ -2,29 +2,42 @@ extends AudioStreamPlayer
 class_name AudioVisualizer
 
 @export var nodes_to_move: Array[Control]
-@export_range(-80, 6) var max_volume: float = 0
-@export_range(-80, 6) var min_volume: float = -5
-@export var max_size_increase: float = 1.2
+@export_range(20, 20000) var frequency_low: float = 30
+@export_range(20, 20000) var frequency_high: float = 250
+@export_range(0.0, 1.0) var sensitivity: float = 1.0
+@export var max_size_increase: float = 1.5
+@export var smoothing_speed: float = .2
 
 var _original_scales: Array[Vector2] = []
+var _current_scale_factor := 1.0
+var _analyzer: AudioEffectSpectrumAnalyzerInstance
 
 func _ready() -> void:
-	# Store the original scale of each node
 	for node in nodes_to_move:
 		_original_scales.append(node.scale)
 
+	# Access the analyzer from the correct bus (e.g., "Music")
+	var bus_index = AudioServer.get_bus_index("Music")
+	var effect_index = 0 # first effect slot on the bus
+	var effect = AudioServer.get_bus_effect(bus_index, effect_index)
+	if effect is AudioEffectSpectrumAnalyzer:
+		_analyzer = AudioServer.get_bus_effect_instance(bus_index, effect_index)
+
 func _process(delta: float) -> void:
-	var music_db = AudioServer.get_bus_peak_volume_left_db(1, 0)
-	print(music_db)
+	if _analyzer == null:
+		return
 
-	# Normalize volume between min_volume and max_volume
-	var t = clamp((music_db - min_volume) / (max_volume - min_volume), 0.0, 1.0)
+	# Get the average magnitude in the desired frequency range
+	var magnitude = _analyzer.get_magnitude_for_frequency_range(frequency_low, frequency_high)
+	var volume = magnitude.length() * sensitivity
+	#print(volume)
+	# Clamp and remap to 0..1
+	var t = clamp(volume, 0.0, 1.0)
+	var target_scale_factor = lerp(1.0, max_size_increase, t)
 
-	# Calculate scale factor
-	var scale_factor = lerp(1.0, max_size_increase, t)
+	# Smooth transition
+	_current_scale_factor = move_toward(_current_scale_factor, target_scale_factor, delta * smoothing_speed)
 
-	# Apply to all nodes
+	# Apply scaling
 	for i in nodes_to_move.size():
-		var node = nodes_to_move[i]
-		var original_scale = _original_scales[i]
-		node.scale = original_scale * scale_factor
+		nodes_to_move[i].scale = _original_scales[i] * _current_scale_factor
