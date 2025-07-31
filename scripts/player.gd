@@ -9,6 +9,7 @@ class_name Player
 @export var down_gravity_scale: float = 1.5
 @export var coyote_time: float = 0.1
 @export var jumps: int = 1
+@export var enabled: bool = true
 
 @export_group("Dependencies")
 @export var visuals_anim_tree: AnimationTree
@@ -25,8 +26,9 @@ var prev_on_floor: bool
 
 
 func _physics_process(delta: float) -> void:
-	update_movement(delta)
-	update_anim()
+	if enabled:
+		update_movement(delta)
+		update_anim()
 
 
 func update_movement(delta):

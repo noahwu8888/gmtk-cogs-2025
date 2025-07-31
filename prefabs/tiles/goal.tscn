@@ -1,19 +1,102 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8em18cjqhgg2"]
+[gd_scene load_steps=11 format=3 uid="uid://b8em18cjqhgg2"]
 
 [ext_resource type="Script" uid="uid://7wof5v1ev1w0" path="res://scripts/goal.gd" id="1_bnsmo"]
-[ext_resource type="Texture2D" uid="uid://chvud8bpqnugy" path="res://assets/art/gmtk_Triangle.png" id="2_w7eqk"]
+[ext_resource type="Texture2D" uid="uid://w82ht8pncd3r" path="res://assets/art/gmtk_triangle_outline.png" id="2_w7eqk"]
 [ext_resource type="AnimationLibrary" uid="uid://d1m50h8yvtr8y" path="res://assets/animation/idle_anim_lib.tres" id="3_cnojs"]
+[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx.gd" id="4_0mt35"]
+[ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx_anim.gd" id="5_4i61e"]
+[ext_resource type="AudioStream" uid="uid://wyojrwok1o3n" path="res://assets/sfx/buildup.ogg" id="6_5xmyj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0dyi5"]
 radius = 4.0
 
-[node name="Goal" type="Node2D" node_paths=PackedStringArray("area")]
+[sub_resource type="Animation" id="Animation_0mt35"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0.689405, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_4i61e"]
+resource_name = "transition"
+length = 4.0
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visuals:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, 0, 0, 0.277778, 0, 0, -0.277778, 0, 0.0555556, 0, 0, -0.0555556, 0, 0, 0),
+"times": PackedFloat32Array(0, 3.53333, 3.7)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Visuals:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(-1.04851, 0, 0, 0.0910571, -577.269, -862.189, -0.342592, 1.90515, 0.100036, -0.556301, 0, -0.00833333, -254.437, 0, 0),
+"times": PackedFloat32Array(0, 3.53333, 3.7)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Visuals:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0),
+"points": PackedFloat32Array(0, 0, 0, 0.277778, 0, 0.689405, -0.277778, 0, 0.0555556, 0, 1.0472, -0.0555556, 0, 0, 0),
+"times": PackedFloat32Array(0, 3.53333, 3.7)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5xmyj"]
+_data = {
+&"RESET": SubResource("Animation_0mt35"),
+&"transition": SubResource("Animation_4i61e")
+}
+
+[node name="Goal" type="Node2D" node_paths=PackedStringArray("area", "anim_player", "ending_fx")]
 script = ExtResource("1_bnsmo")
 area = NodePath("Area2D")
+anim_player = NodePath("AnimationPlayer")
+ending_fx = NodePath("EndingFX")
 
 [node name="Visuals" type="Node2D" parent="."]
-position = Vector2(0, -32)
-rotation = -0.174533
+rotation = 0.689405
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
 texture = ExtResource("2_w7eqk")
@@ -27,6 +110,22 @@ shape = SubResource("CircleShape2D_0dyi5")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
+&"": SubResource("AnimationLibrary_5xmyj"),
 &"Idle": ExtResource("3_cnojs")
 }
 autoplay = "Idle/idle1"
+
+[node name="EndingFX" type="Node2D" parent="."]
+script = ExtResource("4_0mt35")
+duration = 4.0
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="FXAnim" type="Node" parent="EndingFX" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("5_4i61e")
+animation_player = NodePath("../../AnimationPlayer")
+anim_name = "transition"
+blend = 0.5
+metadata/_custom_type_script = "uid://pc05053fdsjn"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX"]
+stream = ExtResource("6_5xmyj")

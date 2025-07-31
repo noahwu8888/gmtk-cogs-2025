@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=3 uid="uid://t6xvasqtnplb"]
 
 [ext_resource type="Script" uid="uid://v8vrrqikjn7h" path="res://scripts/spring.gd" id="1_d87sf"]
-[ext_resource type="Texture2D" uid="uid://cxrpfjytwvec7" path="res://assets/art/gmtk_Gradient.png" id="2_uliwl"]
+[ext_resource type="Texture2D" uid="uid://cxrpfjytwvec7" path="res://assets/art/gmtk_gradient_up.png" id="2_uliwl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_66y8n"]
 size = Vector2(256, 256)

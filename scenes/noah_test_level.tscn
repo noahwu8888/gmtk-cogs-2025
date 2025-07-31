@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://ccesbvhkx1b8a"]
+[gd_scene load_steps=19 format=4 uid="uid://bxn4ktmm2kls6"]
 
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="1_afcvf"]
 [ext_resource type="Script" uid="uid://ynenhsujby15" path="res://addons/cameraregion2d/CameraRegion2D.gd" id="2_g3cfa"]
@@ -6,13 +6,11 @@
 [ext_resource type="Script" uid="uid://d2qqwau4hkym7" path="res://scripts/room.gd" id="4_ppy5q"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="4_rd5be"]
 [ext_resource type="TileSet" uid="uid://cf882mkqehjce" path="res://assets/tilesets/fore_tileset.tres" id="6_1058y"]
-[ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/bg_music_manager.gd" id="7_jwn0t"]
+[ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/audio_part_manager.gd" id="7_jwn0t"]
 [ext_resource type="TileSet" uid="uid://0kov5o43lpg" path="res://assets/tilesets/main_tilset.tres" id="7_sy0p2"]
-[ext_resource type="AudioStream" uid="uid://2p0ujxmu6fam" path="res://assets/music/level_1/bg1.mp3" id="8_571nt"]
 [ext_resource type="TileSet" uid="uid://xh4db45fg6vt" path="res://assets/tilesets/bg_tileset.tres" id="8_hadbe"]
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="9_7nrp1"]
-[ext_resource type="Script" uid="uid://q4owhci408e2" path="res://scripts/music_control/bg_music_emitter.gd" id="9_tjc5a"]
-[ext_resource type="AudioStream" uid="uid://cvoju3lrgidp" path="res://assets/music/level_1/bg2.mp3" id="10_rsm4i"]
+[ext_resource type="Script" uid="uid://q4owhci408e2" path="res://scripts/music_control/audio_fader.gd" id="9_tjc5a"]
 [ext_resource type="AudioStream" uid="uid://djrtk0k21pep2" path="res://assets/music/level_1/bg3.mp3" id="11_ppy5q"]
 [ext_resource type="AudioStream" uid="uid://4h25ywrkro2p" path="res://assets/music/level_1/bg4.mp3" id="12_1058y"]
 
@@ -76,9 +74,8 @@ camera_zoom = Vector2(4, 4)
 transition = SubResource("Resource_nrfyi")
 metadata/_custom_type_script = "uid://ynenhsujby15"
 
-[node name="Room" type="Node2D" parent="." node_paths=PackedStringArray("loop_bar", "fore_layer", "main_layer", "bg_layer", "region")]
+[node name="Room" type="Node2D" parent="." node_paths=PackedStringArray("fore_layer", "main_layer", "bg_layer", "region")]
 script = ExtResource("4_ppy5q")
-loop_bar = NodePath("LoopBar")
 fore_layer = NodePath("ForeLayer")
 main_layer = NodePath("MainLayer")
 bg_layer = NodePath("BGLayer")
@@ -104,27 +101,20 @@ position = Vector2(16, -15)
 
 [node name="BackgroundManager" type="Node" parent="."]
 script = ExtResource("7_jwn0t")
-active_tracks = Dictionary[AudioStream, bool]({
-ExtResource("11_ppy5q"): true
-})
 
 [node name="BGMusicEmitter1" type="AudioStreamPlayer" parent="BackgroundManager"]
-stream = ExtResource("8_571nt")
 script = ExtResource("9_tjc5a")
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter2" type="AudioStreamPlayer" parent="BackgroundManager"]
-stream = ExtResource("10_rsm4i")
 script = ExtResource("9_tjc5a")
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter3" type="AudioStreamPlayer" parent="BackgroundManager"]
-stream = ExtResource("11_ppy5q")
 script = ExtResource("9_tjc5a")
 metadata/_custom_type_script = "uid://q4owhci408e2"
 
 [node name="BGMusicEmitter4" type="AudioStreamPlayer" parent="BackgroundManager"]
-stream = ExtResource("12_1058y")
 script = ExtResource("9_tjc5a")
 metadata/_custom_type_script = "uid://q4owhci408e2"
 

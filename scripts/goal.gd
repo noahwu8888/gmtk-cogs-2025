@@ -4,6 +4,8 @@ class_name Goal
 signal player_entered()
 
 @export var area: Area2D
+@export var anim_player: AnimationPlayer
+@export var ending_fx: FX
 
 
 func _ready() -> void:
@@ -15,7 +17,5 @@ func _on_body_entered(body: Node2D):
 		player_entered.emit()
 
 
-func play_ending(duration: float):
-	pass
-	# TODO: Add visuals that scale based on duration
-	pass
+func play_ending(time_left: float):
+	ending_fx.play_duration(time_left)

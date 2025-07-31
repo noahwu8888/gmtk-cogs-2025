@@ -117,21 +117,21 @@ class _Rhythm:
 	signal interval_changed(current_interval: int)
 
 	var repeating: bool
-	var beat_count: float 
+	var duration: float 
 	var start_beat: float
 	var last_frame_interval
 	
 
-	func _init(_repeating, _beat_count, _start_beat):
+	func _init(_repeating, _duration, _start_beat):
 		repeating = _repeating
-		beat_count = _beat_count
+		duration = _duration
 		start_beat = _start_beat
 		
 
 	const TOO_LATE = .1 # This long after interval starts, we are too late to emit
 	# We pass secs_per_beat so user can change bpm any time
 	func emit_if_needed(position: float, secs_per_beat: float) -> void:
-		var interval_secs = beat_count * secs_per_beat
+		var interval_secs = duration * secs_per_beat
 		var current_interval = int(floor((position - start_beat) / interval_secs))
 		var secs_past_interval = fmod(position - start_beat, interval_secs)
 		var valid_interval = current_interval > 0 and (repeating or current_interval == 1)
@@ -169,6 +169,10 @@ signal beat(current_beat: int)
 		if val == 0: return
 		bpm = 60.0 / val
 
+## Maximum current_position value before it ends. Used if no AudioStreamPlayer is set.
+## If set to -1, then the notifier position continues indefinitely
+@export var silent_duration: float = -1.0
+
 ## Optional [AudioStreamPlayer] to synchronize signals with.  While [member audio_stream_player] is
 ## playing, [signal beat] and [method beats] signals will be emitted based on playback position.
 ## [br][br]See [member running] for emitting signals without an [AudioStreamPlayer].
@@ -202,6 +206,10 @@ var current_position: float:
 			audio_stream_player.seek(val)
 		elif _silent_running:
 			_position = val
+## The current beat as a float position. This is = current_position / beat_length.
+## Use current_beat if you want an integer number for the beat.
+var current_beat_position: float:
+	get: return _position / beat_length
 var _position: float = 0.0
 	
 var _cached_output_latency: float:
@@ -228,6 +236,8 @@ func _physics_process(delta):
 		return
 	if _silent_running:
 		_position += delta
+		if silent_duration >= 0:
+			_position = fmod(_position, silent_duration)
 	else:
 		_position = audio_stream_player.get_playback_position()
 		_position += AudioServer.get_time_since_last_mix() - _cached_output_latency
@@ -239,11 +249,11 @@ func _physics_process(delta):
 
 ## Returns a signal that emits when a specific beat is reached, or repeatedly every specified
 ## number of beats. [param start_beat] (defaults to [code]0.0[/code]) is the beat from which
-## to begin counting. [param beat_count] is the number of beats after [param start_beat] on which
+## to begin counting. [param duration] is the number of beats after [param start_beat] on which
 ## to signal. If [param repeating] (defaults to [code]true[/code]), the signal is emitted
-## every [param beat_count] beats after [param start_beat].
+## every [param duration] beats after [param start_beat].
 ## [br][br]Callback should be of the form [code]fn(current_interval)[/code], where
-## [param current_interval] is the number of [param beat_count]-length intervals 
+## [param current_interval] is the number of [param duration]-length intervals 
 ## past [param start_beat].
 ##
 ## [br][br]Usage:
@@ -266,13 +276,13 @@ func _physics_process(delta):
 ## # Signals once, the first time a multiple of 4 beats after beat 2 is reached
 ## beats(4, true, 2).connect(_func, CONNECT_ONE_SHOT)
 ## [/codeblock]
-func beats(beat_count: float, repeating := true, start_beat := 0.0) -> Signal:
+func beats(duration: float, repeating := true, start_beat := 0.0) -> Signal:
 	for rhythm in _rhythms:
-		if (rhythm.beat_count == beat_count 
+		if (rhythm.duration == duration 
 			and rhythm.repeating == repeating
 			and rhythm.start_beat == start_beat):
 			return rhythm.interval_changed
-	var new_rhythm = _Rhythm.new(repeating, beat_count, start_beat)
+	var new_rhythm = _Rhythm.new(repeating, duration, start_beat)
 	_rhythms.append(new_rhythm)
 	return new_rhythm.interval_changed
 	
