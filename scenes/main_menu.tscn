@@ -69,5 +69,5 @@ autoplay = true
 bus = &"Music"
 script = ExtResource("4_wu84c")
 nodes_to_move = [NodePath("../Title")]
-frequency_high = 80.0
+frequency_high = 50.0
 sensitivity = 0.512
