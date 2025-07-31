@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://bcdwmkrcd6dd4"]
+
+[ext_resource type="Script" uid="uid://b8ubo8usg425e" path="res://prefabs/level elements/platform.gd" id="1_nki8d"]
+[ext_resource type="Texture2D" uid="uid://bvn0ladfae4yv" path="res://icon.svg" id="1_oj1sy"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_fh2do"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_oj1sy")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gu8rf"]
+
+[node name="Platform" type="StaticBody2D" node_paths=PackedStringArray("dip_area", "dip_control_timer")]
+script = ExtResource("1_nki8d")
+dip_area = NodePath("Area2D")
+dip_control_timer = NodePath("DipControlTimer")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_fh2do")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(30, 4)
+shape = SubResource("RectangleShape2D_gu8rf")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -5)
+scale = Vector2(30, 4)
+shape = SubResource("RectangleShape2D_gu8rf")
+
+[node name="DipControlTimer" type="Timer" parent="."]
+one_shot = true
