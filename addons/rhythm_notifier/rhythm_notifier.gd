@@ -119,22 +119,27 @@ class _Rhythm:
 	var repeating: bool
 	var duration: float 
 	var start_beat: float
-	var last_frame_interval
+	var last_frame_interval # int or null
+	var use_abs_position: bool
 	
 
-	func _init(_repeating, _duration, _start_beat):
+	func _init(_repeating: bool, _use_abs_position: bool, _duration: float, _start_beat: float):
 		repeating = _repeating
 		duration = _duration
 		start_beat = _start_beat
+		use_abs_position = _use_abs_position
 		
 
 	const TOO_LATE = .1 # This long after interval starts, we are too late to emit
 	# We pass secs_per_beat so user can change bpm any time
-	func emit_if_needed(position: float, secs_per_beat: float) -> void:
+	func emit_if_needed(position: float, abs_position: float, secs_per_beat: float) -> void:
+		var used_position = position
+		if use_abs_position:
+			used_position = abs_position
 		var interval_secs = duration * secs_per_beat
-		var current_interval = int(floor((position - start_beat) / interval_secs))
-		var secs_past_interval = fmod(position - start_beat, interval_secs)
-		var valid_interval = current_interval > 0 and (repeating or current_interval == 1)
+		var current_interval = int(floor((used_position - start_beat) / interval_secs))
+		var secs_past_interval = fmod(used_position - start_beat, interval_secs)
+		var valid_interval = current_interval >= 0 and (repeating or current_interval == 1)
 		var too_late = secs_past_interval >= TOO_LATE
 		if not valid_interval or too_late:
 			last_frame_interval = null
@@ -194,7 +199,6 @@ signal beat(current_beat: int)
 ## The current beat, indexed from [code]0[/code].
 var current_beat: int:
 	get: return int(floor(_position / beat_length))
-	
 ## The current position in seconds.  If [member audio_stream_player] is playing, this is the
 ## accurate number of seconds into the stream, and setting the value will seek to
 ## that position.  If the audio stream is not playing, this is the number of seconds
@@ -210,7 +214,24 @@ var current_position: float:
 ## Use current_beat if you want an integer number for the beat.
 var current_beat_position: float:
 	get: return _position / beat_length
+
+## The current absolute beat, indexed from [code]0[/code]. This beat is monotonically increasing
+var current_abs_beat: int:
+	get: return int(floor(_abs_position / beat_length))
+## The current absolute beat as a float position. This position is monotonically increasing.
+## This is = current_position / beat_length. Use current_beat if you want an integer number for the beat.
+var current_abs_beat_position: float:
+	get: return _abs_position / beat_length
+## The current absolute position in seconds. This position is monotonically increasing.
+## If [member audio_stream_player] is playing, this is the accurate number of seconds into the 
+## stream. If the audio stream is not playing, this is the number of seconds that [member running] 
+## has been set to true, if any.
+var current_abs_position: float:
+	get: return _abs_position
+# Position that is between [0, AudioStream.get_length()]
 var _position: float = 0.0
+# Position that always monotonically increases
+var _abs_position: float = 0.0
 	
 var _cached_output_latency: float:
 	get:
@@ -229,22 +250,30 @@ func _ready():
 
 
 # If not stopped, recalculate track position and emit any appropriate signals.
-func _process(delta):
+func _physics_process(delta):
 	if _silent_running and _stream_is_playing():
 		_silent_running = false
 	if not running:
 		return
 	if _silent_running:
 		_position += delta
-		if silent_duration >= 0:
+		_abs_position += delta
+		if silent_duration > 0:
 			_position = fmod(_position, silent_duration)
 	else:
-		_position = audio_stream_player.get_playback_position()
-		_position += AudioServer.get_time_since_last_mix() - _cached_output_latency
+		var prev_position = _position
+		_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
+		if prev_position > _position:
+			# We've looped, so _position is the new delta
+			delta = _position
+		else:
+			# Use the difference as the delta
+			delta = _position - prev_position
+		_abs_position += delta
 	if Engine.is_editor_hint():
 		return
 	for rhythm in _rhythms:
-		rhythm.emit_if_needed(_position, beat_length)
+		rhythm.emit_if_needed(_position, _abs_position, beat_length)
 
 
 ## Returns a signal that emits when a specific beat is reached, or repeatedly every specified
@@ -276,13 +305,13 @@ func _process(delta):
 ## # Signals once, the first time a multiple of 4 beats after beat 2 is reached
 ## beats(4, true, 2).connect(_func, CONNECT_ONE_SHOT)
 ## [/codeblock]
-func beats(duration: float, repeating := true, start_beat := 0.0) -> Signal:
+func beats(duration: float, repeating := true, use_abs_position := true, start_beat := 0.0) -> Signal:
 	for rhythm in _rhythms:
 		if (rhythm.duration == duration 
 			and rhythm.repeating == repeating
 			and rhythm.start_beat == start_beat):
 			return rhythm.interval_changed
-	var new_rhythm = _Rhythm.new(repeating, duration, start_beat)
+	var new_rhythm = _Rhythm.new(repeating, use_abs_position, duration, start_beat)
 	_rhythms.append(new_rhythm)
 	return new_rhythm.interval_changed
 	

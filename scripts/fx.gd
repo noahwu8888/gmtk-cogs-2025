@@ -8,6 +8,8 @@ signal finished()
 
 ## Time to wait before playing.
 @export var pre_delay: float = 0
+## Time after duration to wait before deletion.
+@export var post_delay: float = 0
 ## Duration of the FX
 @export var duration: float = 1
 @export var play_on_ready: bool
@@ -20,6 +22,8 @@ signal finished()
 var is_playing: bool = false
 
 @export_group("Dependencies")
+@export var chain_unscaled_fxes: Array[FX]
+@export var chain_fxes: Array[FX]
 @export var fxes: Array[FX]
 @export var cpu_particles: Array[CPUParticles2D]
 @export var gpu_particles: Array[GPUParticles2D]
@@ -32,7 +36,12 @@ var is_playing: bool = false
 func _ready():
 	if play_on_ready:
 		play()
+	var registered_nodes = {}
+	for node in chain_unscaled_fxes + chain_fxes + fxes + cpu_particles + gpu_particles + audio_players + audio_player_2ds + animation_players + fx_animations:
+		registered_nodes[node] = true
 	for child in get_children():
+		if child in registered_nodes:
+			continue
 		if child is FX:
 			fxes.append(child)
 		elif child is CPUParticles2D:
@@ -73,7 +82,7 @@ func stop():
 ## Play the FX so it lasts for a specific duration.
 func play_duration(new_duration: float):
 	print("new duration: ", new_duration, " duration: ", duration)
-	play(duration / new_duration)
+	play(new_duration / duration)
 
 
 ## Play the FX, with a specific time_scale.
@@ -108,6 +117,11 @@ func play(time_scale: float = 1):
 		reparent(World.global)
 	played.emit()
 	await Utils.wait(duration * time_scale)
+	for node in chain_fxes:
+		node.play(time_scale)
+	for node in chain_unscaled_fxes:
+		node.play()
+	await Utils.wait(post_delay)
 	stopped.emit()
 	finished.emit()
 	if destroy_on_finish:

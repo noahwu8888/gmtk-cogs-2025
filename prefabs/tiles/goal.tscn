@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://b8em18cjqhgg2"]
+[gd_scene load_steps=12 format=3 uid="uid://b8em18cjqhgg2"]
 
 [ext_resource type="Script" uid="uid://7wof5v1ev1w0" path="res://scripts/goal.gd" id="1_bnsmo"]
 [ext_resource type="Texture2D" uid="uid://w82ht8pncd3r" path="res://assets/art/gmtk_triangle_outline.png" id="2_w7eqk"]
 [ext_resource type="AnimationLibrary" uid="uid://d1m50h8yvtr8y" path="res://assets/animation/idle_anim_lib.tres" id="3_cnojs"]
 [ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx.gd" id="4_0mt35"]
 [ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx_anim.gd" id="5_4i61e"]
-[ext_resource type="AudioStream" uid="uid://wyojrwok1o3n" path="res://assets/sfx/buildup.ogg" id="6_5xmyj"]
+[ext_resource type="AudioStream" uid="uid://ci8hfe5pseuy7" path="res://assets/sfx/buildup.ogg" id="6_g3lit"]
+[ext_resource type="AudioStream" uid="uid://cgaoc62unxnij" path="res://assets/sfx/kick_2.ogg" id="7_g3lit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0dyi5"]
 radius = 4.0
@@ -48,7 +49,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_4i61e"]
 resource_name = "transition"
-length = 4.0
+length = 3.7
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -115,9 +116,13 @@ libraries = {
 }
 autoplay = "Idle/idle1"
 
-[node name="EndingFX" type="Node2D" parent="."]
+[node name="EndingFX" type="Node2D" parent="." node_paths=PackedStringArray("chain_unscaled_fxes")]
 script = ExtResource("4_0mt35")
-duration = 4.0
+post_delay = 3.7
+duration = 5.0
+unparent_on_play = true
+destroy_on_finish = true
+chain_unscaled_fxes = [NodePath("HitFX")]
 metadata/_custom_type_script = "uid://5vpj6ph24507"
 
 [node name="FXAnim" type="Node" parent="EndingFX" node_paths=PackedStringArray("animation_player")]
@@ -128,4 +133,11 @@ blend = 0.5
 metadata/_custom_type_script = "uid://pc05053fdsjn"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX"]
-stream = ExtResource("6_5xmyj")
+stream = ExtResource("6_g3lit")
+
+[node name="HitFX" type="Node2D" parent="EndingFX"]
+script = ExtResource("4_0mt35")
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="KickPlayer" type="AudioStreamPlayer" parent="EndingFX/HitFX"]
+stream = ExtResource("7_g3lit")

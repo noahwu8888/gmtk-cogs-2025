@@ -1,153 +1,28 @@
-[gd_scene load_steps=15 format=3 uid="uid://dft2arqhitpec"]
+[gd_scene load_steps=5 format=3 uid="uid://dft2arqhitpec"]
 
-[ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="1_fmbed"]
 [ext_resource type="Script" uid="uid://dry7dik54nxtn" path="res://scripts/music_test.gd" id="1_qat88"]
-[ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="2_jj4we"]
-[ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="3_kolrf"]
-[ext_resource type="Texture2D" uid="uid://w82ht8pncd3r" path="res://assets/art/gmtk_triangle_outline.png" id="5_xs2qq"]
-[ext_resource type="AnimationLibrary" uid="uid://d1m50h8yvtr8y" path="res://assets/animation/idle_anim_lib.tres" id="6_jvgl7"]
-[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx.gd" id="7_fbwxh"]
-[ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx_anim.gd" id="8_havgd"]
-[ext_resource type="AudioStream" uid="uid://wyojrwok1o3n" path="res://assets/sfx/buildup.ogg" id="9_qtq32"]
-[ext_resource type="Script" uid="uid://bwhkujh3jeruh" path="res://scripts/world.gd" id="10_jvgl7"]
+[ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="11_fbwxh"]
+[ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="13_cvfru"]
+[ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="14_ddgu7"]
 
-[sub_resource type="AudioStreamSynchronized" id="AudioStreamSynchronized_jj4we"]
-stream_count = 3
-stream_0/stream = ExtResource("1_fmbed")
-stream_0/volume = 0.0
-stream_1/stream = ExtResource("2_jj4we")
-stream_1/volume = 0.0
-stream_2/stream = ExtResource("3_kolrf")
-stream_2/volume = 0.0
-
-[sub_resource type="Animation" id="Animation_0mt35"]
-length = 0.001
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0),
-"points": PackedFloat32Array(0.689405, -0.25, 0, 0.25, 0),
-"times": PackedFloat32Array(0)
-}
-
-[sub_resource type="Animation" id="Animation_4i61e"]
-resource_name = "transition"
-length = 4.0
-tracks/0/type = "bezier"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Visuals:position:x")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(0, 0, 0, 0.277778, 0, 0, -0.277778, 0, 0.0555556, 0, 0, -0.0555556, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.53333, 3.7)
-}
-tracks/1/type = "bezier"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Visuals:position:y")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(-1.04851, 0, 0, 0.0910571, -577.269, -862.189, -0.342592, 1.90515, 0.100036, -0.556301, 0, -0.00833333, -254.437, 0, 0),
-"times": PackedFloat32Array(0, 3.53333, 3.7)
-}
-tracks/2/type = "bezier"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Visuals:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"handle_modes": PackedInt32Array(0, 0, 0),
-"points": PackedFloat32Array(0, 0, 0, 0.277778, 0, 0.689405, -0.277778, 0, 0.0555556, 0, 1.0472, -0.0555556, 0, 0, 0),
-"times": PackedFloat32Array(0, 3.53333, 3.7)
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_5xmyj"]
-_data = {
-&"RESET": SubResource("Animation_0mt35"),
-&"transition": SubResource("Animation_4i61e")
-}
-
-[node name="MusicTest" type="Node2D"]
-
-[node name="Synchronized" type="AudioStreamPlayer" parent="."]
-stream = SubResource("AudioStreamSynchronized_jj4we")
-
-[node name="Node" type="Node" parent="."]
+[node name="MusicTest" type="Node2D" node_paths=PackedStringArray("kick_player", "rhythm_notifier")]
 script = ExtResource("1_qat88")
-scale = 2.0
+kick_player = NodePath("KickPlayer")
+rhythm_notifier = NodePath("RhythmNotifier")
+latency = 0.0
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("1_fmbed")
+[node name="KickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_fbwxh")
 
-[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("2_jj4we")
+[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+script = ExtResource("13_cvfru")
+bpm = 130.0
+beat_length = 0.461538
+audio_stream_player = NodePath("AudioStreamPlayer")
+running = true
+metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
-[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="Node"]
-stream = ExtResource("3_kolrf")
-
-[node name="Visuals" type="Node2D" parent="."]
-rotation = 0.689405
-
-[node name="Sprite2D" type="Sprite2D" parent="Visuals"]
-texture = ExtResource("5_xs2qq")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_5xmyj"),
-&"Idle": ExtResource("6_jvgl7")
-}
-autoplay = "Idle/idle1"
-
-[node name="EndingFX" type="Node2D" parent="."]
-script = ExtResource("7_fbwxh")
-duration = 4.0
-metadata/_custom_type_script = "uid://5vpj6ph24507"
-
-[node name="FXAnim" type="Node" parent="EndingFX" node_paths=PackedStringArray("animation_player")]
-script = ExtResource("8_havgd")
-animation_player = NodePath("../../AnimationPlayer")
-anim_name = "transition"
-blend = 0.5
-metadata/_custom_type_script = "uid://pc05053fdsjn"
-
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX"]
-stream = ExtResource("9_qtq32")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.25, 0.25)
-
-[node name="World" type="Node2D" parent="."]
-script = ExtResource("10_jvgl7")
-metadata/_custom_type_script = "uid://bwhkujh3jeruh"
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
+stream = ExtResource("14_ddgu7")
+volume_db = -10.0
+autoplay = true

@@ -60,7 +60,7 @@ rhythm_notifier = NodePath("../../LevelManager/RhythmNotifier")
 [node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_part_manager")]
 script = ExtResource("4_q1qbj")
 level = SubResource("Resource_m07vp")
-min_transition_duration = 3.0
+min_transition_duration = 5.0
 camera_region_controller = NodePath("../World/CameraRegionController2D")
 loop_bar = NodePath("../World/LoopBar")
 player = NodePath("../World/Player")
