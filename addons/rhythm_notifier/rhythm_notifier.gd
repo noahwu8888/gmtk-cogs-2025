@@ -229,7 +229,7 @@ func _ready():
 
 
 # If not stopped, recalculate track position and emit any appropriate signals.
-func _physics_process(delta):
+func _process(delta):
 	if _silent_running and _stream_is_playing():
 		_silent_running = false
 	if not running:

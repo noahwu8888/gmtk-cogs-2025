@@ -9,7 +9,7 @@ signal finished
 ## Beats per second
 var bps: float :
 	get: 
-		return bpm * 60
+		return bpm / 60
 ## Duration of the room in beats
 @export var beat_count: int = 32
 ## Duration of the room in seconds

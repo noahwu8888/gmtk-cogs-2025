@@ -17,7 +17,7 @@ signal level_completed
 var active_room: Room
 var active_room_index: int
 var is_transitioning: bool
-var trans_beat: int
+var trans_beats_left: int
 
 func _ready() -> void:
 	rhythm_notifier.beat.connect(_on_beat)
@@ -53,29 +53,33 @@ func _on_room_finished():
 	player.enabled = false
 	# The next interval we could use to transition
 	# Ex. Asumming transition_beat_interval = 4, this partitions beats into multiples of 4
-	#               .- trans_beat (wraps around)                                .- end of song
+	#               .- trans_beats_left (wraps around)                                .- end of song
 	# beat          0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15
 	#               |----|----|----|----|----|----|----|----|----|----|----|----X----|----|----|
 	# interval      0                   1    |              2    |              3
 	#                    curr_interval -'    '- curr_beat        |              '- trans_interval_unbounded
 	#                       curr_beat + min_transition_duration -'              
 	# Unit: beats
-	var min_trans_beats: float = min_transition_duration * active_room.bps
+	var min_trans_beats_left: float = min_transition_duration * active_room.bps
+	print("min_transition_duration: ", min_transition_duration, " active_room.bps: ", active_room.bps)
 	# Unit: intervals
-	var trans_interval_unbounded: int = ceil((rhythm_notifier.current_beat + min_trans_beats) / active_room.transition_beat_interval)
+	var trans_interval_unbounded: int = ceil((rhythm_notifier.current_beat + min_trans_beats_left) / active_room.transition_beat_interval)
+	print("trans_interval_unbounded: rhythm_notifier.current_beat: ", rhythm_notifier.current_beat, " min_trans_beats_left: ", min_trans_beats_left, " active_room.transition_beat_interval: ", active_room.transition_beat_interval)
 	# Unit: beats
 	# ceil(intervals * beats/interval) % beats
-	trans_beat = (trans_interval_unbounded * active_room.transition_beat_interval) % active_room.beat_count
+	trans_beats_left = trans_interval_unbounded * active_room.transition_beat_interval
 	# Unit: seconds
-	# interval * beats/interval * seconds/beat = seconds
-	var time_left = trans_interval_unbounded * active_room.transition_beat_interval / active_room.bps
+	# beats * seconds/beat = seconds
+	var time_left = trans_beats_left / active_room.bps
 	active_room.goal.play_ending(time_left)
 	print("PLAYING ENDING with time: %s" % time_left)
-	print("TRANS BEAT %s beat_pos: %s beat: %s" % [trans_beat, rhythm_notifier.current_beat_position, rhythm_notifier.current_beat])
+	print("trans_beats_left %s beat_pos: %s beat: %s" % [trans_beats_left, rhythm_notifier.current_beat_position, rhythm_notifier.current_beat])
 
 func _on_beat(current_beat: int):
 	print("beat: ", current_beat)
-	if is_transitioning and current_beat == trans_beat:
-		is_transitioning = false
-		#print("DONE TRANS")
-		load_room_next_room()
+	if is_transitioning:
+		trans_beats_left -= 1
+		if trans_beats_left == 0:
+			is_transitioning = false
+			#print("DONE TRANS")
+			load_room_next_room()

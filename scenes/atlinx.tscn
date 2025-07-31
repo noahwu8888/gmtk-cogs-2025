@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://t6jjkf7w2aip"]
+[gd_scene load_steps=18 format=4 uid="uid://t6jjkf7w2aip"]
 
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="1_38yu2"]
 [ext_resource type="Script" uid="uid://bwhkujh3jeruh" path="res://scripts/world.gd" id="1_iroee"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://but84a2ah4oj8" path="res://prefabs/rooms/room_1.tscn" id="7_w5gp6"]
 [ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/audio_part_manager.gd" id="8_r4ahd"]
 [ext_resource type="Script" uid="uid://dtqpck37jxpth" path="res://scripts/music_control/audio_part.gd" id="11_6krbk"]
+[ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="15_m07vp"]
 [ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="16_3ok8l"]
 [ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="16_ksotl"]
 [ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="16_w5gp6"]
@@ -59,7 +60,7 @@ rhythm_notifier = NodePath("../../LevelManager/RhythmNotifier")
 [node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_part_manager")]
 script = ExtResource("4_q1qbj")
 level = SubResource("Resource_m07vp")
-min_transition_duration = 5.0
+min_transition_duration = 3.0
 camera_region_controller = NodePath("../World/CameraRegionController2D")
 loop_bar = NodePath("../World/LoopBar")
 player = NodePath("../World/Player")
@@ -97,4 +98,12 @@ beat_count = 14.0
 bpm = 120.0
 volume_db = -5.0
 stream = ExtResource("16_w5gp6")
+metadata/_custom_type_script = "uid://dtqpck37jxpth"
+
+[node name="AudioPart4" type="Node" parent="BGPartManager"]
+script = ExtResource("11_6krbk")
+beat_count = 4.0
+bpm = 130.0
+volume_db = -5.0
+stream = ExtResource("15_m07vp")
 metadata/_custom_type_script = "uid://dtqpck37jxpth"
