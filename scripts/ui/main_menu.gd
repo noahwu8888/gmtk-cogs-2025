@@ -3,7 +3,7 @@ extends Control
 @onready var play_button: Button = $PlayButton
 @onready var settings_button: Button = $SettingsButton
 @onready var quit_button: Button = $QuitButton
-@onready var audio_visualizer: AudioVisualizer = $AudioStreamPlayer
+@onready var audio_visualizer: AudioVisualizer = $AudioVisualizer
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

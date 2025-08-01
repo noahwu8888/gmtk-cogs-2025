@@ -1,12 +1,15 @@
-extends AudioStreamPlayer
+extends Node
 class_name AudioVisualizer
 
+## These will always be effected by the audio visualizer
 @export var nodes_to_move: Array[Control]
+## These will only be effected when the mouse enters it
+@export var conditional_nodes_to_move: Array[Control]
 @export_range(20, 20000) var frequency_low: float = 30
-@export_range(20, 20000) var frequency_high: float = 250
+@export_range(20, 20000) var frequency_high: float = 50
 @export_range(0.0, 1.0) var sensitivity: float = 1.0
-@export var max_size_increase: float = 1.5
-@export var smoothing_speed: float = .2
+@export var max_size_increase: float = 2
+@export var smoothing_speed: float = 1
 
 var _original_scales: Array[Vector2] = []
 var _current_scale_factor := 1.0
@@ -16,12 +19,22 @@ func _ready() -> void:
 	for node in nodes_to_move:
 		_original_scales.append(node.scale)
 
-	# Access the analyzer from the correct bus (e.g., "Music")
+	# Set up analyzer
 	var bus_index = AudioServer.get_bus_index("Music")
-	var effect_index = 0 # first effect slot on the bus
+	var effect_index = 0
 	var effect = AudioServer.get_bus_effect(bus_index, effect_index)
 	if effect is AudioEffectSpectrumAnalyzer:
 		_analyzer = AudioServer.get_bus_effect_instance(bus_index, effect_index)
+
+	# Connect mouse signals for conditional_nodes_to_move
+	for button in conditional_nodes_to_move:
+		if not button.mouse_entered.is_connected(_on_button_mouse_entered):
+			button.mouse_entered.connect(Callable(self, "_on_button_mouse_entered").bind(button))
+		if not button.mouse_exited.is_connected(_on_button_mouse_exited):
+			button.mouse_exited.connect(Callable(self, "_on_button_mouse_exited").bind(button))
+
+	
+	
 
 func _process(delta: float) -> void:
 	if _analyzer == null:
@@ -44,3 +57,11 @@ func _process(delta: float) -> void:
 	# Apply scaling
 	for i in nodes_to_move.size():
 		nodes_to_move[i].scale = _original_scales[i] * _current_scale_factor
+
+func _on_button_mouse_entered(node_to_append: Control) -> void:
+	nodes_to_move.append(node_to_append)
+
+
+func _on_button_mouse_exited(node_to_remove: Control) -> void:
+	nodes_to_move.erase(node_to_remove)
+	node_to_remove.scale = Vector2.ONE
