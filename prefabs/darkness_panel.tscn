@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://fwwt25t8gs83"]
+
+[ext_resource type="Texture2D" uid="uid://dpt30e5lu7krx" path="res://assets/art/gmtk_cave.png" id="1_d4byp"]
+[ext_resource type="Script" uid="uid://c58kl2fxeo38" path="res://scripts/darkness_panel.gd" id="2_gjho2"]
+
+[node name="DarknessPanel" type="Sprite2D"]
+texture = ExtResource("1_d4byp")
+script = ExtResource("2_gjho2")

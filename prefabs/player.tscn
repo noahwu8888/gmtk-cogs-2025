@@ -1,7 +1,8 @@
-[gd_scene load_steps=28 format=3 uid="uid://bbkdkp0428yji"]
+[gd_scene load_steps=29 format=3 uid="uid://bbkdkp0428yji"]
 
 [ext_resource type="Script" uid="uid://cb0fq4m10gsej" path="res://scripts/player.gd" id="1_4dohe"]
 [ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="2_4dohe"]
+[ext_resource type="PackedScene" uid="uid://fwwt25t8gs83" path="res://prefabs/darkness_panel.tscn" id="3_1txc5"]
 [ext_resource type="AnimationLibrary" uid="uid://d24k3wn1udlo0" path="res://assets/animation/player_anim_lib.res" id="3_r66lb"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hcn4f"]
@@ -127,8 +128,12 @@ jumps = 100
 visuals_anim_tree = NodePath("VisualsAnimationTree")
 sprite = NodePath("Visuals/Sprite2D")
 
+[node name="DarknessPanel" parent="." instance=ExtResource("3_1txc5")]
+position = Vector2(0, 128)
+
 [node name="Visuals" type="Node2D" parent="."]
 position = Vector2(0, 128)
+scale = Vector2(1.04585, 0.9083)
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
 position = Vector2(0, -128)
