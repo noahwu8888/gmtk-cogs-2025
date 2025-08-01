@@ -15,7 +15,23 @@ bg_tracks = Array[AudioStream]([ExtResource("2_bcpdk")])
 tile_map_data = PackedByteArray("AAAAAAsAAgAAAAAAAAABAAsAAgAAAAAAAAACAAsAAgAAAAAAAAADAAsAAgAAAAAAAAAEAAsAAgAAAAAAAAAFAAsAAgAAAAAAAAAGAAsAAgAAAAAAAAAKAAkAAgAAAAAAAAALAAkAAgAAAAAAAAAMAAkAAgAAAAAAAAANAAkAAgAAAAAAAAAOAAkAAgAAAAAAAAAPAAkAAgAAAAAAAAAQAAkAAgAAAAAAAAARAAkAAgAAAAAAAAASAA4AAgAAAAAAAAATAA4AAgAAAAAAAAAUAA4AAgAAAAAAAAAVAA4AAgAAAAAAAAAWAA4AAgAAAAAAAAAXAA4AAgAAAAAAAAAYAA4AAgAAAAAAAAAZAA4AAgAAAAAAAAAaAA4AAgAAAAAAAAAZAA0AAQAAAAAAAgAeAAoAAgAAAAAAAAAfAAoAAgAAAAAAAAAgAAoAAgAAAAAAAAAhAAoAAgAAAAAAAAAiAAoAAgAAAAAAAAAjAAoAAgAAAAAAAAAkAAoAAgAAAAAAAAAlAAoAAgAAAAAAAAAmAAoAAgAAAAAAAAAFAAoAAQAAAAAAAgAIAAAAAgAAAAAAAAAJAAAAAgAAAAAAAAAJAAEAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAMAAYAAQAAAAAAAQACAAgAAQAAAAAABAA=")
 
 [node name="BeatPlatform" parent="." index="4" instance=ExtResource("3_lca4a")]
-position = Vector2(1024, 3328)
+position = Vector2(1152, 3840)
+waypoints = Array[Vector2]([Vector2(10, -1.5), Vector2(7, 4.5)])
 move_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_lca4a")
+
+[node name="Platform" parent="." index="5" instance=ExtResource("3_lca4a")]
+position = Vector2(6144, 640)
+waypoints = Array[Vector2]([Vector2(10.5, -1), Vector2(16, 2)])
+loop_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_lca4a")
+
+[node name="Platform2" parent="." index="6" instance=ExtResource("3_lca4a")]
+position = Vector2(5120, 4992)
+waypoints = Array[Vector2]([Vector2(9, 1), Vector2(15, -3)])
+loop_mode = 1
+speed = 2.0
 beat = 6.0
 beat_move_curve = SubResource("Curve_lca4a")

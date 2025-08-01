@@ -18,8 +18,7 @@ func _draw() -> void:
 	var arrow_length = 64
 	var arrow_angle = 30
 	var double_sided = platform.loop_mode == Platform.LoopMode.PING_PONG
-	var offset = platform.rect.get_center()
 	for i in range(len(platform._all_waypoints) - 1):
-		SUtils.draw_arrow(self, (offset + platform._all_waypoints[i]) * SUtils.TILE_SIZE, (offset + platform._all_waypoints[i + 1]) * SUtils.TILE_SIZE, color, width, arrow_length, arrow_angle, double_sided)
+		SUtils.draw_arrow(self, (platform._all_waypoints[i]) * SUtils.TILE_SIZE, (platform._all_waypoints[i + 1]) * SUtils.TILE_SIZE, color, width, arrow_length, arrow_angle, double_sided)
 	if platform.loop_mode == Platform.LoopMode.LOOP:
-		SUtils.draw_arrow(self, (offset + platform._all_waypoints[-1]) * SUtils.TILE_SIZE, (offset + platform._all_waypoints[0]) * SUtils.TILE_SIZE, color, width, arrow_length, arrow_angle)
+		SUtils.draw_arrow(self, (platform._all_waypoints[-1]) * SUtils.TILE_SIZE, (platform._all_waypoints[0]) * SUtils.TILE_SIZE, color, width, arrow_length, arrow_angle)

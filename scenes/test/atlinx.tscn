@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://t6jjkf7w2aip"]
+[gd_scene load_steps=20 format=3 uid="uid://t6jjkf7w2aip"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_dfbem"]
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="2_r5bww"]
@@ -11,7 +11,9 @@
 [ext_resource type="Script" path="res://scripts/level.gd" id="9_4pava"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="10_ko8bd"]
 [ext_resource type="Script" uid="uid://deofdsnkjeipf" path="res://scripts/music/audio_track_manager.gd" id="11_0v5xw"]
+[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="11_r5bww"]
 [ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="12_bbun0"]
+[ext_resource type="AudioStream" uid="uid://dhhlxrdkb8gx" path="res://assets/sfx/crash.ogg" id="12_rdygh"]
 [ext_resource type="AudioStream" uid="uid://d3uf2kkgotct3" path="res://assets/music/test/metro_2.ogg" id="13_cjd40"]
 [ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="14_4741j"]
 [ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="15_d85kv"]
@@ -43,7 +45,7 @@ zoom = Vector2(0.05, 0.05)
 [node name="LoopBar" parent="World" node_paths=PackedStringArray("rhythm_notifier") instance=ExtResource("4_u2tkb")]
 rhythm_notifier = NodePath("../../LevelManager/RhythmNotifier")
 
-[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_track_manager")]
+[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_track_manager", "trans_color_rect", "load_fx")]
 script = ExtResource("5_kt1sm")
 level = SubResource("Resource_m07vp")
 min_transition_duration = 2.0
@@ -53,12 +55,32 @@ player = NodePath("../World/Player")
 world = NodePath("../World")
 rhythm_notifier = NodePath("RhythmNotifier")
 bg_track_manager = NodePath("../BGTrackManager")
+trans_color_rect = NodePath("CanvasLayer/TransColorRect")
+load_fx = NodePath("LoadFX")
 
 [node name="RhythmNotifier" type="Node" parent="LevelManager" node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("10_ko8bd")
 audio_stream_player = NodePath("../../BGTrackManager/BGTracksPlayer")
 is_global = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="LevelManager"]
+
+[node name="TransColorRect" type="ColorRect" parent="LevelManager/CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="LoadFX" type="Node2D" parent="LevelManager"]
+script = ExtResource("11_r5bww")
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="Crash" type="AudioStreamPlayer" parent="LevelManager/LoadFX"]
+stream = ExtResource("12_rdygh")
 
 [node name="BGTrackManager" type="Node" parent="."]
 script = ExtResource("11_0v5xw")

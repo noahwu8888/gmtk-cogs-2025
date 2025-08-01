@@ -30,13 +30,14 @@ var is_playing: bool = false
 @export var gpu_particles: Array[GPUParticles2D]
 @export var audio_players: Array[AudioStreamPlayer]
 @export var audio_player_2ds: Array[AudioStreamPlayer2D]
-@export var animation_players: Array[AnimationPlayer]
-@export var fx_animations: Array[FXAnim]
+@export var anim_players: Array[AnimationPlayer]
+@export var fx_anims: Array[FXAnim]
+@export var fx_anim_trees: Array[FXAnimTree]
 
 
 func _ready():
 	var registered_nodes = {}
-	for node in chain_unscaled_fxes + chain_fxes + fxes + cpu_particles + gpu_particles + audio_players + audio_player_2ds + animation_players + fx_animations:
+	for node in chain_unscaled_fxes + chain_fxes + fxes + cpu_particles + gpu_particles + audio_players + audio_player_2ds + anim_players + fx_anims:
 		registered_nodes[node] = true
 	for child in get_children():
 		if child in registered_nodes:
@@ -54,9 +55,11 @@ func _ready():
 		elif child is AudioStreamPlayer2D:
 			audio_player_2ds.append(child)
 		elif child is AnimationPlayer:
-			animation_players.append(child)
+			anim_players.append(child)
 		elif child is FXAnim:
-			fx_animations.append(child)
+			fx_anims.append(child)
+		elif child is FXAnimTree:
+			fx_anim_trees.append(child)
 	if play_on_ready:
 		play()
 
@@ -81,11 +84,13 @@ func stop():
 		node.stop()
 	for node in audio_player_2ds:
 		node.stop()
-	for node in animation_players:
+	for node in anim_players:
 		node.stop()
-	for node in fx_animations:
+	for node in fx_anims:
 		node.stop()
-	for node in fx_animations:
+	for node in fx_anims:
+		node.stop()
+	for node in fx_anim_trees:
 		node.stop()
 	stopped.emit()
 
@@ -118,11 +123,13 @@ func play(time_scale: float = 1):
 	for node in audio_player_2ds:
 		node.pitch_scale = 1 / time_scale
 		node.play()
-	for node in animation_players:
+	for node in anim_players:
 		node.speed_scale = 1 / time_scale
 		node.play()
-	for node in fx_animations:
+	for node in fx_anims:
 		node.play(time_scale)
+	for node in fx_anim_trees:
+		node.play()
 	if unparent_on_play:
 		reparent(World.global)
 	played.emit()

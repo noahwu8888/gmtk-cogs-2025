@@ -14,26 +14,26 @@ enum MoveMode {
 }
 
 
-@export var rect: Rect2:
+@export var size: Vector2:
 	get:
-		return rect
+		return size
 	set(value):
-		rect = value
-		if is_inside_tree() and patch_rect and collision_shape:
-			if rect.size.x < 1:
-				rect.size.x = 1
-			if rect.size.y < 1:
-				rect.size.y = 1
-			var size = rect.size * SUtils.TILE_SIZE
-			patch_rect.size = size
-			patch_rect.position = rect.position * SUtils.TILE_SIZE
+		size = value
+		if is_inside_tree() and _patch_rect and _collision_shape:
+			if size.x < 1:
+				size.x = 1
+			if size.y < 1:
+				size.y = 1
+			var true_size = size * SUtils.TILE_SIZE
+			_patch_rect.size = true_size
+			_patch_rect.position = (-size / 2.0) * SUtils.TILE_SIZE
 			if _dest_indicator:
-				_dest_indicator.size = patch_rect.size
-			var shape = collision_shape.shape as RectangleShape2D
-			shape.size = size
-			collision_shape.position = rect.get_center() * SUtils.TILE_SIZE
+				_dest_indicator.size = _patch_rect.size
+			var shape = _collision_shape.shape as RectangleShape2D
+			shape.size = true_size
 			if _debug_draw:
 				_debug_draw.queue_redraw()
+			_update_dest_indicator()
 @export var waypoints: Array[Vector2] = [] :
 	get:
 		return waypoints
@@ -67,10 +67,14 @@ var _all_waypoints: Array[Vector2] :
 @export var beat: float = 0.0
 ## How the platform moves to a waypoint on a beat
 @export var beat_move_curve: Curve
+## Beat interval at which this platform visually pulses
+@export var pulse_beat: float = 4.0
 @export_group("Dependencies")
-@export var patch_rect: NinePatchRect
-@export var collision_shape: CollisionShape2D
+@export var _patch_rect: NinePatchRect
+@export var _collision_shape: CollisionShape2D
 @export var _debug_draw: Node2D
+@export var _visuals: Node2D
+@export var _pulse_fx: FX
 
 var waypoint_idx: int = 0
 var waypoint_direction: int = 1
@@ -88,11 +92,14 @@ var _initial_position: Vector2
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		if patch_rect:
+		if _patch_rect:
 			set_process(false)
-			_dest_indicator = patch_rect.duplicate()
-			_dest_indicator.modulate.a = 0.25
-			add_child(_dest_indicator)
+			_dest_indicator = get_node_or_null("_dest_indicator")
+			if _dest_indicator == null:
+				_dest_indicator = _patch_rect.duplicate()
+				_dest_indicator.modulate.a = 0.25
+				_dest_indicator.name = "_dest_indicator"
+				add_child(_dest_indicator)
 			_update_dest_indicator()
 		return
 	_initial_position = position
@@ -100,6 +107,8 @@ func _ready() -> void:
 	if move_mode == MoveMode.BEAT:
 		_prev_abs_beat = RhythmNotifier.global.get_interval_start_beat(beat)
 		_next_abs_beat = RhythmNotifier.global.get_interval_end_beat(beat)
+	if pulse_beat > 0:
+		RhythmNotifier.global.beats(pulse_beat).connect(_pulse_fx.play.unbind(1))
 	_advance_waypoint()
 
 
@@ -148,7 +157,7 @@ func _physics_process(delta: float) -> void:
 func _update_dest_indicator():
 	if Engine.is_editor_hint() and is_inside_tree():
 		if len(_all_waypoints) > 0 and _dest_indicator:
-			_dest_indicator.position = _all_waypoints[-1] * SUtils.TILE_SIZE
+			_dest_indicator.position = (_all_waypoints[-1] - size / 2.0) * SUtils.TILE_SIZE
 
 func _validate_property(property: Dictionary):
 	if (property.name in ["beat", "beat_move_curve"] and move_mode != MoveMode.BEAT) or \

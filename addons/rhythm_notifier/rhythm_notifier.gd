@@ -303,28 +303,39 @@ func _physics_process(delta):
 		return
 	
 	var prev_position = _position
-	
+	var new_position = _position
 	if _silent_running:
-		_position += delta
+		new_position += delta
 		if silent_duration > 0:
-			_position = fmod(_position, silent_duration)
+			new_position = fmod(new_position, silent_duration)
 	if not _silent_running:
-		_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
+		new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
 		# Ensure that _position is monotonically increasing
 		# Note that sometimes the _cached_output_latency can cause this value to become negative
-		if _prev_playback_position < audio_stream_player.get_playback_position() and prev_position > _position:
-			_position = prev_position
+		if _prev_playback_position < audio_stream_player.get_playback_position() and prev_position > new_position:
+			new_position = prev_position
 	_prev_playback_position = audio_stream_player.get_playback_position()
 	
 	if prev_position > _position:
 		# We've looped, so _position is the new delta
-		delta = _position + (_length - fmod(prev_position, _length))
+		delta = new_position + (_length - fmod(prev_position, _length))
 	else:
 		# Use the difference as the delta
-		delta = _position - prev_position
+		delta = new_position - prev_position
+	
+	# If the delta is jumping too far ahead, we must break it into smaller pieces
+	# to feed into the _Rhythm objects, to ensure no beat gets lost
+	while delta >= beat_length * 0.9:
+		delta -= beat_length * 0.9
+		_step(beat_length)
+	_step(delta)
+
+
+func _step(delta: float):
+	_position += delta
 	_abs_position += delta
 	beat_process.emit(delta)
-	
+
 	for key in _rhythms:
 		var rhythm = _rhythms[key]
 		rhythm.emit_if_needed(current_beat_position, current_abs_beat_position, beat_length)

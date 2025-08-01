@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://t6xvasqtnplb"]
+[gd_scene load_steps=10 format=3 uid="uid://t6xvasqtnplb"]
 
 [ext_resource type="Script" uid="uid://v8vrrqikjn7h" path="res://scripts/spring.gd" id="1_d87sf"]
 [ext_resource type="Texture2D" uid="uid://cxrpfjytwvec7" path="res://assets/art/gmtk_gradient_up.png" id="2_uliwl"]
+[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="3_d87sf"]
+[ext_resource type="Animation" uid="uid://ccde7ffp40rtf" path="res://assets/animation/pulse.res" id="3_w38pd"]
+[ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx/fx_anim.gd" id="4_w38pd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_66y8n"]
 size = Vector2(256, 256)
@@ -11,7 +14,7 @@ length = 0.001
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:scale:x")
+tracks/0/path = NodePath("Visuals/Sprite:scale:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -22,7 +25,7 @@ tracks/0/keys = {
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:scale:y")
+tracks/1/path = NodePath("Visuals/Sprite:scale:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -38,40 +41,44 @@ step = 0.0166667
 tracks/0/type = "bezier"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:scale:x")
+tracks/0/path = NodePath("Visuals/Sprite:scale:x")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(2, 0, 2),
-"points": PackedFloat32Array(1, 0, 0, 0, 0.2837, 1.41906, -0.0222222, 0, 0.111111, 0, 1, -0.111111, 0, 0, 0),
+"points": PackedFloat32Array(1, 0, 0, 0, 0.2837, 1.41906, -0.0222222, 0, 0.0666667, -0.381983, 1, -0.111111, 0, 0, 0),
 "times": PackedFloat32Array(0, 0.0333333, 0.4)
 }
 tracks/1/type = "bezier"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:scale:y")
+tracks/1/path = NodePath("Visuals/Sprite:scale:y")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "handle_modes": PackedInt32Array(2, 0, 2),
-"points": PackedFloat32Array(1, 0, 0, 0, 0.858996, 2.96447, -0.0166667, 0, 0.116667, 0, 1, -0.0666667, 0.836435, 0, 0),
+"points": PackedFloat32Array(1, 0, 0, 0, 0.858996, 2.96447, -0.0166667, 0, 0.116667, 0, 1.01948, -0.0666667, 0.836435, 0, 0),
 "times": PackedFloat32Array(0, 0.0333333, 0.4)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_d87sf"]
 _data = {
 &"RESET": SubResource("Animation_rs420"),
+&"pulse": ExtResource("3_w38pd"),
 &"spring": SubResource("Animation_uliwl")
 }
 
-[node name="Spring" type="Node2D" node_paths=PackedStringArray("spring_area", "anim_player")]
+[node name="Spring" type="Node2D" node_paths=PackedStringArray("_spring_area", "_spring_fx", "_pulse_fx")]
 script = ExtResource("1_d87sf")
-power = 6400.0
-spring_area = NodePath("SpringArea2D")
-anim_player = NodePath("AnimationPlayer")
+power = 25.0
+_spring_area = NodePath("SpringArea2D")
+_spring_fx = NodePath("SpringFX")
+_pulse_fx = NodePath("PulseFX")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Visuals" type="Node2D" parent="."]
 position = Vector2(0, 128)
+
+[node name="Sprite" type="Sprite2D" parent="Visuals"]
 texture = ExtResource("2_uliwl")
 offset = Vector2(0, -128)
 region_rect = Rect2(0, 0, 8, 8)
@@ -85,3 +92,23 @@ shape = SubResource("RectangleShape2D_66y8n")
 libraries = {
 &"": SubResource("AnimationLibrary_d87sf")
 }
+
+[node name="PulseFX" type="Node2D" parent="."]
+script = ExtResource("3_d87sf")
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="FXAnim" type="Node" parent="PulseFX" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_w38pd")
+animation_player = NodePath("../../AnimationPlayer")
+anim_name = "pulse"
+metadata/_custom_type_script = "uid://pc05053fdsjn"
+
+[node name="SpringFX" type="Node2D" parent="."]
+script = ExtResource("3_d87sf")
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="FXAnim" type="Node" parent="SpringFX" node_paths=PackedStringArray("animation_player")]
+script = ExtResource("4_w38pd")
+animation_player = NodePath("../../AnimationPlayer")
+anim_name = "spring"
+metadata/_custom_type_script = "uid://pc05053fdsjn"

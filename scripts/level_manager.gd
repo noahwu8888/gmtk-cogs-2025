@@ -13,6 +13,8 @@ signal level_completed
 @export var world: World
 @export var rhythm_notifier: RhythmNotifier
 @export var bg_track_manager: AudioTrackManager
+@export var trans_color_rect: ColorRect
+@export var load_fx: FX
 
 var active_room: Room
 var active_room_index: int
@@ -22,18 +24,33 @@ var trans_beats_left: int
 
 func _ready() -> void:
 	load_level.call_deferred(level)
+	trans_color_rect.color.a = 0.0
+	player.death.connect(respawn)
 
 
 func _process(delta: float) -> void:
 	if player.global_position.y > SUtils.TILE_SIZE * 40:
-		player.global_position = active_room.spawn.global_position
-		
+		player.kill()
 
 
 func load_level(new_level: Level):
 	level = new_level
 	active_room_index = -1
 	load_room_next_room()
+
+
+func respawn():
+	trans_color_rect.color.a = 1.0
+	player.global_position = active_room.spawn.global_position
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	camera_region_controller.instant_update_camera_position()
+	player.enabled = true
+	player.reset()
+	var tween = create_tween()
+	tween.tween_property(trans_color_rect, "color", Color(trans_color_rect.color, 0.0), 1.0) \
+		.set_ease(Tween.EASE_OUT)
+	load_fx.play()
 
 
 func load_room_next_room():
@@ -44,9 +61,7 @@ func load_room_next_room():
 	if active_room_index >= len(level.room_prefabs):
 		level_completed.emit()
 		return
-	player.visible = false
 	player.enabled = false
-	player.global_position = Vector2(-1000, -1000)
 	await get_tree().process_frame
 	var new_room = level.room_prefabs[active_room_index].instantiate() as Room
 	world.add_child(new_room)
@@ -60,9 +75,8 @@ func load_room_next_room():
 	bg_track_manager.set_active_tracks(new_room.bg_tracks)
 	active_room = new_room
 	await get_tree().process_frame
-	player.visible = true
-	player.enabled = true
-	player.global_position = active_room.spawn.global_position
+	respawn()
+	is_transitioning = false
 
 
 func _on_room_finished():
@@ -76,6 +90,7 @@ func _on_room_finished():
 	active_room.goal.play_ending(target_beat)
 	print("PLAYING ENDING with target_beat: %s" % target_beat)
 	await rhythm_notifier.wait_until_beat(target_beat)
-	is_transitioning = false
+	trans_color_rect.visible = true
+	trans_color_rect.color.a = 1.0
 	load_room_next_room()
 	print("DONE TRANS")

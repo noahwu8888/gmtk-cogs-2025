@@ -2,6 +2,9 @@ extends CharacterBody2D
 class_name Player
 
 
+signal death
+
+
 @export var speed: float = 100
 @export var jump_power: float = 100
 @export var gravity: float = 300
@@ -9,12 +12,19 @@ class_name Player
 @export var down_gravity_scale: float = 1.5
 @export var coyote_time: float = 0.1
 @export var jumps: int = 1
-@export var enabled: bool = true
+@export var enabled: bool = true :
+	get:
+		return enabled
+	set(value):
+		enabled = value
+		if is_inside_tree():
+			await get_tree().process_frame
+			collision_shape.disabled = not enabled
 
 @export_group("Dependencies")
 @export var visuals_anim_tree: AnimationTree
-@export var dir_anim_tree: AnimationTree
 @export var sprite: Sprite2D
+@export var collision_shape: CollisionShape2D
 
 var jumps_left: int = 0
 var time_since_floor: float 
@@ -23,6 +33,11 @@ var move_velocity: Vector2
 var just_jumped: bool
 var just_landed: bool
 var prev_on_floor: bool 
+
+
+func _ready() -> void:
+	enabled = enabled
+	reset()
 
 
 func _physics_process(delta: float) -> void:
@@ -88,3 +103,13 @@ func update_anim():
 		visuals_playback.start("landing")
 	visuals_anim_tree.set("parameters/conditions/idle", is_on_floor())
 	visuals_anim_tree.set("parameters/conditions/falling", velocity.y > 0)
+
+
+func reset():
+	velocity = Vector2.ZERO
+	move_velocity = Vector2.ZERO
+
+
+func kill():
+	death.emit()
+	reset()

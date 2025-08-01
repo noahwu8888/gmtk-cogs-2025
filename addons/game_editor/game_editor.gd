@@ -12,7 +12,10 @@ const COLORS = [Color.GREEN, Color.DODGER_BLUE, Color.BLUE, Color.PURPLE, Color.
 
 
 func _on_property_edited(property: String):
-	if target_object.get(property) is Array[Vector2] or target_object is Platform:
+	if not target_object:
+		return
+	if (not property.begins_with("_") and "waypoints" and target_object.get(property,) is Array[Vector2]) or \
+		target_object is Platform:
 		_edit(target_object)
 		update_overlays()
 
@@ -51,7 +54,6 @@ func _edit(object: Object) -> void:
 				}
 				if target_object is Platform:
 					waypoint["scale"] = SUtils.TILE_SIZE
-					waypoint["offset"] = target_object.rect.get_center() * SUtils.TILE_SIZE
 					waypoint["snap"] = Vector2.ONE * 128
 				waypoints.append(waypoint)
 
