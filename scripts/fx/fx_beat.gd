@@ -15,7 +15,15 @@ enum Mode {
 
 ## Time to wait before playing.
 @export var beat_delay: float = 0
+## Time after duration to wait before deletion.
+@export var post_delay: float = 0
 @export var duration: float = 1.0
+@export var play_on_ready: bool
+@export var unparent_on_play: bool
+@export var destroy_on_finish: bool
+## If true, then calling play() while the FX is already playing will cause
+## it to stop the exiting playback before starting a new playback
+@export var restart_on_play: bool = true
 
 @export_group("Dependencies")
 @export var chain_fxes: Array[FX]
@@ -34,10 +42,8 @@ func _ready():
 		if child is FX and child not in chain_fxes:
 			fxes.append(child)
 		elif child is AnimationPlayer:
-			child.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 			anim_players.append(child)
 		elif child is FXAnim:
-			child.is_manual_process = true
 			fx_anims.append(child)
 			
 	# Create FX for remainder
@@ -52,6 +58,9 @@ func _ready():
 		add_child(fx)
 		fxes.append(fx)
 	RhythmNotifier.global.beat_process.connect(_on_beat_process)
+	
+	if play_on_ready:
+		play()
 
 
 ## Stops playback
@@ -70,19 +79,29 @@ func stop():
 ## This will scale the any scalable fxes.
 func play_ending_on_beat(beat: float):
 	mode = Mode.PLAY_ENDING_ON_BEAT
-	if is_playing:
+	if is_playing and restart_on_play:
 		stop()
+	if unparent_on_play:
+		reparent(World.global)
 	is_playing = true
 	time_until_beat = beat * RhythmNotifier.global.beat_length - RhythmNotifier.global.current_abs_position
 	for fx in fxes:
 		fx.play_duration(time_until_beat)
 	for node in fx_anims:
+		node.is_manual_process = true
 		node.play()
 	for node in anim_players:
+		node.callback_mode_process = AnimationMixer.ANIMATION_CALLBACK_MODE_PROCESS_MANUAL
 		node.play()
+	played.emit()
 	await RhythmNotifier.global.wait_until_beat(beat)
 	for node in chain_fxes:
 		node.play()
+	await get_tree().create_timer(post_delay).timeout
+	stopped.emit()
+	finished.emit()
+	if destroy_on_finish:
+		queue_free()
 
 
 func _on_beat_process(delta: float):
@@ -108,8 +127,10 @@ func _on_beat_process(delta: float):
 ## Ex. time_scale = 2 would double the playback speed
 func play():
 	mode = Mode.PLAY
-	if is_playing:
+	if is_playing and restart_on_play:
 		stop()
+	if unparent_on_play:
+		reparent(World.global)
 	is_playing = true
 	if beat_delay > 0:
 		await RhythmNotifier.global.wait_beats(beat_delay)
@@ -121,6 +142,9 @@ func play():
 		node.play()
 	for node in chain_fxes:
 		node.play()
+	await get_tree().create_timer(post_delay).timeout
 	played.emit()
 	stopped.emit()
 	finished.emit()
+	if destroy_on_finish:
+		queue_free()

@@ -35,8 +35,6 @@ var is_playing: bool = false
 
 
 func _ready():
-	if play_on_ready:
-		play()
 	var registered_nodes = {}
 	for node in chain_unscaled_fxes + chain_fxes + fxes + cpu_particles + gpu_particles + audio_players + audio_player_2ds + animation_players + fx_animations:
 		registered_nodes[node] = true
@@ -59,6 +57,8 @@ func _ready():
 			animation_players.append(child)
 		elif child is FXAnim:
 			fx_animations.append(child)
+	if play_on_ready:
+		play()
 
 
 ## Stops playback

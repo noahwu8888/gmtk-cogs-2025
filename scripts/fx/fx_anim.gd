@@ -17,17 +17,25 @@ class_name FXAnim
 
 var animation_length: float :
 	get:
+		if animation_player == null:
+			return 0.0
 		return animation_player.get_animation(anim_name).length
 
 
 func play(time_scale: float = 1.0):
+	if animation_player == null:
+		return
 	animation_player.speed_scale = 1 / time_scale
 	animation_player.play(anim_name, blend)
 
 
 func stop():
+	if animation_player == null:
+		return
 	animation_player.stop()
 
 
 func advance(delta: float):
+	if animation_player == null:
+		return
 	animation_player.advance(delta)

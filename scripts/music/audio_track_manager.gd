@@ -46,7 +46,7 @@ func set_active_tracks(new_active_tracks: Array[AudioStream]):
 		prev_track_volumes[i] = sync_stream.get_sync_stream_volume(i)
 		new_track_volumes[i] = 0 if tracks[i] in active_tracks else -80
 	tween = create_tween()
-	tween.bind_node(self).tween_method(_tween_tracks, 0, 1, fade_duration)
+	tween.bind_node(self).tween_method(_tween_tracks, 0.0, 1.0, fade_duration)
 
 
 func _tween_tracks(value: float):

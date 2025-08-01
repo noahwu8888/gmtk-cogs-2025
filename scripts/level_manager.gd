@@ -47,6 +47,7 @@ func load_room_next_room():
 	player.visible = false
 	player.enabled = false
 	player.global_position = Vector2(-1000, -1000)
+	await get_tree().process_frame
 	var new_room = level.room_prefabs[active_room_index].instantiate() as Room
 	world.add_child(new_room)
 	new_room.region.reparent(camera_region_controller)
@@ -58,10 +59,7 @@ func load_room_next_room():
 	loop_bar.end_x = new_room.region._region.end.x
 	bg_track_manager.set_active_tracks(new_room.bg_tracks)
 	active_room = new_room
-	_load_room_deferred.call_deferred()
-
-
-func _load_room_deferred():
+	await get_tree().process_frame
 	player.visible = true
 	player.enabled = true
 	player.global_position = active_room.spawn.global_position

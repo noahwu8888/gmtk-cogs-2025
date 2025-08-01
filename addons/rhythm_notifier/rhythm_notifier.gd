@@ -131,7 +131,7 @@ class _Rhythm:
 		use_abs_position = _use_abs_position
 		
 
-	const TOO_LATE = .1 # This long after interval starts, we are too late to emit
+	#const TOO_LATE = .1 # This long after interval starts, we are too late to emit
 	# We pass secs_per_beat so user can change bpm any time
 	func emit_if_needed(beat_position: float, abs_beat_position: float, secs_per_beat: float) -> void:
 		var interval_secs = duration * secs_per_beat
@@ -141,10 +141,10 @@ class _Rhythm:
 		var current_interval = int(floor(elapsed_beat_time / duration))
 		var secs_past_interval = fmod(elapsed_beat_time * secs_per_beat, interval_secs)
 		var valid_interval = current_interval >= 0 and (repeating or current_interval == 1)
-		var too_late = secs_past_interval >= TOO_LATE
+		#var too_late = secs_past_interval >= TOO_LATE
 		#if duration != 1.0:
 			#print("current_interval: %s, elapsed_beat_time: %s, interval_secs: %s" % [current_interval, elapsed_beat_time, interval_secs])
-		if not valid_interval or too_late:
+		if not valid_interval: #or too_late:
 			# Invalid interval or interval is too late
 			last_frame_interval = null
 		elif last_frame_interval != current_interval:
@@ -271,6 +271,8 @@ var _rhythms: Dictionary[String, _Rhythm] = {}
 
 
 func _enter_tree() -> void:
+	if Engine.is_editor_hint():
+		return
 	if is_global:
 		if global != null:
 			queue_free()
@@ -279,16 +281,22 @@ func _enter_tree() -> void:
 
 
 func _notification(what: int) -> void:
+	if Engine.is_editor_hint():
+		return
 	if what == NOTIFICATION_PREDELETE and is_global and global == self:
 		global = null
 
 
 func _ready():
+	if Engine.is_editor_hint():
+		return
 	beats(1.0).connect(beat.emit)
 
 
 # If not stopped, recalculate track position and emit any appropriate signals.
 func _physics_process(delta):
+	if Engine.is_editor_hint():
+		return
 	if _silent_running and _stream_is_playing():
 		_silent_running = false
 	if not running:
@@ -312,8 +320,6 @@ func _physics_process(delta):
 	_abs_position += delta
 	beat_process.emit(delta)
 	
-	if Engine.is_editor_hint():
-		return
 	for key in _rhythms:
 		var rhythm = _rhythms[key]
 		rhythm.emit_if_needed(current_beat_position, current_abs_beat_position, beat_length)

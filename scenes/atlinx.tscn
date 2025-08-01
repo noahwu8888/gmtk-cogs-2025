@@ -64,7 +64,7 @@ metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 [node name="BGTrackManager" type="Node" parent="."]
 script = ExtResource("15_w5gp6")
 tracks = Array[AudioStream]([ExtResource("15_m07vp"), ExtResource("11_6krbk"), ExtResource("16_w5gp6"), ExtResource("16_3ok8l"), ExtResource("16_ksotl")])
-fade_duration = 2.0
+fade_duration = 1.0
 metadata/_custom_type_script = "uid://deofdsnkjeipf"
 
 [node name="BGTracksPlayer" type="AudioStreamPlayer" parent="BGTrackManager"]

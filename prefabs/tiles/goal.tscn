@@ -119,7 +119,9 @@ autoplay = "Idle/idle1"
 
 [node name="EndingFX" type="Node2D" parent="." node_paths=PackedStringArray("chain_fxes")]
 script = ExtResource("4_d2sio")
-duration = 3.7
+post_delay = 6.0
+unparent_on_play = true
+destroy_on_finish = true
 chain_fxes = [NodePath("CrashFX")]
 metadata/_custom_type_script = "uid://dqrlchg6pdnje"
 
@@ -130,7 +132,12 @@ anim_name = "transition"
 blend = 0.5
 metadata/_custom_type_script = "uid://pc05053fdsjn"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX"]
+[node name="RiseFX" type="Node2D" parent="EndingFX"]
+script = ExtResource("4_0mt35")
+duration = 3.7
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX/RiseFX"]
 stream = ExtResource("6_g3lit")
 
 [node name="CrashFX" type="Node2D" parent="EndingFX"]
