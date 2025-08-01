@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://davuwv2lqe7er"]
+
+[ext_resource type="PackedScene" uid="uid://t6jjkf7w2aip" path="res://scenes/gameplay.tscn" id="1_dy3le"]
+[ext_resource type="Script" uid="uid://beasfwfiohuq3" path="res://scripts/editor_gameplay_server.gd" id="2_tswun"]
+
+[node name="EditorGameplay" instance=ExtResource("1_dy3le")]
+
+[node name="EditorGameplayServer" type="Node" parent="." index="2" node_paths=PackedStringArray("_level_manager")]
+script = ExtResource("2_tswun")
+_level_manager = NodePath("../LevelManager")

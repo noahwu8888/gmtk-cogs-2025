@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=4 uid="uid://but84a2ah4oj8"]
+[gd_scene load_steps=6 format=4 uid="uid://but84a2ah4oj8"]
 
 [ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_3t5sg"]
 [ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="2_bcpdk"]
 [ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="3_lca4a"]
+[ext_resource type="Script" uid="uid://bdr0kyba811p2" path="res://scripts/beat_toggle.gd" id="4_oyey0"]
 
 [sub_resource type="Curve" id="Curve_lca4a"]
 _data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792, -1.25792, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -35,3 +36,6 @@ loop_mode = 1
 speed = 2.0
 beat = 6.0
 beat_move_curve = SubResource("Curve_lca4a")
+
+[node name="BeatToggle" type="Node" parent="." index="7"]
+script = ExtResource("4_oyey0")

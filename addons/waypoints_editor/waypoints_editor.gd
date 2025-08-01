@@ -53,7 +53,7 @@ func _edit(object: Object) -> void:
 					"color": COLORS[color_idx]
 				}
 				if target_object is Platform:
-					waypoint["scale"] = SUtils.TILE_SIZE
+					waypoint["scale"] = Utils.TILE_SIZE
 					waypoint["snap"] = Vector2.ONE * 128
 				waypoints.append(waypoint)
 
@@ -66,16 +66,6 @@ func _forward_canvas_draw_over_viewport(overlay: Control) -> void:
 		waypoint.position = array[waypoint.index]
 		waypoint.draw_position = target_object.get_viewport_transform() * target_object.get_global_transform_with_canvas() * (waypoint.position * waypoint.scale + waypoint.offset)
 		overlay.draw_circle(waypoint.draw_position, waypoint.radius, waypoint.color)
-	#for property in properties:
-		#var point_array: Array[Vector2] = target_object.get(property.name)
-		#for i in range(len(point_array)):
-			#var point = point_array[i]
-			#var draw_pos = Vector2.ZERO
-			#if target_object is Platform:
-				#draw_pos = (point * SUtils.TILE_SIZE)
-				#draw_pos += target_object.rect.get_center() * SUtils.TILE_SIZE
-			#draw_pos = target_object.get_viewport_transform() * target_object.get_canvas_transform() * draw_pos
-			#overlay.draw_circle(draw_pos, CIRCLE_RADIUS, COLOR)
 
 
 func drag_to(event_position: Vector2) -> void:

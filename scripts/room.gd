@@ -21,6 +21,7 @@ var duration: float :
 ## reaches a specific multiple.
 @export var transition_beat_interval: int = 4
 @export var bg_tracks: Array[AudioStream]
+@export var active_tracks: Array[AudioStream]
 
 @export var bg_color: Color = Color.BLACK
 

@@ -1,0 +1,84 @@
+[gd_scene load_steps=17 format=3 uid="uid://jq6k2s45yolp"]
+
+[ext_resource type="Script" uid="uid://dug4lixts246l" path="res://scripts/utils.gd" id="1_qptee"]
+[ext_resource type="Script" uid="uid://jmme7hdxird4" path="res://scripts/transition_manager.gd" id="2_e6m75"]
+[ext_resource type="Shader" uid="uid://bgqm7fl4bogx" path="res://assets/shaders/transition.gdshader" id="3_w6r1q"]
+[ext_resource type="Texture2D" uid="uid://bcr7pfg68shp" path="res://assets/art/gradient_trans.png" id="4_6g2tk"]
+[ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="5_iyjk6"]
+[ext_resource type="Script" uid="uid://du2xs8w1buoji" path="res://scripts/scene_manager.gd" id="6_iyjk6"]
+[ext_resource type="Script" uid="uid://dynfss5u1fhmt" path="res://scripts/music/bg_track_manager.gd" id="7_gr1a7"]
+[ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="8_svda7"]
+[ext_resource type="AudioStream" uid="uid://d3uf2kkgotct3" path="res://assets/music/test/metro_2.ogg" id="9_7infw"]
+[ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="10_lfafe"]
+[ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="11_pchpq"]
+[ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="12_wavce"]
+[ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="13_a1rin"]
+
+[sub_resource type="Curve" id="Curve_6g2tk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Curve" id="Curve_iyjk6"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6a7o5"]
+shader = ExtResource("3_w6r1q")
+shader_parameter/fill_amount = 0.5
+shader_parameter/size = Vector2(1, 1)
+shader_parameter/trans_texture = ExtResource("4_6g2tk")
+shader_parameter/is_tiling = false
+shader_parameter/invert = false
+
+[node name="Services" type="Node"]
+
+[node name="Utils" type="Node" parent="."]
+script = ExtResource("1_qptee")
+
+[node name="TransitionManager" type="Node" parent="." node_paths=PackedStringArray("_trans_rect")]
+script = ExtResource("2_e6m75")
+trans_in_curve = SubResource("Curve_6g2tk")
+trans_out_curve = SubResource("Curve_iyjk6")
+_trans_rect = NodePath("CanvasLayer/Control/TransRect")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="TransitionManager"]
+
+[node name="Control" type="Control" parent="TransitionManager/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TransRect" type="TextureRect" parent="TransitionManager/CanvasLayer/Control"]
+modulate = Color(0, 0, 0, 1)
+material = SubResource("ShaderMaterial_6a7o5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_iyjk6")
+
+[node name="SceneManager" type="Node" parent="."]
+script = ExtResource("6_iyjk6")
+metadata/_custom_type_script = "uid://du2xs8w1buoji"
+
+[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+script = ExtResource("13_a1rin")
+silent_duration = -1.0
+audio_stream_player = NodePath("../BGTrackManager/BGTracksPlayer")
+is_global = true
+metadata/_custom_type_script = "uid://dqi2pls0xboqr"
+
+[node name="BGTrackManager" type="Node" parent="."]
+script = ExtResource("7_gr1a7")
+tracks = Array[AudioStream]([ExtResource("8_svda7"), ExtResource("9_7infw"), ExtResource("10_lfafe"), ExtResource("11_pchpq"), ExtResource("12_wavce")])
+fade_duration = 1.0
+metadata/_custom_type_script = "uid://deofdsnkjeipf"
+
+[node name="BGTracksPlayer" type="AudioStreamPlayer" parent="BGTrackManager"]
+autoplay = true
+bus = &"Music"

@@ -21,6 +21,6 @@ func _ready() -> void:
 
 func _on_body_entered(body: Node2D):
 	if body is Player:
-		var v = Vector2.from_angle(deg_to_rad(angle)) * power * SUtils.TILE_SIZE
+		var v = Vector2.from_angle(deg_to_rad(angle)) * power * Utils.TILE_SIZE
 		body.move_velocity = v
 		_spring_fx.play()

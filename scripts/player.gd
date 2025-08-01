@@ -49,13 +49,13 @@ func _physics_process(delta: float) -> void:
 func update_movement(delta):
 	# Horizontal movement
 	var horz_dir = Input.get_axis("p1_left", "p1_right")
-	move_velocity.x = horz_dir * speed * SUtils.TILE_SIZE
+	move_velocity.x = horz_dir * speed * Utils.TILE_SIZE
 	
 	# Jump
 	var can_jump = time_since_floor < coyote_time or (jumps_left > 0 and not is_on_floor())
 	just_jumped = false
 	if can_jump and Input.is_action_just_pressed("p1_jump"):
-		move_velocity.y = -jump_power * SUtils.TILE_SIZE
+		move_velocity.y = -jump_power * Utils.TILE_SIZE
 		jumps_left -= 1
 		just_jumped = true
 	
@@ -72,14 +72,14 @@ func update_movement(delta):
 		sprite.flip_h = true
 	
 	# Gravity
-	var gravity_delta = gravity * delta * SUtils.TILE_SIZE
+	var gravity_delta = gravity * delta * Utils.TILE_SIZE
 	if move_velocity.y > 0:
 		# If we are falling:
 		gravity_delta *= down_gravity_scale
 	move_velocity.y += gravity_delta
 	if move_velocity.y > 0:
 		# If we are falling
-		move_velocity.y = clampf(move_velocity.y, 0, terminal_velocity * SUtils.TILE_SIZE)
+		move_velocity.y = clampf(move_velocity.y, 0, terminal_velocity * Utils.TILE_SIZE)
 	
 	# Limit movement when hitting wall or floor
 	if is_on_ceiling() and move_velocity.y < 0:

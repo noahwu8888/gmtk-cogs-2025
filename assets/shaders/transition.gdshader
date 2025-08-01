@@ -15,8 +15,5 @@ void fragment() {
 	bool hide = (value > fill_amount && !invert) || (value < fill_amount && invert);
 	if (hide) {
 		COLOR = vec4(0.0);
-	} else {
-		vec2 offset = vec2(mod(TIME, 1.0), 0.0);
-		COLOR = texture(TEXTURE, UV + offset);
 	}
 }

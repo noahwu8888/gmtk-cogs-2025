@@ -4,7 +4,7 @@ class_name AudioTrackManager
 
 @export var tracks: Array[AudioStream]
 @export var active_tracks: Dictionary[AudioStream, bool]
-@export var fade_duration: float = 0.5
+@export var fade_duration: float
 
 var audio_player: AudioStreamPlayer
 var sync_stream: AudioStreamSynchronized

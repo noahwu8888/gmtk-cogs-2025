@@ -24,9 +24,9 @@ enum MoveMode {
 				size.x = 1
 			if size.y < 1:
 				size.y = 1
-			var true_size = size * SUtils.TILE_SIZE
+			var true_size = size * Utils.TILE_SIZE
 			_patch_rect.size = true_size
-			_patch_rect.position = (-size / 2.0) * SUtils.TILE_SIZE
+			_patch_rect.position = (-size / 2.0) * Utils.TILE_SIZE
 			if _dest_indicator:
 				_dest_indicator.size = _patch_rect.size
 			var shape = _collision_shape.shape as RectangleShape2D
@@ -82,7 +82,7 @@ var waypoint_direction: int = 1
 var _prev_waypoint: Vector2
 var _next_waypoint: Vector2 :
 	get:
-		return _all_waypoints[waypoint_idx] * SUtils.TILE_SIZE + _initial_position
+		return _all_waypoints[waypoint_idx] * Utils.TILE_SIZE + _initial_position
 var _prev_to_next_dist: float
 var _dest_indicator: NinePatchRect
 var _prev_abs_beat: float
@@ -121,6 +121,7 @@ func _advance_waypoint():
 	elif loop_mode == LoopMode.PING_PONG:
 		if waypoint_idx < 0 or waypoint_idx >= len(_all_waypoints):
 			waypoint_direction *= -1
+			waypoint_idx += waypoint_direction
 	_prev_to_next_dist = _prev_waypoint.distance_to(_next_waypoint)
 	_prev_abs_beat = _next_abs_beat
 	_next_abs_beat += beat
@@ -129,7 +130,7 @@ func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
 	if move_mode == MoveMode.SPEED:
-		var move_delta = speed * delta * SUtils.TILE_SIZE
+		var move_delta = speed * delta * Utils.TILE_SIZE
 		while true:
 			var next_waypoint = _next_waypoint
 			var dist_left = position.distance_to(_next_waypoint)
@@ -157,7 +158,7 @@ func _physics_process(delta: float) -> void:
 func _update_dest_indicator():
 	if Engine.is_editor_hint() and is_inside_tree():
 		if len(_all_waypoints) > 0 and _dest_indicator:
-			_dest_indicator.position = (_all_waypoints[-1] - size / 2.0) * SUtils.TILE_SIZE
+			_dest_indicator.position = (_all_waypoints[-1] - size / 2.0) * Utils.TILE_SIZE
 
 func _validate_property(property: Dictionary):
 	if (property.name in ["beat", "beat_move_curve"] and move_mode != MoveMode.BEAT) or \

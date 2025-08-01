@@ -1,7 +1,7 @@
 extends Node
 class_name LevelManager
 
-signal level_completed
+signal level_finished
 
 @export var level: Level
 @export var min_transition_duration: float
@@ -11,8 +11,6 @@ signal level_completed
 @export var loop_bar: LoopBar
 @export var player: Player
 @export var world: World
-@export var rhythm_notifier: RhythmNotifier
-@export var bg_track_manager: AudioTrackManager
 @export var trans_color_rect: ColorRect
 @export var load_fx: FX
 
@@ -23,15 +21,19 @@ var trans_beats_left: int
 
 
 func _ready() -> void:
-	load_level.call_deferred(level)
 	trans_color_rect.color.a = 0.0
 	player.death.connect(respawn)
 
 
 func _process(delta: float) -> void:
-	if player.global_position.y > SUtils.TILE_SIZE * 40:
+	if player.global_position.y > Utils.TILE_SIZE * 40:
 		player.kill()
 
+
+func restart_level():
+	if not level:
+		return
+	load_level(level)
 
 func load_level(new_level: Level):
 	level = new_level
@@ -59,7 +61,7 @@ func load_room_next_room():
 		active_room.queue_free()
 	active_room_index += 1
 	if active_room_index >= len(level.room_prefabs):
-		level_completed.emit()
+		level_finished.emit()
 		return
 	player.enabled = false
 	await get_tree().process_frame
@@ -67,12 +69,12 @@ func load_room_next_room():
 	world.add_child(new_room)
 	new_room.region.reparent(camera_region_controller)
 	new_room.finished.connect(_on_room_finished)
-	rhythm_notifier.bpm = new_room.bpm
-	rhythm_notifier.silent_duration = new_room.duration
+	RhythmNotifier.global.bpm = new_room.bpm
+	RhythmNotifier.global.silent_duration = new_room.duration
 	loop_bar.beat_count = new_room.beat_count
 	loop_bar.start_x = new_room.region._region.position.x
 	loop_bar.end_x = new_room.region._region.end.x
-	bg_track_manager.set_active_tracks(new_room.bg_tracks)
+	BGTrackManager.global.set_active_tracks(new_room.bg_tracks)
 	active_room = new_room
 	await get_tree().process_frame
 	respawn()
@@ -86,10 +88,10 @@ func _on_room_finished():
 	player.enabled = false
 	
 	print("START TRANSITION")
-	var target_beat = rhythm_notifier.get_interval_end_beat(active_room.transition_beat_interval, 0, min_transition_duration)
+	var target_beat = RhythmNotifier.global.get_interval_end_beat(active_room.transition_beat_interval, 0, min_transition_duration)
 	active_room.goal.play_ending(target_beat)
 	print("PLAYING ENDING with target_beat: %s" % target_beat)
-	await rhythm_notifier.wait_until_beat(target_beat)
+	await RhythmNotifier.global.wait_until_beat(target_beat)
 	trans_color_rect.visible = true
 	trans_color_rect.color.a = 1.0
 	load_room_next_room()
