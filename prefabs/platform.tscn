@@ -5,12 +5,12 @@
 [ext_resource type="Script" uid="uid://cqs3y1qb8qwem" path="res://scripts/platform_debug.gd" id="3_hnkxc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_emilk"]
-size = Vector2(1280, 512)
+size = Vector2(1024, 512)
 
 [node name="Platform" type="AnimatableBody2D" node_paths=PackedStringArray("patch_rect", "collision_shape", "_debug_draw")]
 script = ExtResource("1_xo78u")
-rect = Rect2(0, 0, 5, 2)
-waypoints = Array[Vector2]([Vector2(7.5, 0), Vector2(3.5, 5)])
+rect = Rect2(0, 0, 4, 2)
+waypoints = Array[Vector2]([Vector2(9.5, 2.5), Vector2(3.5, 5)])
 speed = 1.0
 beat = 1.0
 patch_rect = NodePath("NinePatchRect")
@@ -24,7 +24,7 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_right = 1280.0
+offset_right = 1024.0
 offset_bottom = 512.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -36,7 +36,7 @@ patch_margin_bottom = 64
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
-position = Vector2(640, 256)
+position = Vector2(512, 256)
 shape = SubResource("RectangleShape2D_emilk")
 
 [node name="DebugDraw" type="Node2D" parent="."]

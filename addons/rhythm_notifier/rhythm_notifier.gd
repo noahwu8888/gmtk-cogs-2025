@@ -157,7 +157,6 @@ class _Rhythm:
 					cleanup = true
 			else:
 				interval_changed.emit(current_interval)
-			#print("RHYTHM NOTIFIER, ", current_interval)
 			last_frame_interval = current_interval
 
 
@@ -320,7 +319,6 @@ func _physics_process(delta):
 	if prev_position > _position:
 		# We've looped, so _position is the new delta
 		delta = _position + (_length - fmod(prev_position, _length))
-		print("   ADD DELTA: %s POSITION: %s, PREV_POSITION: %s _LENGTH: %s" % [delta, _position, prev_position, _length])
 	else:
 		# Use the difference as the delta
 		delta = _position - prev_position

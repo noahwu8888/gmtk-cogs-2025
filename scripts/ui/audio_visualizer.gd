@@ -30,7 +30,6 @@ func _process(delta: float) -> void:
 	# Get the average magnitude in the desired frequency range
 	var magnitude = _analyzer.get_magnitude_for_frequency_range(frequency_low, frequency_high)
 	var volume = magnitude.length() * sensitivity
-	#print(volume)
 	# Clamp and remap to 0..1
 	var t = clamp(volume, 0.0, 1.0)
 	var target_scale_factor = lerp(1.0, max_size_increase, t)

@@ -12,7 +12,7 @@ const COLORS = [Color.GREEN, Color.DODGER_BLUE, Color.BLUE, Color.PURPLE, Color.
 
 
 func _on_property_edited(property: String):
-	if target_object.get(property) is Array[Vector2]:
+	if target_object.get(property) is Array[Vector2] or target_object is Platform:
 		_edit(target_object)
 		update_overlays()
 
@@ -131,9 +131,10 @@ func _forward_canvas_gui_input(event: InputEvent) -> bool:
 			update_overlays()
 			return true
 		if event.is_action_pressed("ui_cancel"):
+			drag_to(dragged_waypoint_start.draw_position)
+			update_overlays()
 			dragged_waypoint = {}
 			dragged_waypoint_start = {}
-			drag_to(dragged_waypoint_start.draw_position)
 			return true
 	return false
 

@@ -61,7 +61,6 @@ func _ready() -> void:
 
 func _draw():
 	if Engine.is_editor_hint():
-		print(size)
 		var c
 		if _selected:
 			c = Color.hex(0xd1ad00ff)

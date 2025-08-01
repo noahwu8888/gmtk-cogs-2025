@@ -115,7 +115,6 @@ func _advance_waypoint():
 	_prev_to_next_dist = _prev_waypoint.distance_to(_next_waypoint)
 	_prev_abs_beat = _next_abs_beat
 	_next_abs_beat += beat
-	print("    advance waypoint: _prev_abs_beat: %s _next_abs_beat: %s" % [_prev_abs_beat, _next_abs_beat])
 
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
@@ -140,8 +139,6 @@ func _physics_process(delta: float) -> void:
 			var weight = beat_move_curve.sample(time_weight)
 			position = _prev_waypoint.lerp(_next_waypoint, weight)
 			if time_weight >= 1:
-				print("_next_waypoint: time_weight: %s, _next_waypoint: %s, _prev_abs_beat: %s, _next_abs_beat: %s" % [time_weight, _next_waypoint, _prev_abs_beat, _next_abs_beat])
-				print(" 	current_abs_beat_position: %s _prev_abs_beat: %s beat: %s" % [RhythmNotifier.global.current_abs_beat_position, _prev_abs_beat, beat])
 				_advance_waypoint()
 				time_weight -= 1.0
 			else:
