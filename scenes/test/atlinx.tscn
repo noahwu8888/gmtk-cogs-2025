@@ -1,6 +1,6 @@
 [gd_scene load_steps=20 format=3 uid="uid://t6jjkf7w2aip"]
 
-[ext_resource type="Script" path="res://scripts/world.gd" id="1_dfbem"]
+[ext_resource type="Script" uid="uid://bwhkujh3jeruh" path="res://scripts/world.gd" id="1_dfbem"]
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="2_r5bww"]
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="3_rdygh"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="4_u2tkb"]
@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://but84a2ah4oj8" path="res://prefabs/rooms/room_1.tscn" id="6_rw0ho"]
 [ext_resource type="PackedScene" uid="uid://bhgotk0stngoq" path="res://prefabs/rooms/room_2.tscn" id="7_h7aby"]
 [ext_resource type="PackedScene" uid="uid://drysfw5lr2cq5" path="res://prefabs/rooms/room_3.tscn" id="8_vbhdp"]
-[ext_resource type="Script" path="res://scripts/level.gd" id="9_4pava"]
+[ext_resource type="Script" uid="uid://drr3hic848gx0" path="res://scripts/level.gd" id="9_4pava"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="10_ko8bd"]
 [ext_resource type="Script" uid="uid://deofdsnkjeipf" path="res://scripts/music/audio_track_manager.gd" id="11_0v5xw"]
 [ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="11_r5bww"]
