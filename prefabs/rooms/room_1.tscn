@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=4 uid="uid://but84a2ah4oj8"]
+[gd_scene load_steps=5 format=4 uid="uid://but84a2ah4oj8"]
 
 [ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_3t5sg"]
 [ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="2_bcpdk"]
 [ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="3_lca4a"]
+
+[sub_resource type="Curve" id="Curve_lca4a"]
+_data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792, -1.25792, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [node name="Room1" instance=ExtResource("1_3t5sg")]
 bg_tracks = Array[AudioStream]([ExtResource("2_bcpdk")])
@@ -10,6 +14,8 @@ bg_tracks = Array[AudioStream]([ExtResource("2_bcpdk")])
 [node name="MainLayer" parent="." index="1"]
 tile_map_data = PackedByteArray("AAAAAAsAAgAAAAAAAAABAAsAAgAAAAAAAAACAAsAAgAAAAAAAAADAAsAAgAAAAAAAAAEAAsAAgAAAAAAAAAFAAsAAgAAAAAAAAAGAAsAAgAAAAAAAAAKAAkAAgAAAAAAAAALAAkAAgAAAAAAAAAMAAkAAgAAAAAAAAANAAkAAgAAAAAAAAAOAAkAAgAAAAAAAAAPAAkAAgAAAAAAAAAQAAkAAgAAAAAAAAARAAkAAgAAAAAAAAASAA4AAgAAAAAAAAATAA4AAgAAAAAAAAAUAA4AAgAAAAAAAAAVAA4AAgAAAAAAAAAWAA4AAgAAAAAAAAAXAA4AAgAAAAAAAAAYAA4AAgAAAAAAAAAZAA4AAgAAAAAAAAAaAA4AAgAAAAAAAAAZAA0AAQAAAAAAAgAeAAoAAgAAAAAAAAAfAAoAAgAAAAAAAAAgAAoAAgAAAAAAAAAhAAoAAgAAAAAAAAAiAAoAAgAAAAAAAAAjAAoAAgAAAAAAAAAkAAoAAgAAAAAAAAAlAAoAAgAAAAAAAAAmAAoAAgAAAAAAAAAFAAoAAQAAAAAAAgAIAAAAAgAAAAAAAAAJAAAAAgAAAAAAAAAJAAEAAgAAAAAAAAAJAAIAAgAAAAAAAAAJAAMAAgAAAAAAAAAJAAQAAgAAAAAAAAAMAAYAAQAAAAAAAQACAAgAAQAAAAAABAA=")
 
-[node name="Platform" parent="." index="4" instance=ExtResource("3_lca4a")]
-position = Vector2(4096, 512)
-mode = 1
+[node name="BeatPlatform" parent="." index="4" instance=ExtResource("3_lca4a")]
+position = Vector2(1024, 3328)
+move_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_lca4a")

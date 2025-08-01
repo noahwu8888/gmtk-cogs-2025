@@ -268,6 +268,7 @@ var _cached_output_latency: float:
 var _invalidate_cached_output_latency_by := 0
 var _silent_running: bool
 var _rhythms: Dictionary[String, _Rhythm] = {}
+var _prev_playback_position: float
 
 
 func _enter_tree() -> void:
@@ -310,10 +311,16 @@ func _physics_process(delta):
 			_position = fmod(_position, silent_duration)
 	if not _silent_running:
 		_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
+		# Ensure that _position is monotonically increasing
+		# Note that sometimes the _cached_output_latency can cause this value to become negative
+		if _prev_playback_position < audio_stream_player.get_playback_position() and prev_position > _position:
+			_position = prev_position
+	_prev_playback_position = audio_stream_player.get_playback_position()
 	
 	if prev_position > _position:
 		# We've looped, so _position is the new delta
-		delta = _position + (_length - prev_position)
+		delta = _position + (_length - fmod(prev_position, _length))
+		print("   ADD DELTA: %s POSITION: %s, PREV_POSITION: %s _LENGTH: %s" % [delta, _position, prev_position, _length])
 	else:
 		# Use the difference as the delta
 		delta = _position - prev_position
@@ -375,10 +382,18 @@ func wait_until_beat(beat: float) -> Signal:
 	return beats(beat, false, true, 0.0)
 
 
+## Returns the current absolute beat at a given beat_interval.
+## Use beat_offset to change the start of the beat_interval.
+func get_interval_start_beat(beat_interval: float, beat_offset: int = 0) -> float:
+	var curr_abs_interval: int = ceil((current_abs_beat_position + beat_offset) / beat_interval)
+	var target_beat = curr_abs_interval * beat_interval - beat_offset
+	return target_beat
+
+
 ## Returns the next absolute beat at a given beat_interval.
 ## The next beat will be at least min_gap away from the current abs position.
 ## Use beat_offset to change the start of the beat_interval.
-func get_next_abs_beat(min_time_gap: float, beat_interval: float, beat_offset: int = 0) -> float:
+func get_interval_end_beat(beat_interval: float, beat_offset: int = 0, min_time_gap: float = 0) -> float:
 	var gap_beats: float = min_time_gap / beat_length
 	var curr_abs_interval: int = ceil((current_abs_beat_position + gap_beats + beat_offset) / beat_interval)
 	var target_beat = curr_abs_interval * beat_interval - beat_offset
@@ -388,8 +403,8 @@ func get_next_abs_beat(min_time_gap: float, beat_interval: float, beat_offset: i
 ## Returns the next absolute position (time in seconds) at a given beat_interval.
 ## The next beat will be at least min_gap away from the current abs position.
 ## Use beat_offset to change the start of the beat_interval.
-func get_next_abs_position(min_time_gap: float, beat_interval: float, beat_offset: int = 0) -> float:
-	return get_next_abs_beat(min_time_gap, beat_interval, beat_offset) * beat_length
+func get_interval_end_position(beat_interval: float, beat_offset: int = 0, min_time_gap: float = 0) -> float:
+	return get_interval_end_beat(beat_interval, beat_offset, min_time_gap) * beat_length
 
 
 func _stream_is_playing():

@@ -28,7 +28,7 @@ func _ready() -> void:
 
 func start():
 	print("START TRANSITION")
-	var target_beat = rhythm_notifier.get_next_abs_beat(min_transition_duration, transition_beat_interval)
+	var target_beat = rhythm_notifier.get_interval_end_beat(transition_beat_interval, 0, min_transition_duration)
 	var target_position = target_beat * rhythm_notifier.beat_length
 	#print("    target_beat: ", target_beat)
 	print("    target_position: ", target_position)

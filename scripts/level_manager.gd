@@ -72,7 +72,7 @@ func _on_room_finished():
 	player.enabled = false
 	
 	print("START TRANSITION")
-	var target_beat = rhythm_notifier.get_next_abs_beat(min_transition_duration, active_room.transition_beat_interval)
+	var target_beat = rhythm_notifier.get_interval_end_beat(active_room.transition_beat_interval, 0, min_transition_duration)
 	active_room.goal.play_ending(target_beat)
 	print("PLAYING ENDING with target_beat: %s" % target_beat)
 	await rhythm_notifier.wait_until_beat(target_beat)

@@ -1,8 +1,9 @@
 ## Script for static utility functions
-extends Node
+extends RefCounted
 class_name SUtils
 
 
+static var DEBUG: bool = false
 const TILE_SIZE: float = 256
 
 

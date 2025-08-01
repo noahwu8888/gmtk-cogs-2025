@@ -31,7 +31,7 @@ func _edit(object: Object) -> void:
 	target_object = object
 	if not object:
 		return
-	var color_idx = 0
+	var color_idx = -1
 	for property in object.get_property_list():
 		if not property.name.begins_with("_") and "waypoints" in property.name and object.get(property.name) is Array[Vector2]:
 			color_idx = (color_idx + 1) % len(COLORS)
