@@ -27,15 +27,18 @@ func _process(delta: float) -> void:
 	if _analyzer == null:
 		return
 
-	# Get the average magnitude in the desired frequency range
+	# Check for new nodes added at runtime
+	while _original_scales.size() < nodes_to_move.size():
+		var new_index = _original_scales.size()
+		_original_scales.append(nodes_to_move[new_index].scale)
+
+	# Get the magnitude from the analyzer
 	var magnitude = _analyzer.get_magnitude_for_frequency_range(frequency_low, frequency_high)
 	var volume = magnitude.length() * sensitivity
-	#print(volume)
-	# Clamp and remap to 0..1
+
+	# Clamp and scale
 	var t = clamp(volume, 0.0, 1.0)
 	var target_scale_factor = lerp(1.0, max_size_increase, t)
-
-	# Smooth transition
 	_current_scale_factor = move_toward(_current_scale_factor, target_scale_factor, delta * smoothing_speed)
 
 	# Apply scaling
