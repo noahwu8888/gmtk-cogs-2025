@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://bxdusb5l5srlr"]
+[gd_scene load_steps=6 format=3 uid="uid://bxdusb5l5srlr"]
 
 [ext_resource type="Theme" uid="uid://bvjqm3y3xejwp" path="res://assets/fonts/menu_theme.tres" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://c7ot2f642wxj2" path="res://scripts/ui/main_menu.gd" id="2_ekxnf"]
-[ext_resource type="AudioStream" uid="uid://bjqvatctpol3y" path="res://assets/music/level_1/lvl_1full.wav" id="3_bqqt6"]
+[ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="3_8ln24"]
+[ext_resource type="AudioStream" uid="uid://wdyqj5r8m07j" path="res://assets/music/main_menu/Lofi Loop.wav" id="4_8ln24"]
 [ext_resource type="Script" uid="uid://chpdokkvvficn" path="res://scripts/ui/audio_visualizer.gd" id="4_wu84c"]
 
 [node name="MainMenu" type="Control"]
@@ -15,17 +16,22 @@ grow_vertical = 2
 theme = ExtResource("1_l6cm7")
 script = ExtResource("2_ekxnf")
 
-[node name="Title" type="RichTextLabel" parent="."]
+[node name="TitleScreen" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="RichTextLabel" parent="TitleScreen"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -344.0
-offset_top = -240.0
-offset_right = 344.0
-offset_bottom = -96.0
+offset_left = 212.0
+offset_top = 64.0
+offset_right = 900.0
+offset_bottom = 208.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(344, 72)
@@ -33,41 +39,52 @@ theme_override_font_sizes/normal_font_size = 84
 text = "Synesthesia"
 horizontal_alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -168.0
-offset_top = -52.0
-offset_right = 168.0
-offset_bottom = 224.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/separation = 16
-
-[node name="PlayButton" type="Button" parent="VBoxContainer"]
+[node name="PlayButton" type="Button" parent="TitleScreen"]
 layout_mode = 2
+offset_left = 408.0
+offset_top = 272.0
+offset_right = 744.0
+offset_bottom = 353.0
+pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Play"
 
-[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+[node name="SettingsButton" type="Button" parent="TitleScreen"]
 layout_mode = 2
+offset_left = 408.0
+offset_top = 369.0
+offset_right = 744.0
+offset_bottom = 450.0
+pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Settings"
 
-[node name="QuitButton" type="Button" parent="VBoxContainer"]
+[node name="QuitButton" type="Button" parent="TitleScreen"]
 layout_mode = 2
+offset_left = 408.0
+offset_top = 466.0
+offset_right = 744.0
+offset_bottom = 548.0
+pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Quit"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." node_paths=PackedStringArray("nodes_to_move")]
-stream = ExtResource("3_bqqt6")
+[node name="Settings" parent="." node_paths=PackedStringArray("MenuPanelRef") instance=ExtResource("3_8ln24")]
+visible = false
+layout_mode = 1
+MenuPanelRef = NodePath("../TitleScreen/Title")
+
+[node name="AudioVisualizer" type="Node" parent="." node_paths=PackedStringArray("nodes_to_move", "conditional_nodes_to_move")]
+script = ExtResource("4_wu84c")
+nodes_to_move = [NodePath("../TitleScreen/Title")]
+conditional_nodes_to_move = [NodePath("../TitleScreen/PlayButton"), NodePath("../TitleScreen/SettingsButton"), NodePath("../TitleScreen/QuitButton")]
+metadata/_custom_type_script = "uid://chpdokkvvficn"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_8ln24")
 autoplay = true
 bus = &"Music"
-script = ExtResource("4_wu84c")
-nodes_to_move = [NodePath("../Title")]
-frequency_high = 80.0
-sensitivity = 0.512
+
+[connection signal="pressed" from="TitleScreen/PlayButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="TitleScreen/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="TitleScreen/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -18,6 +18,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 Services="*res://prefabs/services.tscn"
+SettingsDataManager="*res://addons/modular-settings-menu/singletons/settings_data_manager.gd"
 
 [display]
 
@@ -26,7 +27,7 @@ window/stretch/aspect="keep_width"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/cameraregion2d/plugin.cfg", "res://addons/editor_gameplay_launcher/plugin.cfg", "res://addons/editor_icon_previewer/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/game_editor/plugin.cfg", "res://addons/level_player/plugin.cfg", "res://addons/room_player/plugin.cfg", "res://addons/waypoints_editor/plugin.cfg")
+enabled=PackedStringArray("res://addons/cameraregion2d/plugin.cfg", "res://addons/editor_gameplay_launcher/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/waypoints_editor/plugin.cfg", "res://addons/modular-settings-menu/plugin.cfg")
 
 [global_group]
 
