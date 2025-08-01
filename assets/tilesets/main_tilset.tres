@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://b8em18cjqhgg2" path="res://prefabs/tiles/goal.tscn" id="2_06yf5"]
 [ext_resource type="PackedScene" uid="uid://csrdqnyyv5i3c" path="res://prefabs/tiles/spawn.tscn" id="3_e0tbe"]
 [ext_resource type="PackedScene" uid="uid://t6xvasqtnplb" path="res://prefabs/tiles/spring.tscn" id="3_rsfnk"]
-[ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_square.png" id="4_e0tbe"]
+[ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="4_e0tbe"]
 
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_rsfnk"]
 resource_name = "Prefabs"

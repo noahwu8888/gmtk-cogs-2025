@@ -25,7 +25,7 @@ func _ready() -> void:
 
 
 func _process(delta: float) -> void:
-	if player.global_position.y > 256 * 40:
+	if player.global_position.y > SUtils.TILE_SIZE * 40:
 		player.global_position = active_room.spawn.global_position
 		
 

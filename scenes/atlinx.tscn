@@ -1,12 +1,12 @@
 [gd_scene load_steps=18 format=3 uid="uid://t6jjkf7w2aip"]
 
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="1_38yu2"]
-[ext_resource type="Script" uid="uid://bwhkujh3jeruh" path="res://scripts/world.gd" id="1_iroee"]
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_iroee"]
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="3_q1qbj"]
-[ext_resource type="Script" uid="uid://dc1got8i8eqpe" path="res://scripts/level_manager.gd" id="4_q1qbj"]
+[ext_resource type="Script" path="res://scripts/level_manager.gd" id="4_q1qbj"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="5_b7oqo"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="5_nswv7"]
-[ext_resource type="Script" uid="uid://drr3hic848gx0" path="res://scripts/level.gd" id="7_6ovhn"]
+[ext_resource type="Script" path="res://scripts/level.gd" id="7_6ovhn"]
 [ext_resource type="PackedScene" uid="uid://bhgotk0stngoq" path="res://prefabs/rooms/room_2.tscn" id="7_ksotl"]
 [ext_resource type="PackedScene" uid="uid://but84a2ah4oj8" path="res://prefabs/rooms/room_1.tscn" id="7_w5gp6"]
 [ext_resource type="PackedScene" uid="uid://drysfw5lr2cq5" path="res://prefabs/rooms/room_3.tscn" id="8_3ok8l"]
@@ -27,7 +27,6 @@ metadata/_custom_type_script = "uid://drr3hic848gx0"
 
 [node name="World" type="Node2D" parent="."]
 script = ExtResource("1_iroee")
-metadata/_custom_type_script = "uid://bwhkujh3jeruh"
 
 [node name="Player" parent="World" instance=ExtResource("1_38yu2")]
 position = Vector2(384, 2176)

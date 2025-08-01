@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://cdx5s1dc6kr1m"]
+
+[ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="1_emilk"]
+[ext_resource type="Script" uid="uid://co67xgaiwl2tx" path="res://scripts/platform.gd" id="1_xo78u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_emilk"]
+size = Vector2(1280, 512)
+
+[node name="Platform" type="AnimatableBody2D" node_paths=PackedStringArray("patch_rect", "collision_shape")]
+script = ExtResource("1_xo78u")
+rect = Rect2(0, 0, 5, 2)
+waypoints = Array[Vector2]([Vector2(7.5, 0), Vector2(3.5, 5)])
+speed = null
+patch_rect = NodePath("NinePatchRect")
+collision_shape = NodePath("CollisionShape2D")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+show_behind_parent = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_right = 1280.0
+offset_bottom = 512.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_emilk")
+patch_margin_left = 64
+patch_margin_top = 64
+patch_margin_right = 64
+patch_margin_bottom = 64
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2(640, 256)
+shape = SubResource("RectangleShape2D_emilk")

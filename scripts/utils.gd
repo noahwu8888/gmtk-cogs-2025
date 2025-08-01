@@ -1,8 +1,8 @@
+## Autoload for utility functions.
 extends Node
 
 
 static var global: Node
-
 
 ## Returns the type of an object as a String.
 ## This works with custom class_names.
