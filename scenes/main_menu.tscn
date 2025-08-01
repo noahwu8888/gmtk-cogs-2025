@@ -1,0 +1,73 @@
+[gd_scene load_steps=5 format=3 uid="uid://bxdusb5l5srlr"]
+
+[ext_resource type="Theme" uid="uid://bvjqm3y3xejwp" path="res://assets/fonts/menu_theme.tres" id="1_l6cm7"]
+[ext_resource type="Script" uid="uid://c7ot2f642wxj2" path="res://scripts/ui/main_menu.gd" id="2_ekxnf"]
+[ext_resource type="AudioStream" uid="uid://bjqvatctpol3y" path="res://assets/music/level_1/lvl_1full.wav" id="3_bqqt6"]
+[ext_resource type="Script" uid="uid://chpdokkvvficn" path="res://scripts/ui/audio_visualizer.gd" id="4_wu84c"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_l6cm7")
+script = ExtResource("2_ekxnf")
+
+[node name="Title" type="RichTextLabel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -344.0
+offset_top = -240.0
+offset_right = 344.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(344, 72)
+theme_override_font_sizes/normal_font_size = 84
+text = "Synesthesia"
+horizontal_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -52.0
+offset_right = 168.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="PlayButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Play"
+
+[node name="SettingsButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Settings"
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Quit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." node_paths=PackedStringArray("nodes_to_move")]
+stream = ExtResource("3_bqqt6")
+autoplay = true
+bus = &"Music"
+script = ExtResource("4_wu84c")
+nodes_to_move = [NodePath("../Title")]
+frequency_high = 80.0
+sensitivity = 0.512
