@@ -1,39 +1,26 @@
-[gd_scene load_steps=18 format=4 uid="uid://t6jjkf7w2aip"]
+[gd_scene load_steps=18 format=3 uid="uid://t6jjkf7w2aip"]
 
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="1_38yu2"]
 [ext_resource type="Script" uid="uid://bwhkujh3jeruh" path="res://scripts/world.gd" id="1_iroee"]
-[ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="3_ijuib"]
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="3_q1qbj"]
 [ext_resource type="Script" uid="uid://dc1got8i8eqpe" path="res://scripts/level_manager.gd" id="4_q1qbj"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="5_b7oqo"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="5_nswv7"]
 [ext_resource type="Script" uid="uid://drr3hic848gx0" path="res://scripts/level.gd" id="7_6ovhn"]
+[ext_resource type="PackedScene" uid="uid://bhgotk0stngoq" path="res://prefabs/rooms/room_2.tscn" id="7_ksotl"]
 [ext_resource type="PackedScene" uid="uid://but84a2ah4oj8" path="res://prefabs/rooms/room_1.tscn" id="7_w5gp6"]
-[ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/audio_part_manager.gd" id="8_r4ahd"]
-[ext_resource type="Script" uid="uid://dtqpck37jxpth" path="res://scripts/music_control/audio_part.gd" id="11_6krbk"]
+[ext_resource type="PackedScene" uid="uid://drysfw5lr2cq5" path="res://prefabs/rooms/room_3.tscn" id="8_3ok8l"]
+[ext_resource type="AudioStream" uid="uid://d3uf2kkgotct3" path="res://assets/music/test/metro_2.ogg" id="11_6krbk"]
 [ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="15_m07vp"]
+[ext_resource type="Script" uid="uid://deofdsnkjeipf" path="res://scripts/music/audio_track_manager.gd" id="15_w5gp6"]
 [ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="16_3ok8l"]
 [ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="16_ksotl"]
 [ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="16_w5gp6"]
 
-[sub_resource type="PackedScene" id="PackedScene_m07vp"]
-_bundled = {
-"base_scene": 0,
-"conn_count": 0,
-"conns": PackedInt32Array(),
-"editable_instances": [],
-"names": PackedStringArray("Room1", "MainLayer", "tile_map_data"),
-"node_count": 2,
-"node_paths": [NodePath(".")],
-"nodes": PackedInt32Array(-1, -1, 2147483647, 0, -1, 0, 0, 1073741824, -1, 2147483647, 786433, -1, 1, 2, 1, 0),
-"variants": [ExtResource("3_ijuib"), PackedByteArray("AAAlAP3/AQAAAAAAAQAAAAAAAAABAAMAAAABAAAAAAACAAMAAAAEAAAAAAADAAMAAAADAAAAAAACAAMAAAACAAAAAAACAAMAAAAGAAIAAAABAAMAAAAIAAIAAAACAAMAAAAHAAIAAAACAAMAAAAKAAIAAAACAAMAAAAJAAIAAAACAAMAAAALAAIAAAADAAMAAAAgAP7/AAABAAMAAAAhAP7/AAACAAMAAAAkAP7/AAACAAMAAAAjAP7/AAACAAMAAAAiAP7/AAACAAMAAAAmAP7/AAADAAMAAAAlAP7/AAACAAMAAAAdAAAAAAADAAMAAAAcAAAAAAACAAMAAAAaAAAAAAACAAMAAAAbAAAAAAACAAMAAAAZAAAAAAACAAMAAAAYAAAAAAACAAMAAAAXAAAAAAABAAMAAAAPAAQAAAACAAMAAAAOAAQAAAACAAMAAAANAAQAAAABAAMAAAASAP3/AAACAAMAAAARAP3/AAABAAMAAAATAP3/AAACAAMAAAAUAP3/AAADAAMAAAAQAAQAAAADAAMAAAA=")],
-"version": 3
-}
-
 [sub_resource type="Resource" id="Resource_m07vp"]
 script = ExtResource("7_6ovhn")
 name = "Level 1"
-room_prefabs = Array[PackedScene]([ExtResource("7_w5gp6"), SubResource("PackedScene_m07vp")])
+room_prefabs = Array[PackedScene]([ExtResource("7_w5gp6"), ExtResource("7_ksotl"), ExtResource("8_3ok8l")])
 metadata/_custom_type_script = "uid://drr3hic848gx0"
 
 [node name="Atlinx" type="Node2D"]
@@ -57,53 +44,28 @@ zoom = Vector2(0.05, 0.05)
 [node name="LoopBar" parent="World" node_paths=PackedStringArray("rhythm_notifier") instance=ExtResource("5_nswv7")]
 rhythm_notifier = NodePath("../../LevelManager/RhythmNotifier")
 
-[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_part_manager")]
+[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "rhythm_notifier", "bg_track_manager")]
 script = ExtResource("4_q1qbj")
 level = SubResource("Resource_m07vp")
-min_transition_duration = 5.0
+min_transition_duration = 2.0
 camera_region_controller = NodePath("../World/CameraRegionController2D")
 loop_bar = NodePath("../World/LoopBar")
 player = NodePath("../World/Player")
 world = NodePath("../World")
 rhythm_notifier = NodePath("RhythmNotifier")
-bg_part_manager = NodePath("../BGPartManager")
+bg_track_manager = NodePath("../BGTrackManager")
 
-[node name="RhythmNotifier" type="Node" parent="LevelManager"]
+[node name="RhythmNotifier" type="Node" parent="LevelManager" node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("5_b7oqo")
-running = true
+audio_stream_player = NodePath("../../BGTrackManager/BGTracksPlayer")
+is_global = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
-[node name="BGPartManager" type="Node" parent="."]
-script = ExtResource("8_r4ahd")
+[node name="BGTrackManager" type="Node" parent="."]
+script = ExtResource("15_w5gp6")
+tracks = Array[AudioStream]([ExtResource("15_m07vp"), ExtResource("11_6krbk"), ExtResource("16_w5gp6"), ExtResource("16_3ok8l"), ExtResource("16_ksotl")])
+fade_duration = 2.0
+metadata/_custom_type_script = "uid://deofdsnkjeipf"
 
-[node name="AudioPart" type="Node" parent="BGPartManager"]
-script = ExtResource("11_6krbk")
-beat_count = 14.0
-bpm = 120.0
-volume_db = -5.0
-stream = ExtResource("16_3ok8l")
-metadata/_custom_type_script = "uid://dtqpck37jxpth"
-
-[node name="AudioPart2" type="Node" parent="BGPartManager"]
-script = ExtResource("11_6krbk")
-beat_count = 14.0
-bpm = 120.0
-volume_db = -5.0
-stream = ExtResource("16_ksotl")
-metadata/_custom_type_script = "uid://dtqpck37jxpth"
-
-[node name="AudioPart3" type="Node" parent="BGPartManager"]
-script = ExtResource("11_6krbk")
-beat_count = 14.0
-bpm = 120.0
-volume_db = -5.0
-stream = ExtResource("16_w5gp6")
-metadata/_custom_type_script = "uid://dtqpck37jxpth"
-
-[node name="AudioPart4" type="Node" parent="BGPartManager"]
-script = ExtResource("11_6krbk")
-beat_count = 4.0
-bpm = 130.0
-volume_db = -5.0
-stream = ExtResource("15_m07vp")
-metadata/_custom_type_script = "uid://dtqpck37jxpth"
+[node name="BGTracksPlayer" type="AudioStreamPlayer" parent="BGTrackManager"]
+autoplay = true

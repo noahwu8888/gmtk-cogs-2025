@@ -5,7 +5,7 @@ signal player_entered()
 
 @export var area: Area2D
 @export var anim_player: AnimationPlayer
-@export var ending_fx: FX
+@export var ending_fx: FXBeat
 
 
 func _ready() -> void:
@@ -17,5 +17,5 @@ func _on_body_entered(body: Node2D):
 		player_entered.emit()
 
 
-func play_ending(time_left: float):
-	ending_fx.play_duration(time_left)
+func play_ending(end_beat: float):
+	ending_fx.play_ending_on_beat(end_beat)

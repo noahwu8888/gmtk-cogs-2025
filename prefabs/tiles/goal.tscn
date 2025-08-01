@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8em18cjqhgg2"]
+[gd_scene load_steps=13 format=3 uid="uid://b8em18cjqhgg2"]
 
 [ext_resource type="Script" uid="uid://7wof5v1ev1w0" path="res://scripts/goal.gd" id="1_bnsmo"]
 [ext_resource type="Texture2D" uid="uid://w82ht8pncd3r" path="res://assets/art/gmtk_triangle_outline.png" id="2_w7eqk"]
 [ext_resource type="AnimationLibrary" uid="uid://d1m50h8yvtr8y" path="res://assets/animation/idle_anim_lib.tres" id="3_cnojs"]
-[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx.gd" id="4_0mt35"]
-[ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx_anim.gd" id="5_4i61e"]
+[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="4_0mt35"]
+[ext_resource type="Script" uid="uid://dqrlchg6pdnje" path="res://scripts/fx/fx_beat.gd" id="4_d2sio"]
+[ext_resource type="Script" uid="uid://pc05053fdsjn" path="res://scripts/fx/fx_anim.gd" id="5_4i61e"]
 [ext_resource type="AudioStream" uid="uid://ci8hfe5pseuy7" path="res://assets/sfx/buildup.ogg" id="6_g3lit"]
-[ext_resource type="AudioStream" uid="uid://cgaoc62unxnij" path="res://assets/sfx/kick_2.ogg" id="7_g3lit"]
+[ext_resource type="AudioStream" uid="uid://dhhlxrdkb8gx" path="res://assets/sfx/crash.ogg" id="8_d2sio"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0dyi5"]
 radius = 4.0
@@ -116,14 +117,11 @@ libraries = {
 }
 autoplay = "Idle/idle1"
 
-[node name="EndingFX" type="Node2D" parent="." node_paths=PackedStringArray("chain_unscaled_fxes")]
-script = ExtResource("4_0mt35")
-post_delay = 3.7
-duration = 5.0
-unparent_on_play = true
-destroy_on_finish = true
-chain_unscaled_fxes = [NodePath("HitFX")]
-metadata/_custom_type_script = "uid://5vpj6ph24507"
+[node name="EndingFX" type="Node2D" parent="." node_paths=PackedStringArray("chain_fxes")]
+script = ExtResource("4_d2sio")
+duration = 3.7
+chain_fxes = [NodePath("CrashFX")]
+metadata/_custom_type_script = "uid://dqrlchg6pdnje"
 
 [node name="FXAnim" type="Node" parent="EndingFX" node_paths=PackedStringArray("animation_player")]
 script = ExtResource("5_4i61e")
@@ -135,9 +133,10 @@ metadata/_custom_type_script = "uid://pc05053fdsjn"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="EndingFX"]
 stream = ExtResource("6_g3lit")
 
-[node name="HitFX" type="Node2D" parent="EndingFX"]
+[node name="CrashFX" type="Node2D" parent="EndingFX"]
 script = ExtResource("4_0mt35")
+duration = 6.0
 metadata/_custom_type_script = "uid://5vpj6ph24507"
 
-[node name="KickPlayer" type="AudioStreamPlayer" parent="EndingFX/HitFX"]
-stream = ExtResource("7_g3lit")
+[node name="CrashPlayer" type="AudioStreamPlayer" parent="EndingFX/CrashFX"]
+stream = ExtResource("8_d2sio")

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://csrdqnyyv5i3c"]
+
+[ext_resource type="Texture2D" uid="uid://b4k702ynar6ur" path="res://assets/art/gmtk_circle_outline.png" id="1_jc1o3"]
+
+[node name="Spawn" type="Node2D" groups=["spawn"]]
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(0.764375, 0.96875, 0.124878, 1)
+position = Vector2(0, 128)
+texture = ExtResource("1_jc1o3")
+offset = Vector2(0, -128)
+region_rect = Rect2(0, 0, 8, 8)

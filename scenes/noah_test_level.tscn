@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://d2qqwau4hkym7" path="res://scripts/room.gd" id="4_ppy5q"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="4_rd5be"]
 [ext_resource type="TileSet" uid="uid://cf882mkqehjce" path="res://assets/tilesets/fore_tileset.tres" id="6_1058y"]
-[ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music_control/audio_part_manager.gd" id="7_jwn0t"]
+[ext_resource type="Script" uid="uid://d4br6gobtni3t" path="res://scripts/music/audio_part_manager.gd" id="7_jwn0t"]
 [ext_resource type="TileSet" uid="uid://0kov5o43lpg" path="res://assets/tilesets/main_tilset.tres" id="7_sy0p2"]
 [ext_resource type="TileSet" uid="uid://xh4db45fg6vt" path="res://assets/tilesets/bg_tileset.tres" id="8_hadbe"]
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="9_7nrp1"]
-[ext_resource type="Script" uid="uid://q4owhci408e2" path="res://scripts/music_control/audio_fader.gd" id="9_tjc5a"]
+[ext_resource type="Script" uid="uid://q4owhci408e2" path="res://scripts/music/audio_fader.gd" id="9_tjc5a"]
 [ext_resource type="AudioStream" uid="uid://djrtk0k21pep2" path="res://assets/music/level_1/bg3.mp3" id="11_ppy5q"]
 [ext_resource type="AudioStream" uid="uid://4h25ywrkro2p" path="res://assets/music/level_1/bg4.mp3" id="12_1058y"]
 

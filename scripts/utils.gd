@@ -1,5 +1,7 @@
-extends RefCounted
-class_name Utils
+extends Node
+
+
+static var global: Node
 
 
 ## Returns the type of an object as a String.
@@ -18,6 +20,7 @@ static func get_type_as_string(object: Object) -> String:
 	
 	return type_as_string
 
+
 ## Fetches a descendant node by a type.
 static func get_node_by_type(root: Node, type: String) -> Node:
 	for child in root.get_children(true):
@@ -29,6 +32,29 @@ static func get_node_by_type(root: Node, type: String) -> Node:
 	return null
 
 
+## Fetches a descendant node by a group.
+static func get_node_by_group(root: Node, group: String) -> Node:
+	for child in root.get_children(true):
+		if child.is_in_group(group):
+			return child
+		var res = get_node_by_group(child, group)
+		if res != null:
+			return res
+	return null
+
+
 ## Waits a specific duration. Requires a global World node in the scene. 
 static func wait(duration: float) -> Signal:
-	return World.global.get_tree().create_timer(duration).timeout
+	return global.get_tree().create_timer(duration).timeout
+
+
+func _enter_tree() -> void:
+	if global != null:
+		queue_free()
+		return
+	global = self
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_PREDELETE and global == self:
+		global = null

@@ -1,15 +1,20 @@
-[gd_scene load_steps=5 format=3 uid="uid://dft2arqhitpec"]
+[gd_scene load_steps=8 format=3 uid="uid://dft2arqhitpec"]
 
 [ext_resource type="Script" uid="uid://dry7dik54nxtn" path="res://scripts/music_test.gd" id="1_qat88"]
+[ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="5_jj4we"]
+[ext_resource type="Script" uid="uid://dqrlchg6pdnje" path="res://scripts/fx/fx_beat.gd" id="6_kolrf"]
+[ext_resource type="AudioStream" uid="uid://cgaoc62unxnij" path="res://assets/sfx/kick_2.ogg" id="10_havgd"]
 [ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="11_fbwxh"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="13_cvfru"]
 [ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="14_ddgu7"]
 
-[node name="MusicTest" type="Node2D" node_paths=PackedStringArray("kick_player", "rhythm_notifier")]
+[node name="MusicTest" type="Node2D" node_paths=PackedStringArray("kick_player", "rhythm_notifier", "fx")]
 script = ExtResource("1_qat88")
 kick_player = NodePath("KickPlayer")
 rhythm_notifier = NodePath("RhythmNotifier")
+min_transition_duration = 2.0
 latency = 0.0
+fx = NodePath("FX")
 
 [node name="KickPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("11_fbwxh")
@@ -18,11 +23,33 @@ stream = ExtResource("11_fbwxh")
 script = ExtResource("13_cvfru")
 bpm = 130.0
 beat_length = 0.461538
+silent_duration = -1.0
 audio_stream_player = NodePath("AudioStreamPlayer")
 running = true
+is_global = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
 stream = ExtResource("14_ddgu7")
 volume_db = -10.0
 autoplay = true
+
+[node name="FX" type="Node2D" parent="."]
+script = ExtResource("5_jj4we")
+metadata/_custom_type_script = "uid://5vpj6ph24507"
+
+[node name="FXBeat" type="Node2D" parent="FX"]
+script = ExtResource("6_kolrf")
+beat_delay = 1.0
+metadata/_custom_type_script = "uid://dqrlchg6pdnje"
+
+[node name="Kick" type="AudioStreamPlayer" parent="FX/FXBeat"]
+stream = ExtResource("11_fbwxh")
+
+[node name="FXBeat2" type="Node2D" parent="FX"]
+script = ExtResource("6_kolrf")
+beat_delay = 2.0
+metadata/_custom_type_script = "uid://dqrlchg6pdnje"
+
+[node name="Kick2" type="AudioStreamPlayer" parent="FX/FXBeat2"]
+stream = ExtResource("10_havgd")

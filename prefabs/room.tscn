@@ -29,6 +29,7 @@ metadata/_custom_type_script = "uid://ec185iqkwh8a"
 
 [node name="Room" type="Node2D" node_paths=PackedStringArray("fore_layer", "main_layer", "bg_layer", "region")]
 script = ExtResource("1_yg100")
+transition_beat_interval = 2
 fore_layer = NodePath("ForeLayer")
 main_layer = NodePath("MainLayer")
 bg_layer = NodePath("BGLayer")

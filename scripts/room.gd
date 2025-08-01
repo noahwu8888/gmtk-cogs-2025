@@ -31,6 +31,7 @@ var duration: float :
 @export var region: CameraRegion2D
 
 var goal: Goal
+var spawn: Node2D
 
 
 
@@ -39,6 +40,11 @@ func _ready() -> void:
 	_deferrred_ready.call_deferred()
 
 func _deferrred_ready():
+	spawn = Utils.get_node_by_group(self, "spawn")
+	if spawn == null:
+		push_error("Room missing a spawn point!")
+	spawn.visible = false
 	goal = Utils.get_node_by_type(self, "Goal")
+	if goal == null:
+		push_error("Room missing a goal!")
 	goal.player_entered.connect(finished.emit)
-	

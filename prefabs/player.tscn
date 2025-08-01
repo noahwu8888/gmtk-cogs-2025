@@ -129,7 +129,7 @@ sprite = NodePath("Visuals/Sprite2D")
 
 [node name="Visuals" type="Node2D" parent="."]
 position = Vector2(0, 128)
-scale = Vector2(1.01474, 0.970525)
+scale = Vector2(1.04964, 0.900712)
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
 position = Vector2(0, -128)

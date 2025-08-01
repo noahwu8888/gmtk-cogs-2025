@@ -12,30 +12,41 @@ signal level_completed
 @export var player: Player
 @export var world: World
 @export var rhythm_notifier: RhythmNotifier
-@export var bg_part_manager: AudioPartManager
+@export var bg_track_manager: AudioTrackManager
 
 var active_room: Room
 var active_room_index: int
 var is_transitioning: bool
 var trans_beats_left: int
 
+
 func _ready() -> void:
-	rhythm_notifier.beat.connect(_on_beat)
 	load_level.call_deferred(level)
+
+
+func _process(delta: float) -> void:
+	if player.global_position.y > 256 * 40:
+		player.global_position = active_room.spawn.global_position
+		
+
 
 func load_level(new_level: Level):
 	level = new_level
 	active_room_index = -1
 	load_room_next_room()
 
+
 func load_room_next_room():
 	if active_room != null:
+		active_room.region.queue_free()
 		active_room.queue_free()
 	active_room_index += 1
 	if active_room_index >= len(level.room_prefabs):
 		level_completed.emit()
 		return
-	player.enabled = true
+	player.visible = false
+	player.enabled = false
+	player.global_position = Vector2(-1000, -1000)
 	var new_room = level.room_prefabs[active_room_index].instantiate() as Room
 	world.add_child(new_room)
 	new_room.region.reparent(camera_region_controller)
@@ -45,44 +56,28 @@ func load_room_next_room():
 	loop_bar.beat_count = new_room.beat_count
 	loop_bar.start_x = new_room.region._region.position.x
 	loop_bar.end_x = new_room.region._region.end.x
-	bg_part_manager.set_active_parts(new_room.bg_tracks)
+	bg_track_manager.set_active_tracks(new_room.bg_tracks)
 	active_room = new_room
+	_load_room_deferred.call_deferred()
+
+
+func _load_room_deferred():
+	player.visible = true
+	player.enabled = true
+	player.global_position = active_room.spawn.global_position
+
 
 func _on_room_finished():
+	if is_transitioning:
+		return
 	is_transitioning = true
 	player.enabled = false
-	# The next interval we could use to transition
-	# Ex. Asumming transition_beat_interval = 4, this partitions beats into multiples of 4
-	# beat          0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15
-	#               |----|----|----|----|----|----|----|----|----|----|----|----X----|----|----|
-	# interval      0                   1    |              2    |              3
-	#                    curr_interval -'    '- curr_beat        |              '- trans_interval_unbounded
-	#                       curr_beat + min_transition_duration -'              
-	# Unit: beats
-	var min_trans_beats_left: float = min_transition_duration * active_room.bps
-	print("min_transition_duration: ", min_transition_duration, " active_room.bps: ", active_room.bps)
-	# Unit: intervals
-	var trans_interval_unbounded: int = ceil((rhythm_notifier.current_beat_position + min_trans_beats_left) / active_room.transition_beat_interval)
-	print("trans_interval_unbounded: rhythm_notifier.current_beat: ", rhythm_notifier.current_beat, " current beat_position: ", rhythm_notifier.current_beat_position, " min_trans_beats_left: ", min_trans_beats_left, " active_room.transition_beat_interval: ", active_room.transition_beat_interval)
-	# Unit: beats
-	# ceil(intervals * beats/interval) % beats
-	trans_beats_left = trans_interval_unbounded * active_room.transition_beat_interval - rhythm_notifier.current_beat
-	# Unit: seconds
-	# beats * seconds/beat = seconds
-	var time_left = trans_beats_left / active_room.bps
-	active_room.goal.play_ending(time_left)
-	print("PLAYING ENDING with time: %s" % time_left)
-	print("time_left: %s trans_beats_left %s beat_pos: %s beat: %s" % [time_left, trans_beats_left, rhythm_notifier.current_beat_position, rhythm_notifier.current_beat])
-	await Utils.wait(time_left)
+	
+	print("START TRANSITION")
+	var target_beat = rhythm_notifier.get_next_abs_beat(min_transition_duration, active_room.transition_beat_interval)
+	active_room.goal.play_ending(target_beat)
+	print("PLAYING ENDING with target_beat: %s" % target_beat)
+	await rhythm_notifier.wait_until_beat(target_beat)
 	is_transitioning = false
-	#load_room_next_room()
+	load_room_next_room()
 	print("DONE TRANS")
-
-func _on_beat(current_beat: int):
-	print("beat: ", current_beat)
-	if is_transitioning:
-		trans_beats_left -= 1
-		if trans_beats_left == 0:
-			is_transitioning = false
-			#print("DONE TRANS")
-			#load_room_next_room()

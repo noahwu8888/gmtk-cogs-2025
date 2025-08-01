@@ -25,6 +25,7 @@ var is_playing: bool = false
 @export var chain_unscaled_fxes: Array[FX]
 @export var chain_fxes: Array[FX]
 @export var fxes: Array[FX]
+@export var fx_beat_delays: Array[FXBeat]
 @export var cpu_particles: Array[CPUParticles2D]
 @export var gpu_particles: Array[GPUParticles2D]
 @export var audio_players: Array[AudioStreamPlayer]
@@ -44,6 +45,8 @@ func _ready():
 			continue
 		if child is FX:
 			fxes.append(child)
+		elif child is FXBeat:
+			fx_beat_delays.append(child)
 		elif child is CPUParticles2D:
 			cpu_particles.append(child)
 		elif child is GPUParticles2D:
@@ -64,6 +67,12 @@ func stop():
 		return
 	for node in fxes:
 		node.stop()
+	for node in chain_unscaled_fxes:
+		node.stop()
+	for node in chain_fxes:
+		node.stop()
+	for node in fx_beat_delays:
+		node.stop()
 	for node in cpu_particles:
 		node.emitting = false
 	for node in gpu_particles:
@@ -76,12 +85,13 @@ func stop():
 		node.stop()
 	for node in fx_animations:
 		node.stop()
+	for node in fx_animations:
+		node.stop()
 	stopped.emit()
 
 
 ## Play the FX so it lasts for a specific duration.
 func play_duration(new_duration: float):
-	print("new duration: ", new_duration, " duration: ", duration)
 	play(new_duration / duration)
 
 
@@ -92,9 +102,10 @@ func play(time_scale: float = 1):
 		stop()
 	if pre_delay > 0:
 		await Utils.wait(pre_delay * time_scale)
-	print("time_scale: ", time_scale)
 	for node in fxes:
 		node.play(time_scale)
+	for node in fx_beat_delays:
+		node.play()
 	for node in cpu_particles:
 		node.speed_scale = 1 / time_scale
 		node.emitting = true
@@ -103,7 +114,6 @@ func play(time_scale: float = 1):
 		node.emitting = true
 	for node in audio_players:
 		node.pitch_scale = 1 / time_scale
-		print("pitch scale: ", node.pitch_scale)
 		node.play()
 	for node in audio_player_2ds:
 		node.pitch_scale = 1 / time_scale
