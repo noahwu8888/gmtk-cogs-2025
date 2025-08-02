@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://bxdusb5l5srlr"]
+[gd_scene load_steps=10 format=3 uid="uid://bxdusb5l5srlr"]
 
 [ext_resource type="Theme" uid="uid://bvjqm3y3xejwp" path="res://assets/fonts/menu_theme.tres" id="1_l6cm7"]
 [ext_resource type="Script" uid="uid://c7ot2f642wxj2" path="res://scripts/ui/main_menu.gd" id="2_ekxnf"]
 [ext_resource type="PackedScene" uid="uid://px6a2dg8cawb" path="res://addons/modular-settings-menu/scenes/settings.tscn" id="3_8ln24"]
-[ext_resource type="AudioStream" uid="uid://wdyqj5r8m07j" path="res://assets/music/main_menu/Lofi Loop.wav" id="4_8ln24"]
 [ext_resource type="Script" uid="uid://chpdokkvvficn" path="res://scripts/ui/audio_visualizer.gd" id="4_wu84c"]
+[ext_resource type="Script" uid="uid://deofdsnkjeipf" path="res://scripts/music/audio_track_manager.gd" id="5_8ln24"]
+[ext_resource type="AudioStream" uid="uid://dbnushh8fgg4m" path="res://assets/music/main_menu/main_menu_1.ogg" id="6_tbmy8"]
+[ext_resource type="Script" uid="uid://dweq6snaavn3h" path="res://scripts/ui/level_select.gd" id="7_5dd4i"]
+[ext_resource type="AudioStream" uid="uid://di3pfjcvjrndn" path="res://assets/music/main_menu/main_menu_2.ogg" id="7_jk1qb"]
+[ext_resource type="AudioStream" uid="uid://d15d0sh1kxhvg" path="res://assets/music/main_menu/main_menu_3.ogg" id="8_5dd4i"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -15,11 +19,17 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_l6cm7")
 script = ExtResource("2_ekxnf")
+default_stream = ExtResource("6_tbmy8")
+settings_stream = ExtResource("8_5dd4i")
+level_select_stream = ExtResource("7_jk1qb")
 
 [node name="TitleScreen" type="Control" parent="."]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="Title" type="RichTextLabel" parent="TitleScreen"]
 layout_mode = 1
@@ -28,10 +38,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 212.0
-offset_top = 64.0
-offset_right = 900.0
-offset_bottom = 208.0
+offset_left = -344.0
+offset_top = -240.0
+offset_right = 344.0
+offset_bottom = -96.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(344, 72)
@@ -40,31 +50,52 @@ text = "Synesthesia"
 horizontal_alignment = 1
 
 [node name="PlayButton" type="Button" parent="TitleScreen"]
-layout_mode = 2
-offset_left = 408.0
-offset_top = 272.0
-offset_right = 744.0
-offset_bottom = 353.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = -52.0
+offset_right = 168.0
+offset_bottom = 29.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Play"
 
 [node name="SettingsButton" type="Button" parent="TitleScreen"]
-layout_mode = 2
-offset_left = 408.0
-offset_top = 369.0
-offset_right = 744.0
-offset_bottom = 450.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = 45.0
+offset_right = 168.0
+offset_bottom = 126.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Settings"
 
 [node name="QuitButton" type="Button" parent="TitleScreen"]
-layout_mode = 2
-offset_left = 408.0
-offset_top = 466.0
-offset_right = 744.0
-offset_bottom = 548.0
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = 142.0
+offset_right = 168.0
+offset_bottom = 224.0
+grow_horizontal = 2
+grow_vertical = 2
 pivot_offset = Vector2(168, 41)
 size_flags_vertical = 3
 text = "Quit"
@@ -72,18 +103,71 @@ text = "Quit"
 [node name="Settings" parent="." node_paths=PackedStringArray("MenuPanelRef") instance=ExtResource("3_8ln24")]
 visible = false
 layout_mode = 1
-MenuPanelRef = NodePath("../TitleScreen/Title")
+MenuPanelRef = NodePath("../TitleScreen")
+
+[node name="LevelSelect" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_5dd4i")
+
+[node name="Title" type="RichTextLabel" parent="LevelSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -344.0
+offset_top = -292.0
+offset_right = 344.0
+offset_bottom = -148.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(344, 72)
+theme_override_font_sizes/normal_font_size = 60
+text = "Level Select"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BackButton" type="Button" parent="LevelSelect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -168.0
+offset_top = 188.0
+offset_right = 168.0
+offset_bottom = 270.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(168, 41)
+size_flags_vertical = 3
+text = "Back"
 
 [node name="AudioVisualizer" type="Node" parent="." node_paths=PackedStringArray("nodes_to_move")]
 script = ExtResource("4_wu84c")
-nodes_to_move = [NodePath("../TitleScreen/Title")]
+nodes_to_move = [NodePath("../TitleScreen/Title"), NodePath("../LevelSelect/Title")]
+conditional_nodes_to_move = [NodePath("../TitleScreen/PlayButton"), NodePath("../TitleScreen/SettingsButton"), NodePath("../TitleScreen/QuitButton"), NodePath("../Settings/DiscardChangesPopup/PopupWindow/MarginContainer/VBoxContainer/HBoxContainer/YesButton"), NodePath("../Settings/DiscardChangesPopup/PopupWindow/MarginContainer/VBoxContainer/HBoxContainer/NoButton"), NodePath("../Settings/SettingsPanel/HBoxContainer/ApplyButton"), NodePath("../Settings/SettingsPanel/HBoxContainer/BackButton"), NodePath("../LevelSelect/BackButton")]
 metadata/_custom_type_script = "uid://chpdokkvvficn"
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_8ln24")
+[node name="AudioTrackManager" type="Node" parent="."]
+script = ExtResource("5_8ln24")
+tracks = Array[AudioStream]([ExtResource("6_tbmy8"), ExtResource("7_jk1qb"), ExtResource("8_5dd4i")])
+metadata/_custom_type_script = "uid://deofdsnkjeipf"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="AudioTrackManager"]
 autoplay = true
 bus = &"Music"
 
 [connection signal="pressed" from="TitleScreen/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="TitleScreen/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="TitleScreen/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="settings_menu_closed" from="Settings" to="." method="_on_settings_settings_menu_closed"]
+[connection signal="pressed" from="LevelSelect/BackButton" to="." method="_on_back_button_pressed"]
