@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://b27hogklwxe5u" path="res://addons/rhythm_notifier/og_rhythm_notifier.gd" id="4_4h0qe"]
 [ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="4_8gn0x"]
 
-[node name="MusicTest" type="Node2D" node_paths=PackedStringArray("metronome", "og_rhythm_notifier")]
+[node name="MusicTest2" type="Node2D" node_paths=PackedStringArray("metronome", "og_rhythm_notifier")]
 script = ExtResource("1_7jlli")
 active_tracks = Array[AudioStream]([ExtResource("3_g7s0k")])
 metronome = NodePath("Metro")

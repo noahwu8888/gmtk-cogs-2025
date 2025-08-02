@@ -300,24 +300,21 @@ func _process(delta: float):
 	if not running:
 		return
 	
-	var prev_position = _position
-	var new_position = _position
-
-	new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
-	if new_position < prev_position:
-		new_position = prev_position
+	var new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
+	if new_position < _position:
+		new_position = _position
 	
 	if audio_stream_player.get_playback_position() < _prev_playback_position:
 		# We've looped, so _position is the new delta
-		new_position = 0
-		delta = _length - _position
-		#delta = new_position + (_length - fmod(prev_position, _length))
-		print("DEBUG LOOP: prev_position=%s, new_position=%s, _length=%s, delta=%s" % [prev_position, new_position, _length, delta])
+		#new_position = 0
+		#delta = _length - _position
+		delta = new_position + (_length - fmod(_position, _length))
+		print("DEBUG LOOP: prev_position=%s, new_position=%s, _length=%s, delta=%s" % [_position, new_position, _length, delta])
 	else:
 		# Use the difference as the delta
-		delta = new_position - prev_position
-		print("DEBUG NO_LOOP: prev_position=%s, new_position=%s, calculated_delta=%s audio_stream_player.get_playback_position()=%s _prev_playback_position=%s" % [prev_position, new_position, delta, audio_stream_player.get_playback_position(), _prev_playback_position])
-	
+		delta = new_position - _position
+		print("DEBUG NO_LOOP: _position=%s, new_position=%s, calculated_delta=%s audio_stream_player.get_playback_position()=%s _prev_playback_position=%s" % [_position, new_position, delta, audio_stream_player.get_playback_position(), _prev_playback_position])
+
 	## If the delta is jumping too far ahead, we must break it into smaller pieces
 	## to feed into the _Rhythm objects, to ensure no beat gets lost
 	#while delta >= beat_length:
@@ -330,10 +327,10 @@ func _step(delta: float, expected_new_pos: float):
 	_position = fposmod(_position + delta, _length)
 	_abs_position += delta
 	beat_process.emit(delta)
-	if _position != expected_new_pos:
-		var length = _length
-		assert(false, "Error, expected _position == expected_new_pos!")
-	print('_position: %s abs_position: %s current_beat_position: %s current_abs_beat_position: %s true_time_elapsed: %s playback_pos: %s delta: %s' % [_position, _abs_position, current_beat_position, current_abs_beat_position, Time.get_ticks_msec() / 1000.0, audio_stream_player.get_playback_position(), delta])
+	#if _position != expected_new_pos:
+		#var length = _length
+		#assert(false, "Error, expected _position == expected_new_pos!")
+	#print('_position: %s abs_position: %s current_beat_position: %s current_abs_beat_position: %s true_time_elapsed: %s playback_pos: %s delta: %s' % [_position, _abs_position, current_beat_position, current_abs_beat_position, Time.get_ticks_msec() / 1000.0, audio_stream_player.get_playback_position(), delta])
 
 	for key in _rhythms:
 		var rhythm = _rhythms[key]
