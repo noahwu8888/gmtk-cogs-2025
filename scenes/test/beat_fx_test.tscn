@@ -15,13 +15,8 @@ latency = 0.0
 [node name="KickPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_jmexd")
 
-[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+[node name="RhythmNotifier" type="Node" parent="."]
 script = ExtResource("3_f0q6t")
-bpm = 130.0
-beat_length = 0.461538
-silent_duration = -1.0
-audio_stream_player = NodePath("AudioStreamPlayer")
-running = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]

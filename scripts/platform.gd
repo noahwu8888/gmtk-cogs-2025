@@ -26,6 +26,7 @@ enum MoveMode {
 				size.y = 1
 			var true_size = size * Utils.TILE_SIZE
 			_patch_rect.size = true_size
+			_patch_rect.original_size = true_size
 			_patch_rect.position = (-size / 2.0) * Utils.TILE_SIZE
 			if _dest_indicator:
 				_dest_indicator.size = _patch_rect.size
@@ -70,7 +71,7 @@ var _all_waypoints: Array[Vector2] :
 ## Beat interval at which this platform visually pulses
 @export var pulse_beat: float = 4.0
 @export_group("Dependencies")
-@export var _patch_rect: NinePatchRect
+@export var _patch_rect: PulseRect
 @export var _collision_shape: CollisionShape2D
 @export var _debug_draw: Node2D
 @export var _visuals: Node2D
@@ -102,6 +103,7 @@ func _ready() -> void:
 				add_child(_dest_indicator)
 			_update_dest_indicator()
 		return
+	size = size
 	_initial_position = position
 	_debug_draw.reparent.call_deferred(get_parent())
 	if move_mode == MoveMode.BEAT:

@@ -1,0 +1,21 @@
+[gd_scene load_steps=14 format=3 uid="uid://jt72d3mpvhcs"]
+
+[ext_resource type="PackedScene" uid="uid://b86fxmc7jb1bb" path="res://prefabs/level.tscn" id="1_elbe6"]
+[ext_resource type="PackedScene" uid="uid://but84a2ah4oj8" path="res://prefabs/levels/rooms/lvl_1_room_1.tscn" id="2_5freq"]
+[ext_resource type="PackedScene" uid="uid://bhgotk0stngoq" path="res://prefabs/levels/rooms/lvl_1_room_2.tscn" id="3_j5u35"]
+[ext_resource type="PackedScene" uid="uid://drysfw5lr2cq5" path="res://prefabs/levels/rooms/lvl_1_room_3.tscn" id="4_gdxwp"]
+[ext_resource type="PackedScene" uid="uid://dmkglild1gtcw" path="res://prefabs/levels/rooms/lvl_1_room_4.tscn" id="5_lltv3"]
+[ext_resource type="AudioStream" uid="uid://dpspglrhaa3le" path="res://assets/music/level_1/lvl_1_chords.ogg" id="5_x8yyn"]
+[ext_resource type="AudioStream" uid="uid://d1tyt7o3eykmv" path="res://assets/music/level_1/lvl_1_countermelody.ogg" id="6_2t21p"]
+[ext_resource type="PackedScene" uid="uid://gkixgrsd2jmb" path="res://prefabs/levels/rooms/lvl_1_room_5.tscn" id="6_bbdrr"]
+[ext_resource type="PackedScene" uid="uid://be8hp3alr0nwe" path="res://prefabs/levels/rooms/lvl_1_room_6.tscn" id="7_5fwfd"]
+[ext_resource type="AudioStream" uid="uid://boen4hpuhfr4y" path="res://assets/music/level_1/lvl_1_kick.ogg" id="7_p37nu"]
+[ext_resource type="AudioStream" uid="uid://dysrc2w1ct7y0" path="res://assets/music/level_1/lvl_1_melody.ogg" id="8_lltv3"]
+[ext_resource type="AudioStream" uid="uid://cwfptf37ssrkx" path="res://assets/music/level_1/lvl_1_snare.ogg" id="9_bbdrr"]
+[ext_resource type="AudioStream" uid="uid://rcwvinpi6uid" path="res://assets/music/level_1/lvl_1_synth.ogg" id="10_5fwfd"]
+
+[node name="Level1" instance=ExtResource("1_elbe6")]
+level_name = "Level 1"
+room_prefabs = Array[PackedScene]([ExtResource("2_5freq"), ExtResource("3_j5u35"), ExtResource("4_gdxwp"), ExtResource("5_lltv3"), ExtResource("6_bbdrr"), ExtResource("7_5fwfd")])
+audio_tracks = Array[AudioStream]([ExtResource("5_x8yyn"), ExtResource("6_2t21p"), ExtResource("7_p37nu"), ExtResource("8_lltv3"), ExtResource("9_bbdrr"), ExtResource("10_5fwfd")])
+rooms_string = "lvl_1_room_1   >   lvl_1_room_2   >   lvl_1_room_3   >   lvl_1_room_4   >   lvl_1_room_5   >   lvl_1_room_6   >   "

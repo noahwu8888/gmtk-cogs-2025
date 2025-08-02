@@ -13,6 +13,7 @@ signal level_finished
 @export var world: World
 @export var trans_color_rect: ColorRect
 @export var load_fx: FX
+@export var metronome_sfx: AudioStreamPlayer
 
 var active_room: Room
 var active_room_index: int
@@ -23,6 +24,12 @@ var trans_beats_left: int
 func _ready() -> void:
 	trans_color_rect.color.a = 0.0
 	player.death.connect(respawn)
+	RhythmNotifier.global.beats(1.0).connect(_on_beat)
+
+
+func _on_beat(beat: int):
+	print("beat: %s, beat_pos: %s abs_beat_pos: %s" % [beat, RhythmNotifier.global.current_beat_position, RhythmNotifier.global.current_abs_beat_position])
+	metronome_sfx.play()
 
 
 func _process(delta: float) -> void:
@@ -31,16 +38,31 @@ func _process(delta: float) -> void:
 
 
 func restart_level():
-	print("RESTART")
 	if not level:
 		return
 	load_level(level)
 
 
+func load_level_path(path: String):
+	load_level_prefab(load(path) as PackedScene)
+
+
+func load_level_prefab(new_level_prefab: PackedScene):
+	load_level(new_level_prefab.instantiate() as Level)
+
+
 func load_level(new_level: Level):
+	if len(new_level.room_prefabs) == 0:
+		push_error("Level must have > 0 rooms!")
+		return
+	if new_level.get_parent() == null:
+		add_child(new_level)
+	else:
+		new_level.reparent(self)
 	level = new_level
 	active_room_index = -1
 	is_transitioning = true
+	BGTrackManager.global.update_tracks(level.audio_tracks)
 	load_room_next_room()
 
 
@@ -77,7 +99,7 @@ func load_room_next_room():
 	loop_bar.beat_count = new_room.beat_count
 	loop_bar.start_x = new_room.region._region.position.x
 	loop_bar.end_x = new_room.region._region.end.x
-	BGTrackManager.global.set_active_tracks(new_room.bg_tracks)
+	BGTrackManager.global.set_active_tracks(new_room.audio_tracks)
 	active_room = new_room
 	await get_tree().process_frame
 	respawn()

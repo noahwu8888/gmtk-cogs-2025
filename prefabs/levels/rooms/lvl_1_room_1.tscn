@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://but84a2ah4oj8"]
+
+[ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_5hqy4"]
+[ext_resource type="AudioStream" uid="uid://rcwvinpi6uid" path="res://assets/music/level_1/lvl_1_synth.ogg" id="2_v0hbd"]
+[ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="3_8gsoe"]
+
+[sub_resource type="Curve" id="Curve_lca4a"]
+_data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792, -1.25792, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Lvl1Room1" instance=ExtResource("1_5hqy4")]
+bpm = 68.0
+beat_count = 16
+audio_tracks = Array[AudioStream]([ExtResource("2_v0hbd")])
+
+[node name="CameraRegionTiled" parent="CameraRegions" index="0"]
+tiled_size = Vector2(64, 30)
+size = Vector2(16384, 7680)
+
+[node name="Goal" parent="." index="1"]
+position = Vector2(2432, 3456)
+pulse_beat = 8.0
+
+[node name="Spawn" parent="." index="2"]
+position = Vector2(1408, 3456)
+
+[node name="Platform" parent="." index="3" instance=ExtResource("3_8gsoe")]
+position = Vector2(8192, 4480)
+size = Vector2(64, 1)
+loop_mode = 1
+move_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_lca4a")
+pulse_beat = 8.0

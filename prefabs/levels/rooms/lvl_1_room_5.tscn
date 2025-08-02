@@ -1,0 +1,25 @@
+[gd_scene load_steps=9 format=3 uid="uid://gkixgrsd2jmb"]
+
+[ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_yf3ah"]
+[ext_resource type="AudioStream" uid="uid://rcwvinpi6uid" path="res://assets/music/level_1/lvl_1_synth.ogg" id="2_ifdfb"]
+[ext_resource type="AudioStream" uid="uid://dpspglrhaa3le" path="res://assets/music/level_1/lvl_1_chords.ogg" id="3_u17d3"]
+[ext_resource type="AudioStream" uid="uid://dysrc2w1ct7y0" path="res://assets/music/level_1/lvl_1_melody.ogg" id="4_ifdfb"]
+[ext_resource type="AudioStream" uid="uid://boen4hpuhfr4y" path="res://assets/music/level_1/lvl_1_kick.ogg" id="5_5uh0p"]
+[ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="6_25avg"]
+[ext_resource type="AudioStream" uid="uid://cwfptf37ssrkx" path="res://assets/music/level_1/lvl_1_snare.ogg" id="6_ifdfb"]
+
+[sub_resource type="Curve" id="Curve_6piak"]
+_data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792, -1.25792, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Lvl1Room5" instance=ExtResource("1_yf3ah")]
+bpm = 68.0
+audio_tracks = Array[AudioStream]([ExtResource("2_ifdfb"), ExtResource("3_u17d3"), ExtResource("4_ifdfb"), ExtResource("5_5uh0p"), ExtResource("6_ifdfb")])
+
+[node name="Platform" parent="." index="3" instance=ExtResource("6_25avg")]
+position = Vector2(5376, 4224)
+size = Vector2(32, 1)
+loop_mode = 1
+move_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_6piak")

@@ -19,14 +19,8 @@ fx = NodePath("FX")
 [node name="KickPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_yd2ad")
 
-[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+[node name="RhythmNotifier" type="Node" parent="."]
 script = ExtResource("3_phn1r")
-bpm = 130.0
-beat_length = 0.461538
-silent_duration = -1.0
-audio_stream_player = NodePath("AudioStreamPlayer")
-running = true
-is_global = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]

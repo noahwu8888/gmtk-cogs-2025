@@ -1,0 +1,22 @@
+[gd_scene load_steps=6 format=3 uid="uid://bhgotk0stngoq"]
+
+[ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_hi3qs"]
+[ext_resource type="AudioStream" uid="uid://rcwvinpi6uid" path="res://assets/music/level_1/lvl_1_synth.ogg" id="2_fhge7"]
+[ext_resource type="AudioStream" uid="uid://dpspglrhaa3le" path="res://assets/music/level_1/lvl_1_chords.ogg" id="3_rcico"]
+[ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="4_c8sa5"]
+
+[sub_resource type="Curve" id="Curve_rkhnt"]
+_data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792, -1.25792, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Lvl1Room2" instance=ExtResource("1_hi3qs")]
+bpm = 68.0
+audio_tracks = Array[AudioStream]([ExtResource("2_fhge7"), ExtResource("3_rcico")])
+
+[node name="Platform" parent="." index="3" instance=ExtResource("4_c8sa5")]
+position = Vector2(8192, 4480)
+size = Vector2(64, 1)
+loop_mode = 1
+move_mode = 1
+beat = 6.0
+beat_move_curve = SubResource("Curve_rkhnt")

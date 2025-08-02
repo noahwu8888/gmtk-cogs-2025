@@ -72,11 +72,8 @@ camera_zoom = Vector2(4, 4)
 transition = SubResource("Resource_nrfyi")
 metadata/_custom_type_script = "uid://ynenhsujby15"
 
-[node name="Room" type="Node2D" parent="." node_paths=PackedStringArray("fore_layer", "main_layer", "bg_layer", "region")]
+[node name="Room" type="Node2D" parent="." node_paths=PackedStringArray("region")]
 script = ExtResource("4_p5kur")
-fore_layer = NodePath("ForeLayer")
-main_layer = NodePath("MainLayer")
-bg_layer = NodePath("BGLayer")
 region = NodePath("../CameraRegionController2D/CameraRegion2D")
 
 [node name="LoopBar" parent="Room" instance=ExtResource("5_kttye")]

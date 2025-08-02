@@ -65,7 +65,6 @@ metadata/_custom_type_script = "uid://du2xs8w1buoji"
 
 [node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
 script = ExtResource("13_a1rin")
-silent_duration = -1.0
 audio_stream_player = NodePath("../BGTrackManager/BGTracksPlayer")
 is_global = true
 metadata/_custom_type_script = "uid://dqi2pls0xboqr"
@@ -78,3 +77,4 @@ metadata/_custom_type_script = "uid://deofdsnkjeipf"
 [node name="BGTracksPlayer" type="AudioStreamPlayer" parent="BGTrackManager"]
 autoplay = true
 bus = &"Music"
+playback_type = 2

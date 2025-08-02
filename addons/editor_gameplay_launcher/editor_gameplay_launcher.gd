@@ -4,9 +4,15 @@ extends EditorPlugin
 
 signal connected
 
+enum SceneMode {
+	INVALID,
+	ROOM,
+	LEVEL
+}
+
 var is_connected: bool
-var in_valid_room: bool
-var valid_room_path: String
+var scene_mode = SceneMode.INVALID
+var valid_path: String
 
 var _play_button: Button
 var _client: StreamPeerTCP = StreamPeerTCP.new()
@@ -28,31 +34,42 @@ func _enter_tree() -> void:
 	set_process(false)
 
 
+func _in_valid_scene() -> bool:
+	return scene_mode
+
+
 func _on_scene_changed(root: Node):
-	in_valid_room = false
-	in_valid_room = root.get_script() and \
-		(root.get_script() as GDScript).resource_path == "res://scripts/room.gd" and \
-		FileAccess.file_exists(root.scene_file_path)
-	_play_button.disabled = not in_valid_room
-	valid_room_path = root.scene_file_path if in_valid_room else ""
+	scene_mode = SceneMode.INVALID
+	if root.get_script() and FileAccess.file_exists(root.scene_file_path):
+		var resource_path = (root.get_script() as GDScript).resource_path
+		if resource_path == "res://scripts/room.gd":
+			scene_mode = SceneMode.ROOM
+		elif resource_path == "res://scripts/level.gd":
+			scene_mode = SceneMode.LEVEL
+	_play_button.disabled = not _in_valid_scene()
+	valid_path = root.scene_file_path if _in_valid_scene() else ""
 
 
 func _on_pressed():
-	if not in_valid_room:
+	if not _in_valid_scene():
 		return
 	_client.disconnect_from_host()
 	is_connected = false
 	get_editor_interface().play_custom_scene("res://scenes/editor_gameplay.tscn")
-	pprint("ressed")
 	var sucessful = await try_connect_to_server()
 	if not sucessful:
 		return
 	await connected
-	print("Sending var")
-	_client.put_var({
-		"command": "load_room",
-		"room_path": valid_room_path
-	}, true)
+	if scene_mode == SceneMode.ROOM:
+		_client.put_var({
+			"command": "load_room",
+			"room_path": valid_path
+		}, true)
+	elif scene_mode == SceneMode.LEVEL:
+		_client.put_var({
+			"command": "load_level",
+			"level_path": valid_path
+		}, true)
 
 func try_connect_to_server() -> bool:
 	for i in range(10):

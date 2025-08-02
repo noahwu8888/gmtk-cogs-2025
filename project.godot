@@ -20,6 +20,12 @@ config/icon="res://icon.svg"
 Services="*res://prefabs/services.tscn"
 SettingsDataManager="*res://addons/modular-settings-menu/singletons/settings_data_manager.gd"
 
+[display]
+
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_width"
+window/vsync/vsync_mode=0
+
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/cameraregion2d/plugin.cfg", "res://addons/editor_gameplay_launcher/plugin.cfg", "res://addons/explore-editor-theme/plugin.cfg", "res://addons/waypoints_editor/plugin.cfg", "res://addons/modular-settings-menu/plugin.cfg")
@@ -51,6 +57,15 @@ p1_down={
 "events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":83,"key_label":0,"unicode":115,"location":0,"echo":false,"script":null)
 ]
 }
+
+[network]
+
+limits/debugger/max_chars_per_second=393216
+
+[physics]
+
+common/physics_ticks_per_second=20
+common/physics_interpolation=true
 
 [rendering]
 

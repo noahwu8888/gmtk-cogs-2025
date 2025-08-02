@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://t6jjkf7w2aip"]
+[gd_scene load_steps=9 format=3 uid="uid://t6jjkf7w2aip"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_ctvyo"]
 [ext_resource type="PackedScene" uid="uid://bbkdkp0428yji" path="res://prefabs/player.tscn" id="2_qixtg"]
 [ext_resource type="Script" uid="uid://boimiilxj3n2b" path="res://addons/cameraregion2d/CameraRegionController2D.gd" id="3_nt65e"]
 [ext_resource type="PackedScene" uid="uid://dktcdyv405i1p" path="res://prefabs/loop_bar.tscn" id="4_bhmdk"]
 [ext_resource type="Script" uid="uid://dc1got8i8eqpe" path="res://scripts/level_manager.gd" id="5_s5y6v"]
+[ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="8_e124b"]
 [ext_resource type="Script" uid="uid://5vpj6ph24507" path="res://scripts/fx/fx.gd" id="10_mesn4"]
 [ext_resource type="AudioStream" uid="uid://dhhlxrdkb8gx" path="res://assets/sfx/crash.ogg" id="11_525vb"]
 
@@ -29,7 +30,7 @@ zoom = Vector2(0.05, 0.05)
 
 [node name="LoopBar" parent="World" instance=ExtResource("4_bhmdk")]
 
-[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "trans_color_rect", "load_fx")]
+[node name="LevelManager" type="Node" parent="." node_paths=PackedStringArray("camera_region_controller", "loop_bar", "player", "world", "trans_color_rect", "load_fx", "metronome_sfx")]
 script = ExtResource("5_s5y6v")
 min_transition_duration = 2.0
 camera_region_controller = NodePath("../World/CameraRegionController2D")
@@ -38,6 +39,7 @@ player = NodePath("../World/Player")
 world = NodePath("../World")
 trans_color_rect = NodePath("CanvasLayer/TransColorRect")
 load_fx = NodePath("LoadFX")
+metronome_sfx = NodePath("Metronome")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="LevelManager"]
 
@@ -56,3 +58,6 @@ metadata/_custom_type_script = "uid://5vpj6ph24507"
 
 [node name="Crash" type="AudioStreamPlayer" parent="LevelManager/LoadFX"]
 stream = ExtResource("11_525vb")
+
+[node name="Metronome" type="AudioStreamPlayer" parent="LevelManager"]
+stream = ExtResource("8_e124b")

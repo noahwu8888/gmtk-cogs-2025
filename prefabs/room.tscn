@@ -42,7 +42,7 @@ transition = SubResource("Resource_mlksw")
 metadata/_custom_type_script = "uid://p2nxp58705gq"
 
 [node name="Goal" parent="." instance=ExtResource("4_y72nq")]
-position = Vector2(9088, 2176)
+position = Vector2(9088, 3200)
 
 [node name="Spawn" parent="." instance=ExtResource("5_0dyi5")]
-position = Vector2(1664, 1920)
+position = Vector2(1664, 3200)

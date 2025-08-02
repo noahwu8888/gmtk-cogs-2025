@@ -131,7 +131,7 @@ class _Rhythm:
 		use_abs_position = _use_abs_position
 		
 
-	#const TOO_LATE = .1 # This long after interval starts, we are too late to emit
+	const TOO_LATE = .1 # This long after interval starts, we are too late to emit
 	# We pass secs_per_beat so user can change bpm any time
 	func emit_if_needed(beat_position: float, abs_beat_position: float, secs_per_beat: float) -> void:
 		var interval_secs = duration * secs_per_beat
@@ -141,10 +141,8 @@ class _Rhythm:
 		var current_interval = int(floor(elapsed_beat_time / duration))
 		var secs_past_interval = fmod(elapsed_beat_time * secs_per_beat, interval_secs)
 		var valid_interval = current_interval >= 0 and (repeating or current_interval == 1)
-		#var too_late = secs_past_interval >= TOO_LATE
-		#if duration != 1.0:
-			#print("current_interval: %s, elapsed_beat_time: %s, interval_secs: %s" % [current_interval, elapsed_beat_time, interval_secs])
-		if not valid_interval: #or too_late:
+		var too_late = secs_past_interval >= TOO_LATE
+		if not valid_interval or too_late:
 			# Invalid interval or interval is too late
 			last_frame_interval = null
 		elif last_frame_interval != current_interval:
@@ -292,9 +290,10 @@ func _ready():
 		return
 	beats(1.0).connect(beat.emit)
 
+var accrued_negative: float = 0.0
 
 # If not stopped, recalculate track position and emit any appropriate signals.
-func _physics_process(delta):
+func _process(delta: float):
 	if Engine.is_editor_hint():
 		return
 	if _silent_running and _stream_is_playing():
@@ -304,37 +303,34 @@ func _physics_process(delta):
 	
 	var prev_position = _position
 	var new_position = _position
-	if _silent_running:
-		new_position += delta
-		if silent_duration > 0:
-			new_position = fmod(new_position, silent_duration)
-	if not _silent_running:
-		new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
-		# Ensure that _position is monotonically increasing
-		# Note that sometimes the _cached_output_latency can cause this value to become negative
-		if _prev_playback_position < audio_stream_player.get_playback_position() and prev_position > new_position:
-			new_position = prev_position
+	new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
 	_prev_playback_position = audio_stream_player.get_playback_position()
 	
-	if prev_position > _position:
+	if prev_position > new_position:
 		# We've looped, so _position is the new delta
 		delta = new_position + (_length - fmod(prev_position, _length))
+		print("DEBUG LOOP: prev_position=%s, new_position=%s, _length=%s, fmod(prev_position, _length)=%s, calculated_delta=%s _prev_playback_position=%s" % [prev_position, new_position, _length, fmod(prev_position, _length), delta, audio_stream_player.get_playback_position()])
 	else:
 		# Use the difference as the delta
 		delta = new_position - prev_position
+		print("DEBUG NO_LOOP: prev_position=%s, new_position=%s, calculated_delta=%s" % [prev_position, new_position, delta])
 	
-	# If the delta is jumping too far ahead, we must break it into smaller pieces
-	# to feed into the _Rhythm objects, to ensure no beat gets lost
-	while delta >= beat_length * 0.9:
-		delta -= beat_length * 0.9
-		_step(beat_length)
-	_step(delta)
+	## If the delta is jumping too far ahead, we must break it into smaller pieces
+	## to feed into the _Rhythm objects, to ensure no beat gets lost
+	#while delta >= beat_length:
+		#delta -= beat_length
+		#_step(beat_length)
+	_step(delta, new_position)
 
 
-func _step(delta: float):
-	_position += delta
+func _step(delta: float, expected_new_pos: float):
+	_position = fposmod(_position + delta, _length)
 	_abs_position += delta
 	beat_process.emit(delta)
+	if _position != expected_new_pos:
+		var length = _length
+		assert(false, "Error, expected _position == expected_new_pos!")
+	print('_position: %s abs_position: %s current_beat_position: %s current_abs_beat_position: %s true_time_elapsed: %s playback_pos: %s delta: %s' % [_position, _abs_position, current_beat_position, current_abs_beat_position, Time.get_ticks_msec() / 1000.0, audio_stream_player.get_playback_position(), delta])
 
 	for key in _rhythms:
 		var rhythm = _rhythms[key]
@@ -389,6 +385,12 @@ func wait_beats(duration: float, rounded: bool = true) -> Signal:
 ## Waits until a specific absolute beat
 func wait_until_beat(beat: float) -> Signal:
 	return beats(beat, false, true, 0.0)
+
+
+## Waits until the next interval's end beat.
+func wait_until_interval_end_beat(beat_interval: float, beat_offset: int = 0, min_time_gap: float = 0) -> Signal:
+	var target = get_interval_end_beat(beat_interval, beat_offset, min_time_gap)
+	return wait_until_beat(target)
 
 
 ## Returns the current absolute beat at a given beat_interval.

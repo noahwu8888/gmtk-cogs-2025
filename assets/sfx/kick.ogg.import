@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/kick.ogg-c4095f0538dd652c936f7147b3d5cdab.ogg
 
 [params]
 
-loop=false
-loop_offset=0
-bpm=0
-beat_count=0
+loop=true
+loop_offset=0.0
+bpm=136.0
+beat_count=1
 bar_beats=4

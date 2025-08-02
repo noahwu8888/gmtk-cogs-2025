@@ -12,8 +12,8 @@ dest_files=["res://.godot/imported/lvl_1_melody.ogg-861736f9b851b9e4e9bd25319da2
 
 [params]
 
-loop=false
-loop_offset=0
-bpm=0
+loop=true
+loop_offset=0.0
+bpm=0.0
 beat_count=0
 bar_beats=4

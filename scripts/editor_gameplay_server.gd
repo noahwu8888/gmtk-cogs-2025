@@ -40,11 +40,13 @@ func _notification(what: int) -> void:
 func _on_receive_data(data: Dictionary):
 	pprint("Received data: %s" % data)
 	if data.command == "load_level":
-		var level = load(data.level_path) as Level
-		_level_manager.load_level(level)
+		_level_manager.load_level_path(data.level_path)
 	elif data.command == "load_room":
-		var room = load(data.room_path) as PackedScene
+		var room_prefab = load(data.room_path) as PackedScene
+		var room_inst = room_prefab.instantiate() as Room
+		room_inst.queue_free()
 		var level = Level.new()
-		level.name = "Test %s" % room.resource_name
-		level.room_prefabs.append(room)
+		level.level_name = "Test %s" % room_prefab.resource_name
+		level.audio_tracks = room_inst.audio_tracks
+		level.room_prefabs.append(room_prefab)
 		_level_manager.load_level(level)
