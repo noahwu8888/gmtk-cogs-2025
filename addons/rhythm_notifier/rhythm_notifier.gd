@@ -304,7 +304,6 @@ func _process(delta: float):
 	var new_position = _position
 
 	new_position = audio_stream_player.get_playback_position() + AudioServer.get_time_since_last_mix() - _cached_output_latency
-	
 	if new_position < prev_position:
 		new_position = prev_position
 	

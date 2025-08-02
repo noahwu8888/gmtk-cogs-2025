@@ -46,11 +46,10 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if test_mode == Mode.MANUAL:
-		pass
-	_time += delta
-	while _time >= _beat_length:
-		_on_beat(0)
-		_time -= _beat_length
+		_time += delta
+		while _time >= _beat_length:
+			_on_beat(0)
+			_time -= _beat_length
 
 
 func _on_beat(beat: int):
