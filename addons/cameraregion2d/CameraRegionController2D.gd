@@ -151,9 +151,18 @@ func _calculate_camera_position(delta):
 		if _transition_progress < reg_trans.transition_time:
 			emit_signal("transition_finished")
 	else:
-		camera.global_position = _current_region.get_camera_position(target_node.position)
-		camera.zoom = _current_region.camera_zoom
-		camera.rotation = _current_region.camera_rotation
+		instant_update_camera_position()
+
+
+## Updates the camera's position instantly,
+## bypassing any transitioning curves.
+func instant_update_camera_position():
+	camera.global_position = _current_region.get_camera_position(target_node.position)
+	camera.zoom = _current_region.camera_zoom
+	camera.rotation = _current_region.camera_rotation
+	var reg_trans = _current_region.transition
+	if reg_trans:
+		_transition_progress = reg_trans.transition_time
 
 
 ## Shakes the [member camera] for a specified [param time], with the given [param speed] and [param deviation].

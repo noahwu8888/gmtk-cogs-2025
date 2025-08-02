@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dvs4yj7u3igxr"]
+
+[ext_resource type="Script" uid="uid://dry7dik54nxtn" path="res://scripts/music_test.gd" id="1_r0trg"]
+[ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="2_jmexd"]
+[ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="3_f0q6t"]
+[ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="4_i4gge"]
+
+[node name="MusicTest" type="Node2D" node_paths=PackedStringArray("kick_player", "rhythm_notifier")]
+script = ExtResource("1_r0trg")
+kick_player = NodePath("KickPlayer")
+rhythm_notifier = NodePath("RhythmNotifier")
+min_transition_duration = 2.0
+latency = 0.0
+
+[node name="KickPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_jmexd")
+
+[node name="RhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+script = ExtResource("3_f0q6t")
+bpm = 130.0
+beat_length = 0.461538
+silent_duration = -1.0
+audio_stream_player = NodePath("AudioStreamPlayer")
+running = true
+metadata/_custom_type_script = "uid://dqi2pls0xboqr"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="RhythmNotifier"]
+stream = ExtResource("4_i4gge")
+volume_db = -10.0
+autoplay = true

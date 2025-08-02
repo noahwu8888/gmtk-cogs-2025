@@ -117,16 +117,17 @@ nodes/visuals/node = SubResource("AnimationNodeStateMachine_ht1c8")
 nodes/visuals/position = Vector2(520, 80)
 node_connections = [&"add2", 0, &"visuals", &"add2", 1, &"direction", &"output", 0, &"add2"]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("visuals_anim_tree", "sprite")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("visuals_anim_tree", "sprite", "collision_shape")]
 script = ExtResource("1_4dohe")
-speed = 2560.0
-jump_power = 4000.0
-gravity = 9600.0
-terminal_velocity = 4800.0
+speed = 10.0
+jump_power = 15.625
+gravity = 37.5
+terminal_velocity = 18.75
 down_gravity_scale = 3.0
 jumps = 100
 visuals_anim_tree = NodePath("VisualsAnimationTree")
 sprite = NodePath("Visuals/Sprite2D")
+collision_shape = NodePath("CollisionShape2D")
 
 [node name="DarknessPanel" parent="." instance=ExtResource("3_1txc5")]
 visible = false

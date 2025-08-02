@@ -1,6 +1,7 @@
-[gd_resource type="TileSet" load_steps=6 format=3 uid="uid://0kov5o43lpg"]
+[gd_resource type="TileSet" load_steps=7 format=3 uid="uid://0kov5o43lpg"]
 
 [ext_resource type="PackedScene" uid="uid://b8em18cjqhgg2" path="res://prefabs/tiles/goal.tscn" id="2_06yf5"]
+[ext_resource type="PackedScene" uid="uid://csrdqnyyv5i3c" path="res://prefabs/tiles/spawn.tscn" id="3_e0tbe"]
 [ext_resource type="PackedScene" uid="uid://t6xvasqtnplb" path="res://prefabs/tiles/spring.tscn" id="3_rsfnk"]
 [ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="4_e0tbe"]
 
@@ -8,6 +9,7 @@
 resource_name = "Prefabs"
 scenes/1/scene = ExtResource("2_06yf5")
 scenes/2/scene = ExtResource("3_rsfnk")
+scenes/4/scene = ExtResource("3_e0tbe")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d0fnf"]
 resource_name = "Platform"

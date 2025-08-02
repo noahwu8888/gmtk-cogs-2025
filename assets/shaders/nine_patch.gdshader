@@ -9,7 +9,7 @@ uniform int bottom;
 
 float map(float value, float originalMin, float originalMax, float newMin, float newMax) {
     return (value - originalMin) / (originalMax - originalMin) * (newMax - newMin) + newMin;
-} 
+}
 
 float process_axis(float coord, float pixel, float texture_pixel, float start, float end) {
 	if (coord > 1.0 - end * pixel) {
@@ -23,7 +23,7 @@ float process_axis(float coord, float pixel, float texture_pixel, float start, f
 
 void fragment() {
 	vec2 pixel_size = TEXTURE_PIXEL_SIZE / scale;
-	
+
 	vec2 mappedUV = vec2(
 		process_axis(UV.x, pixel_size.x, TEXTURE_PIXEL_SIZE.x, float(left), float(right)),
 		process_axis(UV.y, pixel_size.y, TEXTURE_PIXEL_SIZE.y, float(top), float(bottom))
