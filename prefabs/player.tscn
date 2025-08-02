@@ -134,7 +134,7 @@ position = Vector2(0, 128)
 
 [node name="Visuals" type="Node2D" parent="."]
 position = Vector2(0, 128)
-scale = Vector2(1.00003, 0.999949)
+scale = Vector2(1.0447, 0.910605)
 
 [node name="Sprite2D" type="Sprite2D" parent="Visuals"]
 position = Vector2(0, -128)
