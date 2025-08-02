@@ -231,6 +231,8 @@ stream = ExtResource("7_g3lit")
 
 [node name="PulseFX" type="Node2D" parent="."]
 script = ExtResource("4_0mt35")
+unparent_on_play = true
+destroy_on_finish = true
 metadata/_custom_type_script = "uid://5vpj6ph24507"
 
 [node name="FXAnim" type="Node" parent="PulseFX" node_paths=PackedStringArray("animation_player")]

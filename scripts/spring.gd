@@ -17,7 +17,8 @@ func _ready() -> void:
 		return
 	_spring_area.body_entered.connect(_on_body_entered)
 	if pulse_beats > 0:
-		RhythmNotifier.global.beats(pulse_beats).connect(_pulse_fx.play.unbind(1))
+		RhythmNotifier.global.beats(4).connect(_pulse_fx.play.unbind(1))
+
 
 func _on_body_entered(body: Node2D):
 	if body is Player:
