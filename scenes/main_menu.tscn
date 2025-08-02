@@ -153,7 +153,7 @@ text = "Back"
 
 [node name="AudioVisualizer" type="Node" parent="." node_paths=PackedStringArray("nodes_to_move", "conditional_nodes_to_move")]
 script = ExtResource("4_wu84c")
-nodes_to_move = [NodePath("../TitleScreen/Title")]
+nodes_to_move = [NodePath("../TitleScreen/Title"), NodePath("../LevelSelect/Title")]
 conditional_nodes_to_move = [NodePath("../TitleScreen/PlayButton"), NodePath("../TitleScreen/SettingsButton"), NodePath("../TitleScreen/QuitButton"), NodePath("../Settings/DiscardChangesPopup/PopupWindow/MarginContainer/VBoxContainer/HBoxContainer/YesButton"), NodePath("../Settings/DiscardChangesPopup/PopupWindow/MarginContainer/VBoxContainer/HBoxContainer/NoButton"), NodePath("../Settings/SettingsPanel/HBoxContainer/ApplyButton"), NodePath("../Settings/SettingsPanel/HBoxContainer/BackButton"), NodePath("../LevelSelect/BackButton")]
 metadata/_custom_type_script = "uid://chpdokkvvficn"
 

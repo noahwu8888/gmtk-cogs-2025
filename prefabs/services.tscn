@@ -50,6 +50,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="TransRect" type="TextureRect" parent="TransitionManager/CanvasLayer/Control"]
 modulate = Color(0, 0, 0, 1)
@@ -60,6 +61,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("5_iyjk6")
 
 [node name="SceneManager" type="Node" parent="."]

@@ -40,6 +40,7 @@ func _on_settings_button_pressed() -> void:
 	
 func _on_settings_settings_menu_closed() -> void:
 	audio_track_manager.set_active_tracks([default_stream])
-	
+	pass
+
 func _on_quit_button_pressed() -> void:
 	pass # Replace with function body.
