@@ -10,7 +10,6 @@ _data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792
 point_count = 3
 
 [node name="Lvl1Room2" instance=ExtResource("1_hi3qs")]
-bpm = 68.0
 audio_tracks = Array[AudioStream]([ExtResource("2_fhge7"), ExtResource("3_rcico")])
 
 [node name="Platform" parent="." index="3" instance=ExtResource("4_c8sa5")]

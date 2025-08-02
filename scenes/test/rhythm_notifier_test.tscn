@@ -1,5 +1,12 @@
-@tool
-@icon("icon.svg")
+[gd_scene load_steps=5 format=3 uid="uid://ddrhe7lmxlo36"]
+
+[ext_resource type="Script" uid="uid://erdt3xk8exfl" path="res://scripts/rhythm_notifier_test.gd" id="1_5883m"]
+[ext_resource type="AudioStream" uid="uid://cgaoc62unxnij" path="res://assets/sfx/kick_2.ogg" id="2_onr6p"]
+[ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="3_36g5o"]
+
+[sub_resource type="GDScript" id="GDScript_7r175"]
+script/source = "@tool
+@icon(\"icon.svg\")
 class_name OGRhythmNotifier
 extends Node
 ## A node that emits emits rhythmic signals synchronized with the beat of an [AudioStreamPlayer].
@@ -19,13 +26,13 @@ extends Node
 ## # Play music and emit lots of signals
 ## func _play_some_music():
 ##     # Print on beat 4, 8, 12...
-##     r.beats(4).connect(func(count): print("Hello from beat %d!" % (count * 4)))
+##     r.beats(4).connect(func(count): print(\"Hello from beat %d!\" % (count * 4)))
 ##
 ##     # Print on beat 5, 8, 11...
-##     r.beats(3, true, 2).connect(func(count): print("Hello from beat %d!" % 2+(count * 3)))
+##     r.beats(3, true, 2).connect(func(count): print(\"Hello from beat %d!\" % 2+(count * 3)))
 ##
 ##     # Print anytime beat 8.5 is reached
-##     r.beats(8.5, false).connect(func(_i): print("Hello from beat eight and a half!"))
+##     r.beats(8.5, false).connect(func(_i): print(\"Hello from beat eight and a half!\"))
 ##
 ##     r.audio_stream_player.play()  # Start signaling
 ##     r.audio_stream_player.seek(1.5)  # pausing/stopping/seeking all supported
@@ -41,9 +48,9 @@ extends Node
 ##
 ##     r.beat.connect(func(count):
 ##         if not r.audio_stream_player.playing:
-##             print("Pickup beat %d" % count)
+##             print(\"Pickup beat %d\" % count)
 ##         else:
-##             print("Song beat %d" % count)
+##             print(\"Song beat %d\" % count)
 ##
 ##     r.running = true  # Start signaling without playing the audio stream
 ##
@@ -52,16 +59,16 @@ extends Node
 ##     r.bpm = 60
 ##     r.beats(4).connect(func(count):
 ##         if r.bpm == 60 and count == 4:
-##             print("Four seconds into the song, we speed up.")
+##             print(\"Four seconds into the song, we speed up.\")
 ##             r.bpm = 120
 ##         elif r.bpm == 120:
-##             print("We are %.2f seconds into the song." % r.current_position)
+##             print(\"We are %.2f seconds into the song.\" % r.current_position)
 ##     )
 ##     r.audio_stream_player.play()
 ## [/codeblock]
 ##
-## [b]Usage example:[/b] Printing the rhythm musicians say when counting measures [i]("ONE and 
-## two and three and TWO and two and three and THREE and ...")[/i]
+## [b]Usage example:[/b] Printing the rhythm musicians say when counting measures [i](\"ONE and 
+## two and three and TWO and two and three and THREE and ...\")[/i]
 ##
 ## [codeblock]
 ## var r = RhythmNotifier.new()
@@ -70,19 +77,19 @@ extends Node
 ## 
 ## # Say the measure number at the start of each measure
 ## r.beats(3).connect(func(count):
-##     print("TIME %.2f, BEAT %2d  :    %d!" %
+##     print(\"TIME %.2f, BEAT %2d  :    %d!\" %
 ##         [r.current_position, r.current_beat, count])
 ## )
 ## # Say the other downbeats in the measure
 ## r.beat.connect(func(count):
 ##     if count % 3 != 0:
-##         print("TIME %.2f, BEAT %2d  :       (%d)" % 
+##         print(\"TIME %.2f, BEAT %2d  :       (%d)\" % 
 ##             [r.current_position, count, (count % 3)+1])
 ## )
 ## # Say the upbeats in the measure
 ## r.beats(.5).connect(func(i):
 ##     if i % 2 != 0:
-##         print("TIME %.2f, BEAT %4.1f:       (and)" %
+##         print(\"TIME %.2f, BEAT %4.1f:       (and)\" %
 ##             [r.current_position, i/2.])
 ## )
 ##
@@ -281,3 +288,23 @@ func beats(beat_count: float, repeating := true, start_beat := 0.0) -> Signal:
 
 func _stream_is_playing():
 	return audio_stream_player != null and audio_stream_player.playing
+"
+
+[node name="RhythmNotifierTest" type="Node2D" node_paths=PackedStringArray("metronome")]
+script = ExtResource("1_5883m")
+active_tracks = Array[AudioStream]([ExtResource("2_onr6p")])
+metronome = NodePath("Metro")
+beats = 1.0
+test_mode = 1
+
+[node name="Metro" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_36g5o")
+
+[node name="OGRhythmNotifier" type="Node" parent="." node_paths=PackedStringArray("audio_stream_player")]
+script = SubResource("GDScript_7r175")
+bpm = 136.0
+beat_length = 0.441176
+audio_stream_player = NodePath("AudioStreamPlayer")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="OGRhythmNotifier"]
+stream = ExtResource("3_36g5o")

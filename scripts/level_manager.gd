@@ -14,6 +14,7 @@ signal level_finished
 @export var trans_color_rect: ColorRect
 @export var load_fx: FX
 @export var metronome_sfx: AudioStreamPlayer
+@export var use_metronome: bool = false 
 
 var active_room: Room
 var active_room_index: int
@@ -24,7 +25,8 @@ var trans_beats_left: int
 func _ready() -> void:
 	trans_color_rect.color.a = 0.0
 	player.death.connect(respawn)
-	RhythmNotifier.global.beats(1.0).connect(_on_beat)
+	if use_metronome:
+		RhythmNotifier.global.beats(1.0).connect(_on_beat)
 
 
 func _on_beat(beat: int):

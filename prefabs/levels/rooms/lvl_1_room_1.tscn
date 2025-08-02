@@ -9,8 +9,6 @@ _data = [Vector2(0.498708, 0), 0.0, 5.64053, 0, 0, Vector2(0.99999, 1), -1.25792
 point_count = 3
 
 [node name="Lvl1Room1" instance=ExtResource("1_5hqy4")]
-bpm = 68.0
-beat_count = 16
 audio_tracks = Array[AudioStream]([ExtResource("2_v0hbd")])
 
 [node name="CameraRegionTiled" parent="CameraRegions" index="0"]
@@ -19,7 +17,6 @@ size = Vector2(16384, 7680)
 
 [node name="Goal" parent="." index="1"]
 position = Vector2(2432, 3456)
-pulse_beat = 8.0
 
 [node name="Spawn" parent="." index="2"]
 position = Vector2(1408, 3456)
@@ -31,4 +28,4 @@ loop_mode = 1
 move_mode = 1
 beat = 6.0
 beat_move_curve = SubResource("Curve_lca4a")
-pulse_beat = 8.0
+pulse_beat = 1.0

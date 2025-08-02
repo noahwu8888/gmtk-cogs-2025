@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=3 uid="uid://dft2arqhitpec"]
+[gd_scene load_steps=8 format=3 uid="uid://bo4sxn5iabijl"]
 
-[ext_resource type="Script" uid="uid://dry7dik54nxtn" path="res://scripts/music_test.gd" id="1_uhcdy"]
 [ext_resource type="AudioStream" uid="uid://ds60orcmyyfsw" path="res://assets/sfx/kick.ogg" id="2_yd2ad"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="3_phn1r"]
 [ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="4_v8abe"]
@@ -8,8 +7,55 @@
 [ext_resource type="Script" uid="uid://dqrlchg6pdnje" path="res://scripts/fx/fx_beat.gd" id="6_5n4lr"]
 [ext_resource type="AudioStream" uid="uid://cgaoc62unxnij" path="res://assets/sfx/kick_2.ogg" id="7_yda4p"]
 
+[sub_resource type="GDScript" id="GDScript_p80jl"]
+script/source = "extends Node
+class_name MusicTest
+
+@export var kick_player: AudioStreamPlayer
+@export var rhythm_notifier: RhythmNotifier
+@export var min_transition_duration: float = 1.0
+@export var transition_beat_interval: float = 4.0 
+@export var bpm: float = 130
+@export var latency: float = 0.01
+@export var fx: FX
+var bps: float :
+	get:
+		return bpm / 60
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_P:
+			start()
+		elif event.keycode == KEY_O:
+			start_fx()
+
+
+func _ready() -> void:
+	rhythm_notifier.beats(1.0).connect(func(count):
+		print(\"TIME %.4f, ABS_TIME: %.4f, CALC_TIME: %.4f, BEAT %2d  :    %d!\" % [rhythm_notifier.current_position, rhythm_notifier.current_abs_position, fmod(rhythm_notifier.current_abs_position, rhythm_notifier.audio_stream_player.stream.get_length()), rhythm_notifier.current_beat, count])
+	)
+
+
+func start():
+	print(\"START TRANSITION\")
+	var target_beat = rhythm_notifier.get_interval_end_beat(transition_beat_interval, 0, min_transition_duration)
+	var target_position = target_beat * rhythm_notifier.beat_length
+	#print(\"    target_beat: \", target_beat)
+	print(\"    target_position: \", target_position)
+	print(\"    notifier rhythms: \", rhythm_notifier._rhythms)
+	#await Utils.wait(target_position - rhythm_notifier.current_abs_position)
+	await rhythm_notifier.beats(target_beat - latency, false)
+	kick_player.play()
+	print(\"TRANSITION END\")
+	print(\"    latency: %s cached_latency: %s\" % [latency, rhythm_notifier._cached_output_latency])
+	
+
+func start_fx():
+	fx.play()
+"
+
 [node name="MusicTest" type="Node2D" node_paths=PackedStringArray("kick_player", "rhythm_notifier", "fx")]
-script = ExtResource("1_uhcdy")
+script = SubResource("GDScript_p80jl")
 kick_player = NodePath("KickPlayer")
 rhythm_notifier = NodePath("RhythmNotifier")
 min_transition_duration = 2.0
