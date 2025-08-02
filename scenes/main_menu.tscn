@@ -74,10 +74,9 @@ visible = false
 layout_mode = 1
 MenuPanelRef = NodePath("../TitleScreen/Title")
 
-[node name="AudioVisualizer" type="Node" parent="." node_paths=PackedStringArray("nodes_to_move", "conditional_nodes_to_move")]
+[node name="AudioVisualizer" type="Node" parent="." node_paths=PackedStringArray("nodes_to_move")]
 script = ExtResource("4_wu84c")
 nodes_to_move = [NodePath("../TitleScreen/Title")]
-conditional_nodes_to_move = [NodePath("../TitleScreen/PlayButton"), NodePath("../TitleScreen/SettingsButton"), NodePath("../TitleScreen/QuitButton")]
 metadata/_custom_type_script = "uid://chpdokkvvficn"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]

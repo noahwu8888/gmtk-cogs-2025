@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://jq6k2s45yolp"]
+[gd_scene load_steps=12 format=3 uid="uid://jq6k2s45yolp"]
 
 [ext_resource type="Script" uid="uid://dug4lixts246l" path="res://scripts/utils.gd" id="1_qptee"]
 [ext_resource type="Script" uid="uid://jmme7hdxird4" path="res://scripts/transition_manager.gd" id="2_e6m75"]
@@ -7,11 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://cse48w2sb0eqy" path="res://assets/art/gmtk_Square.png" id="5_iyjk6"]
 [ext_resource type="Script" uid="uid://du2xs8w1buoji" path="res://scripts/scene_manager.gd" id="6_iyjk6"]
 [ext_resource type="Script" uid="uid://dynfss5u1fhmt" path="res://scripts/music/bg_track_manager.gd" id="7_gr1a7"]
-[ext_resource type="AudioStream" uid="uid://bxamnrwj8w5xu" path="res://assets/music/test/metro.ogg" id="8_svda7"]
-[ext_resource type="AudioStream" uid="uid://d3uf2kkgotct3" path="res://assets/music/test/metro_2.ogg" id="9_7infw"]
-[ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="10_lfafe"]
-[ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="11_pchpq"]
-[ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="12_wavce"]
 [ext_resource type="Script" uid="uid://dqi2pls0xboqr" path="res://addons/rhythm_notifier/rhythm_notifier.gd" id="13_a1rin"]
 
 [sub_resource type="Curve" id="Curve_6g2tk"]
@@ -75,7 +70,6 @@ metadata/_custom_type_script = "uid://dqi2pls0xboqr"
 
 [node name="BGTrackManager" type="Node" parent="."]
 script = ExtResource("7_gr1a7")
-tracks = Array[AudioStream]([ExtResource("8_svda7"), ExtResource("9_7infw"), ExtResource("10_lfafe"), ExtResource("11_pchpq"), ExtResource("12_wavce")])
 fade_duration = 1.0
 metadata/_custom_type_script = "uid://deofdsnkjeipf"
 

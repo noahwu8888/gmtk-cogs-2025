@@ -26,19 +26,16 @@ var duration: float :
 @export var bg_color: Color = Color.BLACK
 
 @export_group("Dependencies")
-@export var fore_layer: TileMapLayer
-@export var main_layer: TileMapLayer
-@export var bg_layer: TileMapLayer
 @export var region: CameraRegion2D
 
 var goal: Goal
 var spawn: Node2D
 
 
-
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(bg_color)
 	_deferrred_ready.call_deferred()
+
 
 func _deferrred_ready():
 	spawn = Utils.get_node_by_group(self, "spawn")

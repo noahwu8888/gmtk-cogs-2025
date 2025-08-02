@@ -1,12 +1,5 @@
-[gd_scene load_steps=5 format=4 uid="uid://drysfw5lr2cq5"]
+[gd_scene load_steps=2 format=3 uid="uid://drysfw5lr2cq5"]
 
 [ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_qycve"]
-[ext_resource type="AudioStream" uid="uid://b1b042vblllv8" path="res://assets/music/test/TwoSisters_Level_Base.ogg" id="2_pl4kv"]
-[ext_resource type="AudioStream" uid="uid://dsn47jtmwqpfi" path="res://assets/music/test/mystery.ogg" id="3_tkbql"]
-[ext_resource type="AudioStream" uid="uid://be3bj08upc4oc" path="res://assets/music/test/intensity.ogg" id="4_dty5b"]
 
 [node name="Room3" instance=ExtResource("1_qycve")]
-bg_tracks = Array[AudioStream]([ExtResource("4_dty5b"), ExtResource("3_tkbql"), ExtResource("2_pl4kv")])
-
-[node name="MainLayer" parent="." index="1"]
-tile_map_data = PackedByteArray("AAAAAAsAAgAAAAAAAAABAAsAAgAAAAAAAAACAAsAAgAAAAAAAAADAAsAAgAAAAAAAAAEAAsAAgAAAAAAAAAFAAsAAgAAAAAAAAAGAAsAAgAAAAAAAAAeAAoAAgAAAAAAAAAfAAoAAgAAAAAAAAAgAAoAAgAAAAAAAAAhAAoAAgAAAAAAAAAiAAoAAgAAAAAAAAAjAAoAAgAAAAAAAAAkAAoAAgAAAAAAAAAlAAoAAgAAAAAAAAAmAAoAAgAAAAAAAAAFAAoAAQAAAAAAAgAlAAgAAQAAAAAAAQAJABEAAgAAAAAAAAAKABEAAgAAAAAAAAALABEAAgAAAAAAAAAMABEAAgAAAAAAAAANABEAAgAAAAAAAAAOABEAAgAAAAAAAAAPABEAAgAAAAAAAAAQABEAAgAAAAAAAAARABEAAgAAAAAAAAASABEAAgAAAAAAAAATABEAAgAAAAAAAAAUABEAAgAAAAAAAAAVABEAAgAAAAAAAAAWABUAAgAAAAAAAAAXABUAAgAAAAAAAAAYABUAAgAAAAAAAAAZABUAAgAAAAAAAAAaABUAAgAAAAAAAAAbABUAAgAAAAAAAAAcABUAAgAAAAAAAAAdABUAAgAAAAAAAAARAAAAAgAAAAAAAAASAAAAAgAAAAAAAAATAAEAAgAAAAAAAAATAAIAAgAAAAAAAAATAAMAAgAAAAAAAAASAAQAAgAAAAAAAAARAAQAAgAAAAAAAAASAAIAAgAAAAAAAAARAAIAAgAAAAAAAAAQAAAAAgAAAAAAAAAQAAQAAgAAAAAAAAATAAAAAgAAAAAAAAATAAQAAgAAAAAAAAAdABQAAQAAAAAAAgAVABAAAQAAAAAAAgACAAgAAQAAAAAABAA=")

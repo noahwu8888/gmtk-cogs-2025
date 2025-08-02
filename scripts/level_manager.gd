@@ -31,13 +31,16 @@ func _process(delta: float) -> void:
 
 
 func restart_level():
+	print("RESTART")
 	if not level:
 		return
 	load_level(level)
 
+
 func load_level(new_level: Level):
 	level = new_level
 	active_room_index = -1
+	is_transitioning = true
 	load_room_next_room()
 
 

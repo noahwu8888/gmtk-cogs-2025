@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://da2ppk1bq8v31"]
+
+[ext_resource type="PackedScene" uid="uid://cy7fb0f5jqp4x" path="res://prefabs/room.tscn" id="1_o18wo"]
+[ext_resource type="AudioStream" uid="uid://bb1e0ubgsww1y" path="res://assets/music/level_1/lvl_1_test.ogg" id="2_tesas"]
+[ext_resource type="PackedScene" uid="uid://cdx5s1dc6kr1m" path="res://prefabs/platform.tscn" id="5_ur2vi"]
+
+[node name="RoomTest" instance=ExtResource("1_o18wo")]
+bg_tracks = Array[AudioStream]([ExtResource("2_tesas")])
+
+[node name="CameraRegionTiled" parent="CameraRegions" index="0"]
+tiled_size = Vector2(55, 30)
+size = Vector2(14080, 7680)
+
+[node name="Platform" parent="." index="3" instance=ExtResource("5_ur2vi")]
+position = Vector2(1792, 3200)
+
+[node name="Platform2" parent="." index="4" instance=ExtResource("5_ur2vi")]
+position = Vector2(3712, 2432)
+size = Vector2(6, 1)
+
+[node name="Platform3" parent="." index="5" instance=ExtResource("5_ur2vi")]
+position = Vector2(7296, 4352)
+size = Vector2(15, 1)
+
+[node name="Platform4" parent="." index="6" instance=ExtResource("5_ur2vi")]
+position = Vector2(10368, 2944)
+size = Vector2(15, 1)

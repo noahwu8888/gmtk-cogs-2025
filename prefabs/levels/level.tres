@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Level" load_steps=2 format=3 uid="uid://1lvl2r1aide1"]
+
+[ext_resource type="Script" uid="uid://drr3hic848gx0" path="res://scripts/level.gd" id="1_uthbu"]
+
+[resource]
+script = ExtResource("1_uthbu")
+name = ""
+room_prefabs = Array[PackedScene]([])
+metadata/_custom_type_script = "uid://drr3hic848gx0"

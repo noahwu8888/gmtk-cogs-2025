@@ -129,6 +129,8 @@ func _advance_waypoint():
 func _physics_process(delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
+	if len(waypoints) == 0:
+		return
 	if move_mode == MoveMode.SPEED:
 		var move_delta = speed * delta * Utils.TILE_SIZE
 		while true:
