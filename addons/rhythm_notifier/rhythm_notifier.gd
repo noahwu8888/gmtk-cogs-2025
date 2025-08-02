@@ -312,11 +312,11 @@ func _process(delta: float):
 		new_position = 0
 		delta = _length - _position
 		#delta = new_position + (_length - fmod(prev_position, _length))
-		#print("DEBUG LOOP: prev_position=%s, new_position=%s, _length=%s, fmod(prev_position, _length)=%s, calculated_delta=%s _prev_playback_position=%s" % [prev_position, new_position, _length, fmod(prev_position, _length), delta, audio_stream_player.get_playback_position()])
+		print("DEBUG LOOP: prev_position=%s, new_position=%s, _length=%s, delta=%s" % [prev_position, new_position, _length, delta])
 	else:
 		# Use the difference as the delta
 		delta = new_position - prev_position
-		#print("DEBUG NO_LOOP: prev_position=%s, new_position=%s, calculated_delta=%s" % [prev_position, new_position, delta])
+		print("DEBUG NO_LOOP: prev_position=%s, new_position=%s, calculated_delta=%s audio_stream_player.get_playback_position()=%s _prev_playback_position=%s" % [prev_position, new_position, delta, audio_stream_player.get_playback_position(), _prev_playback_position])
 	
 	## If the delta is jumping too far ahead, we must break it into smaller pieces
 	## to feed into the _Rhythm objects, to ensure no beat gets lost
