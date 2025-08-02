@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://fwwt25t8gs83"]
+
+[ext_resource type="Texture2D" uid="uid://bvelkxlgo70lo" path="res://assets/art/gmtk_dark.png" id="1_gjho2"]
+[ext_resource type="Script" uid="uid://c58kl2fxeo38" path="res://scripts/darkness_panel.gd" id="2_gjho2"]
+
+[node name="DarknessPanel" type="Sprite2D"]
+scale = Vector2(10, 10)
+texture = ExtResource("1_gjho2")
+script = ExtResource("2_gjho2")
